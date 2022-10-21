@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 09:14:23 by mviinika          #+#    #+#             */
-/*   Updated: 2022/10/20 14:59:15 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/10/21 13:50:43 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,29 +43,36 @@ static void rem_quote(t_quotes *quots, char *input, int *tot, int *i)
 	}
 }
 
-static char	*word(char *input, int i, int *total, char **env)
+int	is_redirect(char *input, int i, t_quotes *quots)
+{
+	return ((input[i] == '>' && !quots->d_quote)
+		|| (input[i] == '>' && !quots->s_quote));
+}
+
+static char	*word(t_pars *pars, int i, int *total, char **env)
 {
 	char		*word;
 	t_quotes	quots;
 	t_word		ints;
 
-	initialise_structs(&quots, &ints, input);
-	word = ft_strnew(ft_strlen(input));
-	while (ft_isspace(input[i]) && (*total)++)
+	initialise_structs(&quots, &ints, pars->trimmed);
+	word = ft_strnew(ft_strlen(pars->trimmed));
+	while (ft_isspace(pars->trimmed[i]) && (*total)++)
 		i++;
 	while (i < ints.len)
 	{
-		ft_printf("jee\n");
-		rem_quote(&quots, input, total, &i);
-		if (is_expansion(input, i))
+		rem_quote(&quots, pars->trimmed, total, &i);
+		if (is_redirect( pars->trimmed, i, &quots))
+			pars->redir = 1;
+		if (is_expansion( pars->trimmed, i))
 			ints.expan = 1;
-		if (is_end_of_word(input[i], &quots) && (*total)++)
+		if (is_end_of_word( pars->trimmed[i], &quots) && (*total)++)
 			break ;
-		if (can_be_added(input[i], &quots))
-			add_letter(word, input[i++], total, &ints.k);
+		if (can_be_added( pars->trimmed[i], &quots))
+			add_letter(word,  pars->trimmed[i++], total, &ints.k);
 	}
-	// if ((ints.expan && !quots.s_quote)
-	// 	|| (word[0] == '~' && word[1] != '$' && !quots.s_quote))
+	if ((ints.expan && !quots.s_quote)
+		|| (word[0] == '~' && word[1] != '$' && !quots.s_quote))
 		word = handle_expansions(word, env, total, &i);
 	return (word);
 }
@@ -76,9 +83,10 @@ void	set_pars_struct(t_pars *pars, char *input)
 	* (ft_wordcount_ws(input) + 1));
 	pars->trimmed = ft_strtrim(input);
 	pars->len = (int)ft_strlen(pars->trimmed);
+	pars->redir = 0;
 }
 
-char	**parse_input(char *input, char **env)
+char	**parse_input(char *input, t_env *env)
 {
 	int			i;
 	int			k;
@@ -91,7 +99,7 @@ char	**parse_input(char *input, char **env)
 	set_pars_struct(&pars, input);
 	while (i < pars.len)
 	{
-		pars.parsed[k++] = word(pars.trimmed, i, &total, env);
+		pars.parsed[k++] = word(&pars, i, &total, env->env);
 		if (!pars.parsed[k - 1])
 		{
 			ft_strdel(&pars.trimmed);
@@ -100,6 +108,12 @@ char	**parse_input(char *input, char **env)
 			return (NULL);
 		}
 		i = total;
+	}
+	if (pars.redir)
+	{
+		redirect(pars.parsed, env);
+		ft_strdel(&pars.trimmed);
+		return (NULL);
 	}
 	pars.parsed[k] = NULL;
 	ft_strdel(&pars.trimmed);

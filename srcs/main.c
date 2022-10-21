@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 19:07:23 by mviinika          #+#    #+#             */
-/*   Updated: 2022/10/20 12:22:20 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/10/21 13:49:07 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ static int	minishell(t_env *env, char **builtins)
 		else
 		{
 			if (rb != 0)
-				parsed_input = parse_input(buf, env->env);
+				parsed_input = parse_input(buf, env);
 			rb = check_exec(parsed_input, rb, builtins, env);
 		}
 		ft_memset(buf, '\0', 4096);

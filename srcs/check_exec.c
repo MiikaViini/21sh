@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 13:37:00 by mviinika          #+#    #+#             */
-/*   Updated: 2022/10/20 09:04:55 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/10/21 13:55:28 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,6 @@ static int check_builtins(char **input, char **builtins, t_env *env)
 
 int check_exec(char **input, int rb, char **builtins, t_env *env)
 {
-	int ret;
-
-	ret = 0;
 	if ((rb && !input) || (rb && !input[0]))
 		return (1);
 	env->path = get_path(env->env);

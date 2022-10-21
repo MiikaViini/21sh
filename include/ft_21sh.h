@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   21sh.h                                             :+:      :+:    :+:   */
+/*   ft_21sh.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 08:59:36 by mviinika          #+#    #+#             */
-/*   Updated: 2022/10/20 09:04:00 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/10/21 13:50:22 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ typedef struct s_pars
 	int		len;
 	char	**parsed;
 	char	*trimmed;
+	int		redir;
 }			t_pars;
 
 typedef struct s_word
@@ -63,6 +64,7 @@ typedef struct s_word
 	int		len;
 	int		expan;
 	int		k;
+	int		redir;
 }			t_word;
 
 int		check_command(char **input, char **path, char **env);
@@ -78,12 +80,13 @@ void	error_print(char *word, char *command, char *e_msg);
 void	get_env(t_env *dest, char **environ, int argc, char **argv);
 char	*handle_expansions(char *input, char **env, int *total, int *i);
 int		is_expansion(char *str, int i);
-char	**parse_input(char *input, char **env);
+char	**parse_input(char *input, t_env *env);
 char	*passwd_user(char *input);
 char	*tilde_expansion(char *word, char **env, char *expanded);
 void	update_env(char **env, char *input, char *var);
 char	*user_expansion(char *input);
 void	free_parsed_input(char **p_input);
+int		redirect(char **input, t_env *env);
 
 /***********\
 ** utils.c **

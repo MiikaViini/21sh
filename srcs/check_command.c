@@ -6,13 +6,13 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 20:41:14 by mviinika          #+#    #+#             */
-/*   Updated: 2022/10/20 09:04:55 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/10/21 13:48:05 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
 
-static int execute_command(char **input, char *exec, char **env)
+static int	execute_command(char **input, char *exec, char **env)
 {
 	int pid;
 	struct stat stat_;
