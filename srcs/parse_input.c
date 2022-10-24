@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 09:14:23 by mviinika          #+#    #+#             */
-/*   Updated: 2022/10/21 13:50:43 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/10/24 15:08:49 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,45 +77,34 @@ static char	*word(t_pars *pars, int i, int *total, char **env)
 	return (word);
 }
 
-void	set_pars_struct(t_pars *pars, char *input)
-{
-	pars->parsed = (char **)ft_memalloc(sizeof(char *) \
-	* (ft_wordcount_ws(input) + 1));
-	pars->trimmed = ft_strtrim(input);
-	pars->len = (int)ft_strlen(pars->trimmed);
-	pars->redir = 0;
-}
-
-char	**parse_input(char *input, t_env *env)
+char	**parse_input(t_env *env, t_pars *pars)
 {
 	int			i;
 	int			k;
 	static int	total;
-	t_pars		pars;
 
 	i = 0;
 	k = 0;
 	total = 0;
-	set_pars_struct(&pars, input);
-	while (i < pars.len)
+	while (i < pars->len)
 	{
-		pars.parsed[k++] = word(&pars, i, &total, env->env);
-		if (!pars.parsed[k - 1])
+		pars->parsed[k++] = word(pars, i, &total, env->env);
+		if (!pars->parsed[k - 1])
 		{
-			ft_strdel(&pars.trimmed);
-			free_parsed_input(pars.parsed);
-			free(pars.parsed);
+			ft_strdel(&pars->trimmed);
+			free_parsed_input(pars->parsed);
+			free(pars->parsed);
 			return (NULL);
 		}
 		i = total;
 	}
-	if (pars.redir)
+	pars->parsed[k] = NULL;
+	if (pars->redir)
 	{
-		redirect(pars.parsed, env);
-		ft_strdel(&pars.trimmed);
-		return (NULL);
+		redirect(pars, env);
+		//ft_strdel(&pars->trimmed);
+		//return (NULL);
 	}
-	pars.parsed[k] = NULL;
-	ft_strdel(&pars.trimmed);
-	return (pars.parsed);
+	ft_strdel(&pars->trimmed);
+	return (pars->parsed);
 }

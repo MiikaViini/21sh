@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 20:41:14 by mviinika          #+#    #+#             */
-/*   Updated: 2022/10/21 13:48:05 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/10/24 15:01:29 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 static int	execute_command(char **input, char *exec, char **env)
 {
-	int pid;
-	struct stat stat_;
+	int			pid;
+	struct stat	stat_;
 
 	if (stat(exec, &stat_) != -1 && !S_ISREG(stat_.st_mode))
 		return (1);
@@ -34,10 +34,10 @@ static int	execute_command(char **input, char *exec, char **env)
 	return (0);
 }
 
-static int execute_path_bin(char **input, char *path, char **env, DIR *dir)
+static int	execute_path_bin(char **input, char *path, char **env, DIR *dir)
 {
-	char *exec;
-	char *path_;
+	char	*exec;
+	char	*path_;
 
 	exec = ft_strjoin("/", input[0]);
 	path_ = ft_strjoin(path, exec);
@@ -91,9 +91,9 @@ static int check_path_bin(char **input, char **path, char **env)
 	return (0);
 }
 
-int check_command(char **input, char **path, char **env)
+int	check_command(char **input, char **path, char **env)
 {
-	struct stat buf;
+	struct stat	buf;
 
 	if (ft_strchr(input[0], '/') && access(input[0], F_OK) == 0)
 	{
