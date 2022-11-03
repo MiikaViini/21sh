@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/12 09:56:41 by mviinika          #+#    #+#             */
-/*   Updated: 2022/10/21 12:57:23 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/11/03 12:29:34 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,12 @@ int can_be_added(char c, t_quotes *quots)
 
 int is_end_of_word(char c, t_quotes *quots)
 {
-	return ((ft_isspace(c) && quots->s_quote + quots->d_quote == 0) 
+	return ((ft_isspace(c) && quots->s_quote + quots->d_quote == 0)
 		|| (ft_isspace(c) && quots->closed));
+}
+
+int is_operator (char c, t_quotes *quots)
+{
+	(void)quots;
+	return (c == '|' | c == ';' | c == '<' | c == '>');
 }

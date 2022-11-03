@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 09:14:23 by mviinika          #+#    #+#             */
-/*   Updated: 2022/10/24 15:08:49 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/11/03 12:52:46 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static void	initialise_structs(t_quotes *quotes, t_word *ints, char *input)
 	ints->len = (int)ft_strlen(input);
 }
 
-static void rem_quote(t_quotes *quots, char *input, int *tot, int *i)
+static void	rem_quote(t_quotes *quots, char *input, int *tot, int *i)
 {
 	if (is_quote(input[*i]))
 	{
@@ -62,18 +62,25 @@ static char	*word(t_pars *pars, int i, int *total, char **env)
 	while (i < ints.len)
 	{
 		rem_quote(&quots, pars->trimmed, total, &i);
-		if (is_redirect( pars->trimmed, i, &quots))
-			pars->redir = 1;
-		if (is_expansion( pars->trimmed, i))
-			ints.expan = 1;
-		if (is_end_of_word( pars->trimmed[i], &quots) && (*total)++)
+		if (is_operator(pars->trimmed[i], &quots))
+		{
+			word[0] = pars->trimmed[i];
+			(*total)++;
 			break ;
-		if (can_be_added( pars->trimmed[i], &quots))
-			add_letter(word,  pars->trimmed[i++], total, &ints.k);
+		}
+		if (is_redirect(pars->trimmed, i, &quots))
+			pars->redir = 1;
+		if (is_expansion(pars->trimmed, i))
+			ints.expan = 1;
+		if (is_end_of_word(pars->trimmed[i], &quots) && (*total)++)
+			break ;
+		if (can_be_added(pars->trimmed[i], &quots))
+			add_letter(word, pars->trimmed[i++], total, &ints.k);
 	}
 	if ((ints.expan && !quots.s_quote)
 		|| (word[0] == '~' && word[1] != '$' && !quots.s_quote))
 		word = handle_expansions(word, env, total, &i);
+	ft_printf("%s\n", word);
 	return (word);
 }
 

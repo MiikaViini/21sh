@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 08:59:36 by mviinika          #+#    #+#             */
-/*   Updated: 2022/10/24 15:07:36 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/11/03 12:29:22 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,29 +14,20 @@
 # define FT_21SH_H
 
 # include <sys/stat.h>
-# include "../libft/include/libft.h"
 # include <dirent.h>
 # include <fcntl.h>
 # include <pwd.h>
+
+# include "../libft/include/libft.h"
+# include "ast.h"
+# include "tokens.h"
+# include "error.h"
 
 # define MAX_VAR 1024
 # define MAX_PATH 1024
 # define MAX_LINE 4096
 
 # define SHELL "21sh"
-
-# define E_EXE "error occured during execution"
-# define E_NOTF "command not found"
-# define E_NOTVAL "variable name must begin with a letter."
-# define E_ARGNOTVAL "please enter arguments in format 'name=value'."
-# define E_NOTALNUM "variable name must contain alphanumeric characters."
-# define E_QUOT "invalid quoting, try again"
-# define E_NOEX "no such file or directory"
-# define E_NOPERM "permission denied"
-# define E_NODIR "is not a directory"
-# define E_NULLVAR "not set"
-# define E_ISDIR "is a directory"
-# define E_NOUSER "no such user or named directory"
 
 typedef struct s_env
 {
@@ -107,6 +98,7 @@ int		is_valid_char(char c);
 void	add_letter(char *word, char c, int *total, int *k);
 int		can_be_added(char c, t_quotes *quots);
 int		is_end_of_word(char c, t_quotes *quots);
+int 	is_operator (char c, t_quotes *quots);
 
 typedef int					(*t_builtins)(char **input, t_env *env);
 
