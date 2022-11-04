@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 08:59:36 by mviinika          #+#    #+#             */
-/*   Updated: 2022/11/03 12:29:22 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/11/04 14:45:21 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,9 @@ void	add_letter(char *word, char c, int *total, int *k);
 int		can_be_added(char c, t_quotes *quots);
 int		is_end_of_word(char c, t_quotes *quots);
 int 	is_operator (char c, t_quotes *quots);
+
+t_ast	*make_ast(t_env *env, t_pars *pars);
+void 	ast_travers(t_ast *tree);
 
 typedef int					(*t_builtins)(char **input, t_env *env);
 

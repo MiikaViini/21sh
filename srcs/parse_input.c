@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 09:14:23 by mviinika          #+#    #+#             */
-/*   Updated: 2022/11/03 12:52:46 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/11/04 14:45:40 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,7 @@ char	**parse_input(t_env *env, t_pars *pars)
 	int			i;
 	int			k;
 	static int	total;
+	t_ast		*tree;
 
 	i = 0;
 	k = 0;
@@ -106,6 +107,9 @@ char	**parse_input(t_env *env, t_pars *pars)
 		i = total;
 	}
 	pars->parsed[k] = NULL;
+	tree = make_ast(env, pars);
+	ast_travers(tree);
+	exit(2);
 	if (pars->redir)
 	{
 		redirect(pars, env);
