@@ -6,11 +6,30 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 09:14:23 by mviinika          #+#    #+#             */
-/*   Updated: 2022/11/04 14:45:40 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/11/08 15:17:09 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
+
+static t_tlist	*newlst(char *content, char type)
+{
+	t_tlist	*fresh;
+
+	fresh = (t_tlist *)ft_memalloc(sizeof(t_tlist));
+	if (content == NULL)
+	{
+		fresh->str = NULL;
+		fresh->type = 0;
+		fresh->next = NULL;
+		return (fresh);
+	}
+	fresh->str = ft_strnew(ft_strlen(content));
+	ft_memcpy(fresh->str, content, ft_strlen(content));
+	fresh->type = type;
+	fresh->next = NULL;
+	return (fresh);
+}
 
 static void	initialise_structs(t_quotes *quotes, t_word *ints, char *input)
 {
@@ -49,12 +68,16 @@ int	is_redirect(char *input, int i, t_quotes *quots)
 		|| (input[i] == '>' && !quots->s_quote));
 }
 
-static char	*word(t_pars *pars, int i, int *total, char **env)
+static t_tlist	*get_token(t_pars *pars, int i, int *total)
 {
 	char		*word;
 	t_quotes	quots;
 	t_word		ints;
+	t_tlist		*token;
+	char		type;
 
+	type = TOKEN_WORD;
+	//token = newlst(NULL, 0);
 	initialise_structs(&quots, &ints, pars->trimmed);
 	word = ft_strnew(ft_strlen(pars->trimmed));
 	while (ft_isspace(pars->trimmed[i]) && (*total)++)
@@ -64,50 +87,106 @@ static char	*word(t_pars *pars, int i, int *total, char **env)
 		rem_quote(&quots, pars->trimmed, total, &i);
 		if (is_operator(pars->trimmed[i], &quots))
 		{
+			if (pars->trimmed[i] == '|')
+				type = TOKEN_PIPE;
+			else if (pars->trimmed[i] == ';')
+				type = TOKEN_SEMICOLON;
+			else if (pars->trimmed[i] == '<')
+				type = TOKEN_GT;
+			else if (pars->trimmed[i] == '>')
+				type = TOKEN_LT;
+			else if (pars->trimmed[i] == '&')
+				type = TOKEN_AGGR;
+			else
+				type = TOKEN_ELSE;
 			word[0] = pars->trimmed[i];
 			(*total)++;
 			break ;
 		}
-		if (is_redirect(pars->trimmed, i, &quots))
-			pars->redir = 1;
 		if (is_expansion(pars->trimmed, i))
-			ints.expan = 1;
+			type = TOKEN_DOLLAR;
 		if (is_end_of_word(pars->trimmed[i], &quots) && (*total)++)
+		{
 			break ;
+		}
 		if (can_be_added(pars->trimmed[i], &quots))
 			add_letter(word, pars->trimmed[i++], total, &ints.k);
 	}
-	if ((ints.expan && !quots.s_quote)
-		|| (word[0] == '~' && word[1] != '$' && !quots.s_quote))
-		word = handle_expansions(word, env, total, &i);
+	// if ((ints.expan && !quots.s_quote)
+	// 	|| (word[0] == '~' && word[1] != '$' && !quots.s_quote))
+	// 	word = handle_expansions(word, env, total, &i);
 	ft_printf("%s\n", word);
-	return (word);
+	token = newlst(word, type);
+	return (token);
 }
+
+
+
+static void	lstaddlast(t_tlist **alst, t_tlist *new)
+{
+	t_tlist	*temp;
+
+	temp = *alst;
+	if (*alst == NULL)
+	{
+		*alst = new;
+		return ;
+	}
+	while (temp != NULL)
+	{
+		if (temp->next == NULL)
+		{
+			temp->next = new;
+			break ;
+		}
+		temp = temp->next;
+	}
+}
+
+// static void	lstadd(t_tlist **alst, t_tlist *new)
+// {
+// 	new->next = *alst;
+// 	*alst = new;
+// }
 
 char	**parse_input(t_env *env, t_pars *pars)
 {
 	int			i;
-	int			k;
 	static int	total;
 	t_ast		*tree;
+	t_tlist		*tokens;
 
 	i = 0;
-	k = 0;
 	total = 0;
+	tokens = NULL;
+	(void)env;
 	while (i < pars->len)
 	{
-		pars->parsed[k++] = word(pars, i, &total, env->env);
-		if (!pars->parsed[k - 1])
-		{
-			ft_strdel(&pars->trimmed);
-			free_parsed_input(pars->parsed);
-			free(pars->parsed);
-			return (NULL);
-		}
+		//pars->parsed[k++] = get_token(pars, i, &total, env->env);
+		//get_token(pars, i, &total, env->env);
+		// if (!pars->parsed[k - 1])
+		// {
+		// 	ft_strdel(&pars->trimmed);
+		// 	free_parsed_input(pars->parsed);
+		// 	free(pars->parsed);
+		// 	return (NULL);
+		// }
+		
+		lstaddlast(&tokens, get_token(pars, i, &total));
+		
+		//tokens = tokens->next;
 		i = total;
 	}
-	pars->parsed[k] = NULL;
-	tree = make_ast(env, pars);
+	//pars->parsed[k] = NULL;
+	// tokens = start;
+	// while(tokens)
+	// {
+	// 	ft_printf("type ; %c", tokens->type);
+	// 	ft_printf(" str ; %s\n", tokens->str);
+	// 	tokens = tokens->next;
+	// }
+	// tree = create_ast_node(NULL, TOKEN_PIPE, 0);
+	tree = make_ast(tokens);
 	ast_travers(tree);
 	exit(2);
 	if (pars->redir)

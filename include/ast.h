@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/03 12:11:30 by mviinika          #+#    #+#             */
-/*   Updated: 2022/11/04 14:57:30 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/11/08 16:00:50 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,9 @@ typedef struct s_ast
 	struct s_ast	*right;
 }				t_ast;
 
-t_ast	*create_ast_node(char **pars, int type, int size);
-void	insert_right(t_ast *root, char **pars, int type, int size);
-void	insert_left(t_ast *root, char **pars, int type, int size);
+t_ast	*create_ast_node(char *pars, int type, int size);
+void	insert_right(t_ast *root, char *pars, int type, int size);
+void	insert_left(t_ast *root, char *pars, int type, int size);
 
 
 

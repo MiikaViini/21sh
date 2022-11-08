@@ -6,31 +6,37 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/03 12:54:32 by mviinika          #+#    #+#             */
-/*   Updated: 2022/11/04 15:44:01 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/11/08 16:01:22 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
 
-void	insert_left(t_ast *root, char **pars, int type, int size)
+void	insert_left(t_ast *root, char *pars, int type, int size)
 {
 	root->left = create_ast_node(pars, type, size);
+	root = root->left;
 }
 
-void	insert_right(t_ast *root, char **pars, int type, int size)
+void	insert_right(t_ast *root, char *pars, int type, int size)
 {
+	ft_printf("insert right");
 	root->right = create_ast_node(pars, type, size);
+	
+	root = root->right;
 }
 
-t_ast	*create_ast_node(char **pars, int type, int size)
+t_ast	*create_ast_node(char *pars, int type, int size)
 {
 	t_ast	*root;
 
 	root = (t_ast *)malloc(sizeof(t_ast));
-	if (pars)
+	(void)size;
+	if (*pars)
 	{
-		root->cmd = pars[size];
-		root->args = ft_strarrndup(root->args, &pars[size], size);
+		ft_printf("insert right\n");
+		root->cmd = pars;
+		ft_printf("insertdddd right\n");
 	}
 	root->type = type;
 	root->left = NULL;
@@ -59,30 +65,58 @@ void ast_travers(t_ast *tree)
 // 	ast->right = NULL;
 // }
 
-t_ast	*make_ast(t_env *env, t_pars *pars)
+t_ast *simple_command(t_ast *node, t_tlist **tokens)
 {
-	int		i;
-	int		pipe;
-	t_ast	*root;
-	t_ast	*start;
+	node->cmd = (*tokens)->str;
+	*tokens = (*tokens)->next;
+	return (node);
+}
 
-	i = 0;
-	pipe = 0;
-	(void)env;
-	root = create_ast_node(NULL, TOKEN_PIPE, 0);
-	start = root;
-	while (pars->parsed[i])
+int	no_pipe(t_tlist *tokens)
+{
+	t_tlist	*temp;
+	
+	temp = tokens;
+	while (temp)
 	{
-		// if (ft_strcmp(pars->parsed[i], "|") == 0)
-		// 	insert_right(root, &pars->parsed[i], TOKEN_PIPE, 1);
-		if (!root->left)
-			insert_left(root, &pars->parsed[i], TOKEN_WORD, 1);
-		else if (!root->right)
-			insert_right(root, &pars->parsed[i], TOKEN_WORD, 1);
-		else
-			root = root->right;
-		i++;
+		if (temp->type == TOKEN_PIPE)
+			return 0;
+		temp = temp->next;
 	}
-	root = start;
-	return (root);
+	return 1;
+}
+
+t_ast	*make_ast(t_tlist *tokens)
+{
+	t_ast *tree;
+
+	tree = ft_memalloc(sizeof(tree));
+	tree->type = TOKEN_PIPE;
+	// if (tokens == NULL)
+	// 	return tree;
+	ft_printf("token %s\n", tokens->str);
+	tree->left = simple_command(tree, &tokens);
+	ft_printf("token %s\n", tokens->str);
+
+	if (tokens->type == TOKEN_WORD || no_pipe(tokens))
+	{
+		ft_printf("word a%s\n", tokens->str);
+		insert_left(tree, tokens->str, TOKEN_WORD, 0);
+		
+	}
+	
+	else if (!no_pipe(tokens))
+	{
+		ft_printf("word d%s\n", tokens->str);
+		insert_right(tree, tokens->str, TOKEN_WORD, 0);
+		ft_printf("word d%s\n", tokens->str);
+		return(tree);
+	}
+	else if (tokens->type == TOKEN_PIPE && tokens->next)
+	{
+		ft_printf("word  s%s\n", tokens->str);
+		make_ast(tokens->next);
+	}
+	
+	return (tree);
 }
