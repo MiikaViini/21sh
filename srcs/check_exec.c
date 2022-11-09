@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 13:37:00 by mviinika          #+#    #+#             */
-/*   Updated: 2022/10/24 12:59:25 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/11/09 13:48:59 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,13 +46,13 @@ static int	check_builtins(char **input, char **builtins, t_env *env)
 	return (0);
 }
 
-int	check_exec(t_pars *parsed, int rb, char **builtins, t_env *env)
+int	check_exec(t_ast *tree, int rb, char **builtins, t_env *env)
 {
-	if ((rb && !parsed->parsed) || (rb && !parsed->parsed[0]))
+	if ((rb && !tree) || (rb && !tree))
 		return (1);
 	env->path = get_path(env->env);
-	if (rb)
-		update_env(env->env, parsed->parsed[ft_linecount(parsed->parsed) - 1], "_");
+	// if (rb)
+	// 	update_env(env->env, tree->parsed[ft_linecount(parsed->parsed) - 1], "_");
 	if (rb == 0 || (parsed->parsed[0] && !ft_strcmp(parsed->parsed[0], "exit")))
 	{
 		ft_putstr("exit\n");

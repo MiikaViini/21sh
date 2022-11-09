@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 19:07:23 by mviinika          #+#    #+#             */
-/*   Updated: 2022/10/24 15:10:50 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/11/09 13:40:59 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static int	minishell(t_env *env, char **builtins)
 {
 	int		rb;
 	char	buf[MAX_LINE + 1];
-	//char	**parsed_input;
+	t_ast	*tree;
 	t_pars	parsed;
 
 	rb = 1;
@@ -45,9 +45,10 @@ static int	minishell(t_env *env, char **builtins)
 	// parsed.fd = open("test", O_CREAT| O_RDWR | O_APPEND, 0777);
 	// dup2(parsed.fd, STDOUT_FILENO);
 	//parsed_input = NULL;
+	tree = NULL;
 	if (rb != 0)
 	{
-		dup2(STDOUT_FILENO, parsed.std_out);
+		// dup2(STDOUT_FILENO, parsed.std_out);
 		rb = read(0, &buf, MAX_LINE);
 		set_pars_struct(&parsed, buf);
 		if (rb == -1)
@@ -57,8 +58,8 @@ static int	minishell(t_env *env, char **builtins)
 		else
 		{
 			if (rb != 0)
-				parse_input(env, &parsed);
-			rb = check_exec(&parsed, rb, builtins, env);
+				tree = parse_input(env, &parsed);
+			rb = check_exec(tree, rb, builtins, env);
 		}
 		// ft_putendl_fd(parsed.parsed[0], 1);
 		ft_memset(buf, '\0', 4096);

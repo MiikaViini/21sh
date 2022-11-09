@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 09:14:23 by mviinika          #+#    #+#             */
-/*   Updated: 2022/11/08 15:17:09 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/11/09 13:12:51 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,7 +149,7 @@ static void	lstaddlast(t_tlist **alst, t_tlist *new)
 // 	*alst = new;
 // }
 
-char	**parse_input(t_env *env, t_pars *pars)
+t_ast	*parse_input(t_env *env, t_pars *pars)
 {
 	int			i;
 	static int	total;
@@ -160,6 +160,7 @@ char	**parse_input(t_env *env, t_pars *pars)
 	total = 0;
 	tokens = NULL;
 	(void)env;
+	tree = NULL;
 	while (i < pars->len)
 	{
 		//pars->parsed[k++] = get_token(pars, i, &total, env->env);
@@ -187,6 +188,10 @@ char	**parse_input(t_env *env, t_pars *pars)
 	// }
 	// tree = create_ast_node(NULL, TOKEN_PIPE, 0);
 	tree = make_ast(tokens);
+	// ft_printf("%d", tree->type);
+	// ft_printf("%s %d", tree->left->cmd, tree->left->type);
+	// ft_printf("%s %d", tree->right->cmd,tree->right->type);
+	//ft_printf("%s ", tree->cmd);
 	ast_travers(tree);
 	exit(2);
 	if (pars->redir)
@@ -196,5 +201,5 @@ char	**parse_input(t_env *env, t_pars *pars)
 		//return (NULL);
 	}
 	ft_strdel(&pars->trimmed);
-	return (pars->parsed);
+	return (tree);
 }

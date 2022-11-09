@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 08:59:36 by mviinika          #+#    #+#             */
-/*   Updated: 2022/11/08 15:16:57 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/11/09 13:42:52 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ typedef struct s_word
 }			t_word;
 
 int		check_command(char **input, char **path, char **env);
-int		check_exec(t_pars *parsed, int rb, char **builtins, t_env *env);
+int		check_exec(t_ast *tree, int rb, char **builtins, t_env *env);
 int		check_quotes(char *input);
 int		do_cd(char **input, t_env *env);
 int		do_echo(char **input, t_env *env);
@@ -73,7 +73,7 @@ void	error_print(char *word, char *command, char *e_msg);
 void	get_env(t_env *dest, char **environ, int argc, char **argv);
 char	*handle_expansions(char *input, char **env, int *total, int *i);
 int		is_expansion(char *str, int i);
-char	**parse_input(t_env *env, t_pars *pars);
+t_ast	*parse_input(t_env *env, t_pars *pars);
 char	*passwd_user(char *input);
 char	*tilde_expansion(char *word, char **env, char *expanded);
 void	update_env(char **env, char *input, char *var);
