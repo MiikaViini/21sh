@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/24 11:04:49 by mviinika          #+#    #+#             */
-/*   Updated: 2022/05/08 13:22:43 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/11/10 09:35:16 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,7 @@ static char	*apply_space(t_modifiers *mods, char *str)
 char	*apply_sign(char *string, t_modifiers *mods, long long num)
 {
 	char	*res;
-	int		i;
 
-	i = 0;
 	res = ft_strdup(string);
 	if (num >= 0 && *string != ' ' && *string != '+' && mods->plus)
 	{

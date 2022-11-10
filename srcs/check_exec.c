@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 13:37:00 by mviinika          #+#    #+#             */
-/*   Updated: 2022/11/09 13:48:59 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/11/10 15:59:51 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,25 +45,91 @@ static int	check_builtins(char **input, char **builtins, t_env *env)
 	}
 	return (0);
 }
-
-int	check_exec(t_ast *tree, int rb, char **builtins, t_env *env)
+int	fork1(void)
 {
-	if ((rb && !tree) || (rb && !tree))
-		return (1);
+	int pid;
+
+	pid = fork();
+	if(pid == -1)
+		error_print(NULL, NULL, E_NODIGIT);
+	return pid;
+}
+
+int exec_single_command(t_ast *tree, int rb, char **builtins, t_env *env)
+{
+	if ((rb && !tree) || (!rb && !tree))
+		return 1;
 	env->path = get_path(env->env);
-	// if (rb)
-	// 	update_env(env->env, tree->parsed[ft_linecount(parsed->parsed) - 1], "_");
-	if (rb == 0 || (parsed->parsed[0] && !ft_strcmp(parsed->parsed[0], "exit")))
+	if (rb && tree->type == TOKEN_WORD)
+		update_env(env->env, tree->cmd[ft_linecount(tree->cmd) - 1], "_");
+	if (rb == 0)
 	{
 		ft_putstr("exit\n");
-		return (EXIT_SUCCESS);
+		return 0;
 	}
-	else if (check_builtins(parsed->parsed, builtins, env))
+	if (check_builtins(tree->cmd, builtins, env))
+	{
 		;
-	else if (check_command(parsed->parsed, env->path, env->env))
+	}
+	else if (check_command(tree->cmd, env->path, env->env))
+	{
 		;
+	}
 	else
-		error_print(parsed->parsed[0], NULL, E_NOTF);
+		error_print(tree->cmd[0], NULL, E_NOTF);
 	free_strarr(env->path);
-	return (1);
+	return 1;
+}
+
+int	exec_tree(t_ast *tree, int rb, char **builtins, t_env *env)
+{
+	int fd[2];
+	if ((!tree) || (!rb && !tree))
+		return 1;
+	env->path = get_path(env->env);
+	if (rb && tree->type == TOKEN_WORD)
+		update_env(env->env, tree->cmd[ft_linecount(tree->cmd) - 1], "_");
+	if (rb == 0)
+	{
+		ft_putstr("exit\n");
+		return 0;
+	}
+	if (tree->type == TOKEN_WORD && check_builtins(tree->cmd, builtins, env))
+	{
+		;
+	}
+	else if (tree->type == TOKEN_WORD && check_command_tree(tree->cmd, env->path, env->env))
+	{
+		;
+	}
+	else if (tree->type == TOKEN_PIPE)
+	{
+		if (pipe(fd) < 0)
+			error_print(NULL, NULL, E_PIPEFAIL);
+		if ( (fork1()) == 0)
+		{
+			close(1);
+			dup(fd[1]);
+			close(fd[0]);
+			close(fd[1]);
+			exec_tree(tree->left, rb, builtins, env);
+		}
+		if ((fork1()) == 0)
+		{
+			close(0);
+			dup(fd[0]);
+			close(fd[0]);
+			close(fd[1]);
+			exec_tree(tree->right, rb, builtins, env);
+		}
+		close(fd[0]);
+		close(fd[1]);
+		wait(0);
+		wait(0);
+	}
+	// else
+	// 	error_print(tree->cmd[0], NULL, E_NOTF);
+	//free_strarr(env->path);
+	exit(1);
+
 }

@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 11:29:41 by mviinika          #+#    #+#             */
-/*   Updated: 2022/05/08 13:11:38 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/11/10 09:36:45 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ static int	inf_nan(char *str, t_modifiers *mods, int count, long double num)
 		mods->width++;
 	mods->dot = 0;
 	mods->zero = 0;
-	if (num == -1.0 / 0 && mods->width++)
+	if (num == -1.0 / 0.0 && mods->width++)
 		mods->sign++;
 	str = check_infinity(num, mods);
 	output = treat_width(str, mods, ft_strlen(str));
@@ -91,7 +91,7 @@ int	f_specifier(va_list args, t_modifiers *mods)
 	f_prec_prep(mods);
 	string = ft_ftoa(num, mods->precision);
 	f_prep_mods(mods, string, num);
-	if (num == 1.0 / 0 || num == -1.0 / 0 || num != num)
+	if (num == 1.0 / 0.0 || num == -1.0 / 0.0 || num != num)
 		return (inf_nan(string, mods, count, (long double)num));
 	if (mods->dot && mods->hash && !mods->f_prec)
 		output = ft_strjoin(string + mods->d_zerominus, ".");

@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 19:07:23 by mviinika          #+#    #+#             */
-/*   Updated: 2022/11/09 13:40:59 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/11/10 16:01:16 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,17 @@ void	set_pars_struct(t_pars *pars, char *input)
 	pars->trimmed = ft_strtrim(input);
 	pars->len = (int)ft_strlen(pars->trimmed);
 	pars->redir = 0;
-	pars->std_out = dup(STDOUT_FILENO);
+	// pars->std_out = dup(STDOUT_FILENO);
 }
 
-static int	minishell(t_env *env, char **builtins)
+int is_pipe_sequence(t_ast *tree)
+{
+	if (tree->right)
+		return (1);
+	return (0);
+}
+
+static int	ft_21sh(t_env *env, char **builtins)
 {
 	int		rb;
 	char	buf[MAX_LINE + 1];
@@ -42,37 +49,40 @@ static int	minishell(t_env *env, char **builtins)
 
 	rb = 1;
 	ft_memset(buf, '\0', MAX_LINE + 1);
-	// parsed.fd = open("test", O_CREAT| O_RDWR | O_APPEND, 0777);
-	// dup2(parsed.fd, STDOUT_FILENO);
-	//parsed_input = NULL;
 	tree = NULL;
 	if (rb != 0)
 	{
-		// dup2(STDOUT_FILENO, parsed.std_out);
 		rb = read(0, &buf, MAX_LINE);
-		set_pars_struct(&parsed, buf);
 		if (rb == -1)
 			exit(1);
+		set_pars_struct(&parsed, buf);
 		if (check_quotes(buf))
 			error_print(NULL, NULL, E_QUOT);
 		else
 		{
-			if (rb != 0)
+			if (*parsed.trimmed)
 				tree = parse_input(env, &parsed);
-			rb = check_exec(tree, rb, builtins, env);
+			else
+				return 1;
+			if (is_pipe_sequence(tree))
+			{
+				if (fork() == 0)
+					rb = exec_tree(tree, rb, builtins, env);
+				wait(0);
+			}
+			else
+				rb = exec_single_command(tree->left, rb, builtins, env);
 		}
-		// ft_putendl_fd(parsed.parsed[0], 1);
 		ft_memset(buf, '\0', 4096);
 		free_parsed_input(parsed.parsed);
 		free(parsed.parsed);
-		close(parsed.fd);
 	}
 	return (rb);
 }
 
 static char	**initialize_and_set_builtins(void)
 {
-	static char	*builtins[6] = {"echo", "cd", "setenv", "unsetenv", "env"};
+	static char	*builtins[7] = {"echo", "cd", "setenv", "unsetenv", "env", "exit"};
 
 	return (builtins);
 }
@@ -90,7 +100,7 @@ int	main(int argc, char **argv, char **environ)
 	while (rb != 0)
 	{
 		ft_putstr("21sh$ ");
-		rb = minishell(&env, builtins);
+		rb = ft_21sh(&env, builtins);
 	}
 	free_strarr(env.env);
 	free_strarr(env.path);

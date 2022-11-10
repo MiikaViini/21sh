@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/03 12:16:42 by mviinika          #+#    #+#             */
-/*   Updated: 2022/11/03 12:21:44 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/11/10 12:28:00 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,5 +25,7 @@
 # define E_NULLVAR "not set"
 # define E_ISDIR "is a directory"
 # define E_NOUSER "no such user or named directory"
+# define E_NODIGIT "numeric argument required"
+# define E_PIPEFAIL "failed to open with pipe()"
 
 #endif

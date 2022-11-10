@@ -6,34 +6,28 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/03 12:54:32 by mviinika          #+#    #+#             */
-/*   Updated: 2022/11/09 13:01:50 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/11/10 10:18:23 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
 
-void	insert_left(t_ast *root, char *pars, int type, int size)
-{
-	root->left = create_ast_node(pars, type, size);
-}
+// void	insert_left(t_ast *root, char *pars, int type, int size)
+// {
+// 	root->left = create_ast_node(pars, type, size);
+// }
 
-void	insert_right(t_ast *root, char *pars, int type, int size)
-{
-	ft_printf("insert right");
-	root->right = create_ast_node(pars, type, size);
-}
+// void	insert_right(t_ast *root, char *pars, int type, int size)
+// {
+// 	ft_printf("insert right");
+// 	root->right = create_ast_node(pars, type, size);
+// }
 
-t_ast	*create_ast_node(char *pars, int type, int size)
+t_ast	*create_pipe_node(int type)
 {
 	t_ast	*root;
 
 	root = ft_memalloc(sizeof(t_ast));
-	(void)size;
-	if (pars && *pars)
-	{
-		ft_printf("pars\n");
-		root->cmd = pars;
-	}
 	root->type = type;
 	root->left = NULL;
 	root->right = NULL;
@@ -46,7 +40,7 @@ void ast_travers(t_ast *tree)
 		return ;
 	ast_travers(tree->left);
 	if (tree->cmd)
-		ft_printf("%s -> ", tree->cmd);
+		ft_printf("%s -> ", tree->cmd[0]);
 	ft_printf("here %d\n", tree->type);
 	ast_travers(tree->right);
 }
@@ -62,16 +56,26 @@ void ast_travers(t_ast *tree)
 
 t_ast *simple_command(t_ast *node, t_tlist **tokens)
 {
+	int i;
+
+	i = 0;
+	static int k;
+	k++;
 	if ((*tokens)->type == TOKEN_WORD)
 	{
 		node = ft_memalloc(sizeof(node));
-		//insert_left(node, tokens->str, TOKEN_WORD, 0);
-		//insert_left(node, (*tokens)->str, TOKEN_WORD, 0);
-		node->cmd = (*tokens)->str;
-		node->type = TOKEN_WORD;
-		node->left = NULL;
-		node->right = NULL;
-		(*tokens) = (*tokens)->next;
+		node->cmd = (char **)ft_memalloc(sizeof(char *) * 5);
+		while((*tokens) && (*tokens)->type == TOKEN_WORD)
+		{
+			node->cmd[i++] = ft_strdup((*tokens)->str);
+			node->type = TOKEN_WORD;
+			node->left = NULL;
+			node->right = NULL;
+			// if (!(*tokens)->next)
+			// 	break;
+			(*tokens) = (*tokens)->next;
+		}
+		node->cmd[i] = NULL;
 	}
 	return (node);
 }
@@ -94,13 +98,13 @@ t_ast	*make_ast(t_tlist *tokens)
 {
 	t_ast *tree;
 
-	tree = create_ast_node(NULL, TOKEN_PIPE, 0);
-	tree->left= simple_command(tree, &tokens);
+	tree = create_pipe_node(TOKEN_PIPE);
+	tree->left = simple_command(tree, &tokens);
 	if (!tokens)
 		return tree;
 	if (no_pipe(tokens->next))
 	{
-		insert_right(tree, tokens->next->str, TOKEN_WORD, 0);
+		tree->right = simple_command(tree, &tokens->next);
 		return(tree);
 	}
 	else if (tokens->type == TOKEN_PIPE)

@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 09:14:23 by mviinika          #+#    #+#             */
-/*   Updated: 2022/11/09 13:12:51 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/11/10 11:46:10 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,6 @@ static t_tlist	*get_token(t_pars *pars, int i, int *total)
 	// if ((ints.expan && !quots.s_quote)
 	// 	|| (word[0] == '~' && word[1] != '$' && !quots.s_quote))
 	// 	word = handle_expansions(word, env, total, &i);
-	ft_printf("%s\n", word);
 	token = newlst(word, type);
 	return (token);
 }
@@ -177,6 +176,7 @@ t_ast	*parse_input(t_env *env, t_pars *pars)
 		
 		//tokens = tokens->next;
 		i = total;
+		
 	}
 	//pars->parsed[k] = NULL;
 	// tokens = start;
@@ -192,14 +192,14 @@ t_ast	*parse_input(t_env *env, t_pars *pars)
 	// ft_printf("%s %d", tree->left->cmd, tree->left->type);
 	// ft_printf("%s %d", tree->right->cmd,tree->right->type);
 	//ft_printf("%s ", tree->cmd);
-	ast_travers(tree);
-	exit(2);
-	if (pars->redir)
-	{
-		redirect(pars, env);
-		//ft_strdel(&pars->trimmed);
-		//return (NULL);
-	}
+	// ast_travers(tree);
+	// exit(2);
+	// if (pars->redir)
+	// {
+	// 	redirect(pars, env);
+	// 	//ft_strdel(&pars->trimmed);
+	// 	//return (NULL);
+	// }
 	ft_strdel(&pars->trimmed);
 	return (tree);
 }

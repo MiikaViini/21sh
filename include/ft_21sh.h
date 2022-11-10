@@ -6,9 +6,11 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 08:59:36 by mviinika          #+#    #+#             */
-/*   Updated: 2022/11/09 13:42:52 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/11/10 15:26:03 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+
 
 #ifndef FT_21SH_H
 # define FT_21SH_H
@@ -17,6 +19,10 @@
 # include <dirent.h>
 # include <fcntl.h>
 # include <pwd.h>
+
+#ifdef __linux__
+#include <sys/wait.h>
+#endif
 
 # include "../libft/include/libft.h"
 # include "ast.h"
@@ -28,6 +34,9 @@
 # define MAX_LINE 4096
 
 # define SHELL "21sh"
+
+# define DB ft_putendl("tassa\n");
+# define DB1 ft_putendl("there\n");
 
 typedef struct s_env
 {
@@ -61,11 +70,12 @@ typedef struct s_word
 }			t_word;
 
 int		check_command(char **input, char **path, char **env);
-int		check_exec(t_ast *tree, int rb, char **builtins, t_env *env);
+int	exec_tree(t_ast *tree, int rb, char **builtins, t_env *env);
 int		check_quotes(char *input);
 int		do_cd(char **input, t_env *env);
 int		do_echo(char **input, t_env *env);
 int		do_env(char **input, t_env *env);
+int		do_exit(char **input, t_env *env);
 int		do_setenv(char **input, t_env *env);
 int		do_unsetenv(char **input, t_env *env);
 char	*dollar_expansion(char *expanded, char *word, char **env, int len);
@@ -80,6 +90,8 @@ void	update_env(char **env, char *input, char *var);
 char	*user_expansion(char *input);
 void	free_parsed_input(char **p_input);
 int		redirect(t_pars *pars, t_env *env);
+int exec_single_command(t_ast *tree, int rb, char **builtins, t_env *env);
+int	check_command_tree(char **input, char **path, char **env);
 
 /***********\
 ** utils.c **
@@ -105,12 +117,13 @@ void 	ast_travers(t_ast *tree);
 
 typedef int					(*t_builtins)(char **input, t_env *env);
 
-static const t_builtins		g_builtins[6] = {
+static const t_builtins		g_builtins[7] = {
 	do_echo,
 	do_cd,
 	do_setenv,
 	do_unsetenv,
 	do_env,
+	do_exit,
 	NULL
 };
 #endif

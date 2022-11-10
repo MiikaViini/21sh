@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   check_command.c                                    :+:      :+:    :+:   */
+/*   check_command_tree.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/11 20:41:14 by mviinika          #+#    #+#             */
-/*   Updated: 2022/11/10 14:49:53 by mviinika         ###   ########.fr       */
+/*   Created: 2022/11/10 14:49:24 by mviinika          #+#    #+#             */
+/*   Updated: 2022/11/10 15:36:56 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,21 +14,23 @@
 
 static int	execute_command(char **input, char *exec, char **env)
 {
-	int			pid;
-	struct stat	stat_;
+	//int			pid;
+	// struct stat	stat_;
 
-	if (stat(exec, &stat_) != -1 && !S_ISREG(stat_.st_mode))
-		return (1);
-	pid = fork();
-	if (pid < 0)
-		return (1);
-	else if (pid == 0)
-	{
+	// if (stat(exec, &stat_) != -1 && !S_ISREG(stat_.st_mode))
+	// 	return (1);
+	// pid = fork();
+	// if (pid < 0)
+	// 	return (1);
+	// else if (pid == 0)
+	// {
+		
 		execve(exec, input, env);;
 		error_print(exec, NULL, E_EXE);
 		exit(EXIT_FAILURE);
-	}
-	wait(&pid);
+		
+	// }
+	// wait(&pid);
 	return (0);
 }
 
@@ -89,7 +91,7 @@ static int check_path_bin(char **input, char **path, char **env)
 	return (0);
 }
 
-int	check_command(char **input, char **path, char **env)
+int	check_command_tree(char **input, char **path, char **env)
 {
 	struct stat	buf;
 
@@ -98,12 +100,12 @@ int	check_command(char **input, char **path, char **env)
 		if (stat(input[0], &buf) == 0 && S_ISDIR(buf.st_mode))
 		{
 			error_print(input[0], NULL, E_ISDIR);
-			return (1);
+			return 1;
 		}
 		else if (!execute_command(input, input[0], env))
-			return (1);
+			return 1;
 	}
 	else if (!check_path_bin(input, path, env))
-		return (1);
+		return 1;
 	return (0);
 }

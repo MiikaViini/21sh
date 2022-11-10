@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/12 17:39:14 by mviinika          #+#    #+#             */
-/*   Updated: 2022/10/20 09:04:55 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/11/10 10:09:16 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,8 @@ void get_env(t_env *dest, char **environ, int argc, char **argv)
 	{
 		if (ft_strncmp(environ[k], "OLDPWD=", 7) == 0)
 			k++;
+		if (!environ[k])
+			break;
 		dest->env[i++] = ft_strdup(environ[k]);
 	}
 	dest->env[i] = NULL;

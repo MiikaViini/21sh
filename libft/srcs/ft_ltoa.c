@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/23 11:49:11 by mviinika          #+#    #+#             */
-/*   Updated: 2022/10/18 12:53:44 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/11/10 09:34:46 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,6 @@ static size_t	intlen(unsigned long long n)
 	int	len;
 
 	len = 1;
-	if (n < 0)
-		len++;
 	while (n > 0 && len++)
 		n = n / 10;
 	return (len);
