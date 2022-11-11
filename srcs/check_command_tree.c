@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 14:49:24 by mviinika          #+#    #+#             */
-/*   Updated: 2022/11/10 15:36:56 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/11/11 10:37:53 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,9 @@ static int	execute_command(char **input, char *exec, char **env)
 	// else if (pid == 0)
 	// {
 		
-		execve(exec, input, env);;
-		error_print(exec, NULL, E_EXE);
-		exit(EXIT_FAILURE);
+	execve(exec, input, env);;
+	error_print(exec, NULL, E_EXE);
+	exit(EXIT_FAILURE);
 		
 	// }
 	// wait(&pid);

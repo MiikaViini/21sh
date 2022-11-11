@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 09:14:23 by mviinika          #+#    #+#             */
-/*   Updated: 2022/11/10 11:46:10 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/11/11 13:57:02 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,25 +41,49 @@ static void	initialise_structs(t_quotes *quotes, t_word *ints, char *input)
 	ints->len = (int)ft_strlen(input);
 }
 
-static void	rem_quote(t_quotes *quots, char *input, int *tot, int *i)
+static void	see_quote(t_quotes *quots, char *input, int i)
 {
-	if (is_quote(input[*i]))
+	if (is_quote(input[i]))
 	{
-		while (is_double_quote(input[*i]) && quots->s_quote == 0)
+		while (is_double_quote(input[i]) && quots->s_quote == 0)
 		{
 			quots->d_quote += 1;
-			*i += 1;
-			*tot += 1;
+			i += 1;
 		}
-		while (is_single_quote(input[*i]) && !quots->d_quote)
+		while (is_single_quote(input[i]) && !quots->d_quote)
 		{
 			quots->s_quote += 1;
-			*i += 1;
-			*tot += 1;
+			i += 1;
 		}
 		if (quots->s_quote >= 2 || quots->d_quote >= 2)
 			quots->closed = 1;
 	}
+}
+
+char *remove_quotes(char *input)
+{
+	int 	i;
+	int 	k;
+	char	quote;
+	char	*fresh;
+
+	i = 0;
+	k = 0;
+	quote = 0;
+	fresh = ft_strnew(ft_strlen(input));
+	while (input[i])
+	{
+		
+		if ((input[i] == '\'' && quote == 0)|| (input[i] == '\"' && quote == 0))
+			quote = input[i];
+		else if (input[i] == quote)
+			quote = 0;
+		else if (input[i] != quote)
+			fresh[k++] = input[i];
+		i++;
+	}
+	ft_strdel(&input);
+	return (fresh);
 }
 
 int	is_redirect(char *input, int i, t_quotes *quots)
@@ -68,7 +92,7 @@ int	is_redirect(char *input, int i, t_quotes *quots)
 		|| (input[i] == '>' && !quots->s_quote));
 }
 
-static t_tlist	*get_token(t_pars *pars, int i, int *total)
+static t_tlist	*get_token(t_pars *pars, t_env *env, int i, int *total)
 {
 	char		*word;
 	t_quotes	quots;
@@ -77,14 +101,13 @@ static t_tlist	*get_token(t_pars *pars, int i, int *total)
 	char		type;
 
 	type = TOKEN_WORD;
-	//token = newlst(NULL, 0);
 	initialise_structs(&quots, &ints, pars->trimmed);
 	word = ft_strnew(ft_strlen(pars->trimmed));
 	while (ft_isspace(pars->trimmed[i]) && (*total)++)
 		i++;
 	while (i < ints.len)
 	{
-		rem_quote(&quots, pars->trimmed, total, &i);
+		see_quote(&quots, pars->trimmed, i);
 		if (is_operator(pars->trimmed[i], &quots))
 		{
 			if (pars->trimmed[i] == '|')
@@ -112,9 +135,13 @@ static t_tlist	*get_token(t_pars *pars, int i, int *total)
 		if (can_be_added(pars->trimmed[i], &quots))
 			add_letter(word, pars->trimmed[i++], total, &ints.k);
 	}
-	// if ((ints.expan && !quots.s_quote)
-	// 	|| (word[0] == '~' && word[1] != '$' && !quots.s_quote))
-	// 	word = handle_expansions(word, env, total, &i);
+	if ((type == TOKEN_DOLLAR && !quots.s_quote)
+		|| (word[0] == '~' && word[1] != '$' && !quots.s_quote))
+	{
+		word = handle_expansions(word, env->env, total, &i);
+		type = TOKEN_WORD;
+	}
+	word = remove_quotes(word);
 	token = newlst(word, type);
 	return (token);
 }
@@ -142,12 +169,9 @@ static void	lstaddlast(t_tlist **alst, t_tlist *new)
 	}
 }
 
-// static void	lstadd(t_tlist **alst, t_tlist *new)
-// {
-// 	new->next = *alst;
-// 	*alst = new;
-// }
 
+// Parsing and lexing input, *get_token()* will make token list as a linked list
+// *make_ast()* will make abstract syntax tree from tokens
 t_ast	*parse_input(t_env *env, t_pars *pars)
 {
 	int			i;
@@ -158,48 +182,15 @@ t_ast	*parse_input(t_env *env, t_pars *pars)
 	i = 0;
 	total = 0;
 	tokens = NULL;
-	(void)env;
 	tree = NULL;
 	while (i < pars->len)
 	{
-		//pars->parsed[k++] = get_token(pars, i, &total, env->env);
-		//get_token(pars, i, &total, env->env);
-		// if (!pars->parsed[k - 1])
-		// {
-		// 	ft_strdel(&pars->trimmed);
-		// 	free_parsed_input(pars->parsed);
-		// 	free(pars->parsed);
-		// 	return (NULL);
-		// }
-		
-		lstaddlast(&tokens, get_token(pars, i, &total));
-		
-		//tokens = tokens->next;
+		lstaddlast(&tokens, get_token(pars,env ,i, &total));
 		i = total;
-		
 	}
-	//pars->parsed[k] = NULL;
-	// tokens = start;
-	// while(tokens)
-	// {
-	// 	ft_printf("type ; %c", tokens->type);
-	// 	ft_printf(" str ; %s\n", tokens->str);
-	// 	tokens = tokens->next;
-	// }
-	// tree = create_ast_node(NULL, TOKEN_PIPE, 0);
 	tree = make_ast(tokens);
-	// ft_printf("%d", tree->type);
-	// ft_printf("%s %d", tree->left->cmd, tree->left->type);
-	// ft_printf("%s %d", tree->right->cmd,tree->right->type);
-	//ft_printf("%s ", tree->cmd);
 	// ast_travers(tree);
 	// exit(2);
-	// if (pars->redir)
-	// {
-	// 	redirect(pars, env);
-	// 	//ft_strdel(&pars->trimmed);
-	// 	//return (NULL);
-	// }
 	ft_strdel(&pars->trimmed);
 	return (tree);
 }

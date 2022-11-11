@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/03 12:54:32 by mviinika          #+#    #+#             */
-/*   Updated: 2022/11/10 10:18:23 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/11/11 12:36:34 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,8 @@ void ast_travers(t_ast *tree)
 	if (tree == NULL)
 		return ;
 	ast_travers(tree->left);
-	if (tree->cmd)
-		ft_printf("%s -> ", tree->cmd[0]);
+	// if (tree->cmd)
+	// 	ft_printf("%s -> ", tree->cmd[0]);
 	ft_printf("here %d\n", tree->type);
 	ast_travers(tree->right);
 }
@@ -71,8 +71,6 @@ t_ast *simple_command(t_ast *node, t_tlist **tokens)
 			node->type = TOKEN_WORD;
 			node->left = NULL;
 			node->right = NULL;
-			// if (!(*tokens)->next)
-			// 	break;
 			(*tokens) = (*tokens)->next;
 		}
 		node->cmd[i] = NULL;
@@ -104,7 +102,9 @@ t_ast	*make_ast(t_tlist *tokens)
 		return tree;
 	if (no_pipe(tokens->next))
 	{
+		
 		tree->right = simple_command(tree, &tokens->next);
+		
 		return(tree);
 	}
 	else if (tokens->type == TOKEN_PIPE)
