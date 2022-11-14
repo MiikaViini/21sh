@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 08:59:36 by mviinika          #+#    #+#             */
-/*   Updated: 2022/11/10 15:26:03 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/11/14 15:50:42 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,9 +81,9 @@ int		do_unsetenv(char **input, t_env *env);
 char	*dollar_expansion(char *expanded, char *word, char **env, int len);
 void	error_print(char *word, char *command, char *e_msg);
 void	get_env(t_env *dest, char **environ, int argc, char **argv);
-char	*handle_expansions(char *input, char **env, int *total, int *i);
+char	*handle_expansions(char *input, char **env);
 int		is_expansion(char *str, int i);
-t_ast	*parse_input(t_env *env, t_pars *pars);
+t_ast	**parse_input(t_env *env, t_pars *pars);
 char	*passwd_user(char *input);
 char	*tilde_expansion(char *word, char **env, char *expanded);
 void	update_env(char **env, char *input, char *var);
@@ -112,7 +112,7 @@ int		can_be_added(char c, t_quotes *quots);
 int		is_end_of_word(char c, t_quotes *quots);
 int 	is_operator (char c, t_quotes *quots);
 
-t_ast	*make_ast(t_tlist *tokens);
+t_ast	*make_ast(t_tlist **tokens);
 void 	ast_travers(t_ast *tree);
 
 typedef int					(*t_builtins)(char **input, t_env *env);

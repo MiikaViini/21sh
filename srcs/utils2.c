@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/12 09:56:41 by mviinika          #+#    #+#             */
-/*   Updated: 2022/11/11 13:56:24 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/11/11 14:47:57 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int is_end_of_word(char c, t_quotes *quots)
 int is_operator (char c, t_quotes *quots)
 {
 	(void)quots;
-	if (!quots->closed)
+	if ((quots->d_quote && !quots->closed) || (quots->s_quote && !quots->closed))
 		return 0;
-	return ((c == '|' )| (c == ';') | (c == '<') | (c == '>'));
+	return ((c == '|' ) | (c == ';') | (c == '<') | (c == '>'));
 }

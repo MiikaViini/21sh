@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 09:14:23 by mviinika          #+#    #+#             */
-/*   Updated: 2022/11/11 13:57:02 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/11/14 16:06:35 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,7 @@ static t_tlist	*get_token(t_pars *pars, t_env *env, int i, int *total)
 	char		type;
 
 	type = TOKEN_WORD;
+	(void)env;
 	initialise_structs(&quots, &ints, pars->trimmed);
 	word = ft_strnew(ft_strlen(pars->trimmed));
 	while (ft_isspace(pars->trimmed[i]) && (*total)++)
@@ -124,6 +125,7 @@ static t_tlist	*get_token(t_pars *pars, t_env *env, int i, int *total)
 				type = TOKEN_ELSE;
 			word[0] = pars->trimmed[i];
 			(*total)++;
+			i += 1;
 			break ;
 		}
 		if (is_expansion(pars->trimmed, i))
@@ -135,13 +137,11 @@ static t_tlist	*get_token(t_pars *pars, t_env *env, int i, int *total)
 		if (can_be_added(pars->trimmed[i], &quots))
 			add_letter(word, pars->trimmed[i++], total, &ints.k);
 	}
-	if ((type == TOKEN_DOLLAR && !quots.s_quote)
-		|| (word[0] == '~' && word[1] != '$' && !quots.s_quote))
+	if ((type == TOKEN_DOLLAR && !quots.s_quote) || (word[0] == '~' && word[1] != '$' && !quots.s_quote))
 	{
-		word = handle_expansions(word, env->env, total, &i);
-		type = TOKEN_WORD;
+		//word = handle_expansions(word, env->env, total, &i);
+		type = TOKEN_DOLLAR;
 	}
-	word = remove_quotes(word);
 	token = newlst(word, type);
 	return (token);
 }
@@ -172,25 +172,31 @@ static void	lstaddlast(t_tlist **alst, t_tlist *new)
 
 // Parsing and lexing input, *get_token()* will make token list as a linked list
 // *make_ast()* will make abstract syntax tree from tokens
-t_ast	*parse_input(t_env *env, t_pars *pars)
+t_ast	**parse_input(t_env *env, t_pars *pars)
 {
 	int			i;
 	static int	total;
-	t_ast		*tree;
+	t_ast		**tree;
 	t_tlist		*tokens;
 
 	i = 0;
 	total = 0;
 	tokens = NULL;
-	tree = NULL;
+	tree = (t_ast **)ft_memalloc(sizeof(t_ast *) * 100);;
 	while (i < pars->len)
 	{
 		lstaddlast(&tokens, get_token(pars,env ,i, &total));
 		i = total;
 	}
-	tree = make_ast(tokens);
-	// ast_travers(tree);
-	// exit(2);
+	i = 0;
+	while(tokens)
+	{
+		tree[i] = make_ast(&tokens);
+		if (tokens && tokens->type == TOKEN_SEMICOLON)
+			tokens = tokens->next;
+		i++;
+	}
+	tree[i] = NULL;
 	ft_strdel(&pars->trimmed);
 	return (tree);
 }

@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/03 12:54:32 by mviinika          #+#    #+#             */
-/*   Updated: 2022/11/11 12:36:34 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/11/14 16:01:41 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,24 +54,27 @@ void ast_travers(t_ast *tree)
 // 	ast->right = NULL;
 // }
 
-t_ast *simple_command(t_ast *node, t_tlist **tokens)
+static t_ast *simple_command(t_ast *node, t_tlist ***tokens)
 {
 	int i;
 
 	i = 0;
 	static int k;
 	k++;
-	if ((*tokens)->type == TOKEN_WORD)
+	
+	if ((**tokens)->type == TOKEN_WORD || (**tokens)->type == TOKEN_DOLLAR)
 	{
 		node = ft_memalloc(sizeof(node));
-		node->cmd = (char **)ft_memalloc(sizeof(char *) * 5);
-		while((*tokens) && (*tokens)->type == TOKEN_WORD)
+		node->cmd = (char **)ft_memalloc(sizeof(char *) * 2);
+		while((**tokens))
 		{
-			node->cmd[i++] = ft_strdup((*tokens)->str);
+			if ((**tokens)->type != TOKEN_WORD || (**tokens)->type != TOKEN_DOLLAR)
+				break;
+			node->cmd[i++] = ft_strdup((**tokens)->str);
 			node->type = TOKEN_WORD;
 			node->left = NULL;
 			node->right = NULL;
-			(*tokens) = (*tokens)->next;
+			(**tokens) = (**tokens)->next;
 		}
 		node->cmd[i] = NULL;
 	}
@@ -86,28 +89,38 @@ int	no_pipe(t_tlist *tokens)
 	while (temp)
 	{
 		if (temp->type == TOKEN_PIPE)
+		{
 			return 0;
+		}
+		if (temp->type == TOKEN_SEMICOLON)
+		{
+			break;
+		}
 		temp = temp->next;
 	}
 	return 1;
 }
 
-t_ast	*make_ast(t_tlist *tokens)
+t_ast	*make_ast(t_tlist **tokens)
 {
 	t_ast *tree;
 
 	tree = create_pipe_node(TOKEN_PIPE);
-	tree->left = simple_command(tree, &tokens);
-	if (!tokens)
+	tree->left = simple_command(tree, &(tokens));
+	if (!(*tokens))
 		return tree;
-	if (no_pipe(tokens->next))
+	if ((*tokens)->type == TOKEN_SEMICOLON)
+		return tree;
+	if (no_pipe((*tokens)->next))
 	{
-		
-		tree->right = simple_command(tree, &tokens->next);
-		
+		(*tokens) = (*tokens)->next;
+		tree->right = simple_command(tree, &(tokens));
 		return(tree);
 	}
-	else if (tokens->type == TOKEN_PIPE)
-		tree->right = make_ast(tokens->next);
+	else if ((*tokens) && (*tokens)->type == TOKEN_PIPE)
+	{
+		(*tokens) = (*tokens)->next;
+		tree->right = make_ast(tokens);
+	}
 	return (tree);
 }
