@@ -6,12 +6,13 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 13:37:00 by mviinika          #+#    #+#             */
-/*   Updated: 2022/11/15 15:23:33 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/11/15 15:42:04 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
 
+// Get binary paths from environment
 static char	**get_path(char **env)
 {
 	int		i;
@@ -30,6 +31,7 @@ static char	**get_path(char **env)
 	return (path);
 }
 
+// Check if cmd is builtin
 static int	check_builtins(char **input, char **builtins, t_env *env)
 {
 	int k;
@@ -45,6 +47,7 @@ static int	check_builtins(char **input, char **builtins, t_env *env)
 	}
 	return (0);
 }
+
 // Fork wrapper, with pid check.
 int	fork1(void)
 {
@@ -55,6 +58,8 @@ int	fork1(void)
 		error_print(NULL, NULL, E_NOFORK);
 	return pid;
 }
+
+//Remove quotes from input
 char *remove_quotes(char *input)
 {
 	int 	i;
@@ -81,14 +86,13 @@ char *remove_quotes(char *input)
 	return (fresh);
 }
 
-// Expands variables from environment
+// Expands variables from environment and removes quotes
 void expand_and_remove_quotes(t_ast **tree, t_env *env)
 {
 	int i;
 	int k;
 	t_quotes quotes;
 
-	
 	k = 0;
 	i = 0;
 	initialise_structs(&quotes, NULL, NULL);
@@ -107,8 +111,6 @@ void expand_and_remove_quotes(t_ast **tree, t_env *env)
 		k = 0;
 	 	i++;
 	}
-	
-
 }
 
 // Executes single command, so no pipe sequnce was deteced. Also expand
@@ -130,52 +132,19 @@ int exec_single_command(t_ast *tree, int rb, char **builtins, t_env *env)
 		return 0;
 	}
 	if (check_builtins(tree->cmd, builtins, env))
-	{
 		;
-	}
-	else if (check_command(tree->cmd, env->path, env->env, 0))
-	{
-		;
-	}
 	else
-		error_print(tree->cmd[0], NULL, E_NOTF);
+		check_command(tree->cmd, env->path, env->env, 0);
 	free_strarr(env->path);
 	return 1;
 }
 
-// Executes syntax tree node by node from left to right
-// trees root is always PIPE. Depending of TOKEN, it executes necessary
-// actions with that node. When PIPE is found, recursively executes tree.
-// Does proper piping in child processes and waits them to finish. in the
-// end closes pipes and exits child process.
-int	exec_tree(t_ast *tree, int rb, char **builtins, t_env *env)
+// executing pipe sequences
+void	pipe_executor(t_ast *tree, int rb, char **builtins, t_env *env)
 {
 	int fd[2];
-	int i;
-	
-	i = 0;
-	if ((!tree) || (!rb && !tree))
-		return 1;
-	env->path = get_path(env->env);
-	expand_and_remove_quotes(&tree, env);
-	if (rb && tree->type == NODE_CMD)
-		update_env(env->env, tree->cmd[ft_linecount(tree->cmd) - 1], "_");
-	if (rb == 0)
-	{
-		ft_putstr("exit\n");
-		return 0;
-	}
-	if (tree->type == NODE_CMD && check_builtins(tree->cmd, builtins, env))
-	{
-		;
-	}
-	else if (tree->type == NODE_CMD && check_command(tree->cmd, env->path, env->env, 1))
-	{
-		;
-	}
-	else if (tree->type == NODE_PIPE)
-	{
-		if (pipe(fd) < 0)
+
+	if (pipe(fd) < 0)
 			error_print(NULL, NULL, E_PIPEFAIL);
 		if ((fork1()) == 0)
 		{
@@ -197,6 +166,37 @@ int	exec_tree(t_ast *tree, int rb, char **builtins, t_env *env)
 		close(fd[1]);
 		wait(0);
 		wait(0);
+}
+// Executes syntax tree node by node from left to right
+// trees root is always PIPE. Depending of TOKEN, it executes necessary
+// actions with that node. When PIPE is found, recursively executes tree.
+// Does proper piping in child processes and waits them to finish. in the
+// end closes pipes and exits child process.
+int	exec_tree(t_ast *tree, int rb, char **builtins, t_env *env)
+{
+	int i;
+	
+	i = 0;
+	if ((!tree) || (!rb && !tree))
+		return 1;
+	env->path = get_path(env->env);
+	expand_and_remove_quotes(&tree, env);
+	if (rb && tree->type == NODE_CMD)
+		update_env(env->env, tree->cmd[ft_linecount(tree->cmd) - 1], "_");
+	if (rb == 0)
+	{
+		ft_putstr("exit\n");
+		return 0;
 	}
+	if (tree->type == NODE_CMD)
+	{
+		if (check_builtins(tree->cmd, builtins, env))
+			;
+		else
+			check_command(tree->cmd, env->path, env->env, 1);
+	}
+	else if (tree->type == NODE_PIPE)
+		pipe_executor(tree, rb, builtins, env);
+	free_strarr(env->path);
 	exit(1);
 }
