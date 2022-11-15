@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 08:59:36 by mviinika          #+#    #+#             */
-/*   Updated: 2022/11/15 12:42:46 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/11/15 15:04:09 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,13 @@
 # include <pwd.h>
 
 #ifdef __linux__
-#include <sys/wait.h>
+#define LIN 1
+# include <sys/wait.h>
+#endif
+
+#ifdef	__APPLE__
+#define LIN 0
+# include <sys/wait.h>
 #endif
 
 # include "../libft/include/libft.h"
@@ -69,8 +75,8 @@ typedef struct s_word
 	int		redir;
 }			t_word;
 
-int		check_command(char **input, char **path, char **env);
-int	exec_tree(t_ast *tree, int rb, char **builtins, t_env *env);
+int		check_command(char **input, char **path, char **env, int tree);
+int		exec_tree(t_ast *tree, int rb, char **builtins, t_env *env);
 int		check_quotes(char *input);
 int		do_cd(char **input, t_env *env);
 int		do_echo(char **input, t_env *env);
@@ -92,6 +98,9 @@ void	free_parsed_input(char **p_input);
 int		redirect(t_pars *pars, t_env *env);
 int exec_single_command(t_ast *tree, int rb, char **builtins, t_env *env);
 int	check_command_tree(char **input, char **path, char **env);
+
+void	initialise_structs(t_quotes *quotes, t_word *ints, char *input);
+void	see_quote(t_quotes *quots, char *input, int i);
 
 /***********\
 ** utils.c **

@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 09:14:23 by mviinika          #+#    #+#             */
-/*   Updated: 2022/11/15 13:29:11 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/11/15 15:12:45 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,17 +32,20 @@ static t_tlist	*newlst(char *content, char type)
 	return (fresh);
 }
 
-static void	initialise_structs(t_quotes *quotes, t_word *ints, char *input)
+void	initialise_structs(t_quotes *quotes, t_word *ints, char *input)
 {
 	quotes->s_quote = 0;
 	quotes->d_quote = 0;
 	quotes->closed = 0;
-	ints->expan = 0;
-	ints->k = 0;
-	ints->len = (int)ft_strlen(input);
+	if (ints)
+	{
+		ints->expan = 0;
+		ints->k = 0;
+		ints->len = (int)ft_strlen(input);
+	}
 }
 
-static void	see_quote(t_quotes *quots, char *input, int i)
+void	see_quote(t_quotes *quots, char *input, int i)
 {
 	if (is_quote(input[i]))
 	{
@@ -60,8 +63,6 @@ static void	see_quote(t_quotes *quots, char *input, int i)
 			quots->closed = 1;
 	}
 }
-
-
 
 int	is_redirect(char *input, int i, t_quotes *quots)
 {
@@ -105,19 +106,12 @@ static t_tlist	*get_token(t_pars *pars, t_env *env, int i, int *total)
 			i += 1;
 			break ;
 		}
-		if (is_expansion(pars->trimmed, i))
-			type = TOKEN_DOLLAR;
 		if (is_end_of_word(pars->trimmed[i], &quots) && (*total)++)
 		{
 			break ;
 		}
 		if (can_be_added(pars->trimmed[i], &quots))
 			add_letter(word, pars->trimmed[i++], total, &ints.k);
-	}
-	if ((type == TOKEN_DOLLAR && !quots.s_quote) || (word[0] == '~' && word[1] != '$' && !quots.s_quote))
-	{
-		//word = handle_expansions(word, env->env, total, &i);
-		type = TOKEN_DOLLAR;
 	}
 	token = newlst(word, type);
 	return (token);

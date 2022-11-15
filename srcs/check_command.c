@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 20:41:14 by mviinika          #+#    #+#             */
-/*   Updated: 2022/11/10 14:49:53 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/11/15 14:28:08 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,14 @@ static int	execute_command(char **input, char *exec, char **env)
 		exit(EXIT_FAILURE);
 	}
 	wait(&pid);
+	return (0);
+}
+
+static int	execute_command_tree(char **input, char *exec, char **env)
+{
+	execve(exec, input, env);;
+	error_print(exec, NULL, E_EXE);
+	exit(EXIT_FAILURE);
 	return (0);
 }
 
@@ -89,7 +97,7 @@ static int check_path_bin(char **input, char **path, char **env)
 	return (0);
 }
 
-int	check_command(char **input, char **path, char **env)
+int	check_command(char **input, char **path, char **env, int tree)
 {
 	struct stat	buf;
 
@@ -100,8 +108,16 @@ int	check_command(char **input, char **path, char **env)
 			error_print(input[0], NULL, E_ISDIR);
 			return (1);
 		}
-		else if (!execute_command(input, input[0], env))
-			return (1);
+		else if (tree)
+		{
+			if (!execute_command(input, input[0], env))
+				return (1);
+		}
+		else
+		{
+			if (!execute_command_tree(input, input[0], env))
+				return (1);
+		}
 	}
 	else if (!check_path_bin(input, path, env))
 		return (1);

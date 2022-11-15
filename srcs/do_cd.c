@@ -6,12 +6,14 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/03 09:14:35 by mviinika          #+#    #+#             */
-/*   Updated: 2022/10/24 12:57:39 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/11/15 14:18:58 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
 
+// Checks if directory exists, can be executed or is a directory.
+// param input is directory to be entered
 static int	check_access(char *input)
 {
 	int			ret;
@@ -22,7 +24,7 @@ static int	check_access(char *input)
 	if (chdir(input) == -1)
 	{
 
-		if (access(input, F_OK) && S_ISDIR(buf.st_mode))
+		if (access(input, F_OK) && !S_ISDIR(buf.st_mode))
 		{
 			error_print(input, "cd", E_NOEX);
 			ret = 1;
@@ -39,6 +41,7 @@ static int	check_access(char *input)
 	return (ret);
 }
 
+//Prints error messages if HOME or OLDPWD doesnt exist in env list
 static int	check_env_var(char *input, char **env)
 {
 	if ((!*env && !input) || (!*env && ft_strncmp(input, "--", 2) == 0))
@@ -54,6 +57,7 @@ static int	check_env_var(char *input, char **env)
 	return (0);
 }
 
+//Check if HOME or OLDPWD variables are set or not.
 static int env_dir(char *input, char **env)
 {
 	int i;
@@ -82,6 +86,8 @@ static int env_dir(char *input, char **env)
 	return (0);
 }
 
+// Execute cd builtin. Tries to access given directory. Does proper checking
+// before trying to set it to current working directory.
 int	do_cd(char **input, t_env *env)
 {
 	char	old_cwd[MAX_PATH + 1];

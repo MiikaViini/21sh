@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/12 10:45:58 by mviinika          #+#    #+#             */
-/*   Updated: 2022/10/20 14:33:06 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/11/15 14:09:58 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,13 @@ char	*user_expansion(char *input)
 	struct dirent	*entity;
 	char			*path;
 
+	if (LIN)
+	{
+		path = passwd_user(input);
+		// if (path == NULL)
+		// 	error_print(input + 1, NULL, E_NOUSER);
+		return (path);
+	}
 	dir = opendir("/Users");
 	path = NULL;
 	if (dir == NULL)

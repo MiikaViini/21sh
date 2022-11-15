@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 09:15:09 by mviinika          #+#    #+#             */
-/*   Updated: 2022/11/15 12:12:59 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/11/15 15:11:51 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,8 @@ char *handle_expansions(char *input, char **env)
 	char	*expanded;
 
 	expanded = replace_expansion(input, env, input);
-	//*total += ft_strlen(&input[*i]);
+	if (!expanded)
+		return (input);
 	ft_strdel(&input);
 	return (expanded);
 }

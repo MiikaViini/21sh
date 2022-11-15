@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 13:37:00 by mviinika          #+#    #+#             */
-/*   Updated: 2022/11/15 13:29:13 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/11/15 15:23:33 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,22 +82,24 @@ char *remove_quotes(char *input)
 }
 
 // Expands variables from environment
-void expandables(t_ast **tree, t_env *env)
+void expand_and_remove_quotes(t_ast **tree, t_env *env)
 {
 	int i;
 	int k;
+	t_quotes quotes;
 
 	
 	k = 0;
 	i = 0;
-	while((*tree)->type != TOKEN_PIPE && (*tree)->cmd[i])
+	initialise_structs(&quotes, NULL, NULL);
+	while((*tree)->type != NODE_PIPE && (*tree)->cmd[i])
 	{
+		see_quote(&quotes, (*tree)->cmd[i], k);
 		while ((*tree)->cmd[i][k])
 		{	
-			if (is_expansion((*tree)->cmd[i], k))
+			if (is_expansion((*tree)->cmd[i], k) && !quotes.s_quote)
 			{
 				(*tree)->cmd[i] = handle_expansions((*tree)->cmd[i], env->env);
-				(*tree)->type = TOKEN_WORD;
 			}
 			k++;
 		}
@@ -105,6 +107,8 @@ void expandables(t_ast **tree, t_env *env)
 		k = 0;
 	 	i++;
 	}
+	
+
 }
 
 // Executes single command, so no pipe sequnce was deteced. Also expand
@@ -115,10 +119,9 @@ int exec_single_command(t_ast *tree, int rb, char **builtins, t_env *env)
 	if ((rb && !tree) || (!rb && !tree))
 		return 1;
 	env->path = get_path(env->env);
-	expandables(&tree, env);
-	if (rb && tree->type == TOKEN_WORD)
+	expand_and_remove_quotes(&tree, env);
+	if (rb && tree->type == NODE_CMD)
 	{
-		
 		update_env(env->env, tree->cmd[ft_linecount(tree->cmd) - 1], "_");
 	}
 	if (rb == 0)
@@ -130,7 +133,7 @@ int exec_single_command(t_ast *tree, int rb, char **builtins, t_env *env)
 	{
 		;
 	}
-	else if (check_command(tree->cmd, env->path, env->env))
+	else if (check_command(tree->cmd, env->path, env->env, 0))
 	{
 		;
 	}
@@ -154,25 +157,23 @@ int	exec_tree(t_ast *tree, int rb, char **builtins, t_env *env)
 	if ((!tree) || (!rb && !tree))
 		return 1;
 	env->path = get_path(env->env);
-	expandables(&tree, env);
-
-	//word = remove_quotes(word);
-	if (rb && tree->type == TOKEN_WORD)
+	expand_and_remove_quotes(&tree, env);
+	if (rb && tree->type == NODE_CMD)
 		update_env(env->env, tree->cmd[ft_linecount(tree->cmd) - 1], "_");
 	if (rb == 0)
 	{
 		ft_putstr("exit\n");
 		return 0;
 	}
-	if (tree->type == TOKEN_WORD && check_builtins(tree->cmd, builtins, env))
+	if (tree->type == NODE_CMD && check_builtins(tree->cmd, builtins, env))
 	{
 		;
 	}
-	else if (tree->type == TOKEN_WORD && check_command_tree(tree->cmd, env->path, env->env))
+	else if (tree->type == NODE_CMD && check_command(tree->cmd, env->path, env->env, 1))
 	{
 		;
 	}
-	else if (tree->type == TOKEN_PIPE)
+	else if (tree->type == NODE_PIPE)
 	{
 		if (pipe(fd) < 0)
 			error_print(NULL, NULL, E_PIPEFAIL);

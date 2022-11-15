@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/03 12:54:32 by mviinika          #+#    #+#             */
-/*   Updated: 2022/11/15 12:42:12 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/11/15 15:20:17 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,13 +54,10 @@ static t_ast *simple_command(t_ast *node, t_tlist ***tokens)
 	node->cmd = (char **)ft_memalloc(sizeof(char *) * 2);
 	while(**tokens)
 	{
-		if (((**tokens) && (**tokens)->type == TOKEN_WORD) || ((**tokens) && (**tokens)->type == TOKEN_DOLLAR))
+		if ((**tokens)->type == TOKEN_WORD)
 		{
 			node->cmd[i++] = ft_strdup((**tokens)->str);
-			if ((**tokens)->type == TOKEN_WORD)
-				node->type = TOKEN_WORD;
-			else
-				node->type = TOKEN_DOLLAR;
+			node->type = NODE_CMD;
 			node->left = NULL;
 			node->right = NULL;
 			(**tokens) = (**tokens)->next;
@@ -97,7 +94,7 @@ t_ast	*make_ast(t_tlist **tokens)
 {
 	t_ast *tree;
 
-	tree = create_pipe_node(TOKEN_PIPE);
+	tree = create_pipe_node(NODE_PIPE);
 	tree->left = simple_command(tree, &(tokens));
 	if (!(*tokens))
 		return tree;

@@ -6,7 +6,7 @@
 #    By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/07/09 19:07:08 by mviinika          #+#    #+#              #
-#    Updated: 2022/11/15 10:42:34 by mviinika         ###   ########.fr        #
+#    Updated: 2022/11/15 14:29:27 by mviinika         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,7 +36,7 @@ SRC_FILES = main.c \
 			redirect.c \
 			lexer.c \
 			do_exit.c \
-			check_command_tree.c
+#			check_command_tree.c
 
 DIR_O = objs
 

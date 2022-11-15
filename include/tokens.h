@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/03 11:22:36 by mviinika          #+#    #+#             */
-/*   Updated: 2022/11/15 11:33:41 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/11/15 15:19:33 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,15 @@ typedef enum e_tokens
 	TOKEN_GT,
 	TOKEN_LT,
 	TOKEN_AGGR,
-	TOKEN_DOLLAR,
 	TOKEN_TILDE,
 	TOKEN_ELSE
 }			t_tokens;
+
+typedef enum e_nodes
+{
+	NODE_CMD,
+	NODE_PIPE,
+	NODE_SEMICOLON
+}			t_nodes;
 
 #endif

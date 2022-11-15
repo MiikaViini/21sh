@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 19:07:23 by mviinika          #+#    #+#             */
-/*   Updated: 2022/11/15 12:15:36 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/11/15 13:36:12 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,6 @@ void	set_pars_struct(t_pars *pars, char *input)
 	* (ft_wordcount_ws(input) + 1));
 	pars->trimmed = ft_strtrim(input);
 	pars->len = (int)ft_strlen(pars->trimmed);
-	pars->redir = 0;
-	// pars->std_out = dup(STDOUT_FILENO);
 }
 
 int is_pipe_sequence(t_ast *tree)

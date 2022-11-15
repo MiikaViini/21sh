@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/29 21:50:13 by mviinika          #+#    #+#             */
-/*   Updated: 2022/10/20 10:47:38 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/11/15 14:28:39 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static void	try_execute(char **input, int *i, t_env *temp, t_env *env)
 		return ;
 	}
 	input[*i] = exec;
-	check_command(&input[*i], env->path, temp->env);
+	check_command(&input[*i], env->path, temp->env, 0);
 }
 
 static void	exec_w_env(char **input, t_env *env, int i, int k)
