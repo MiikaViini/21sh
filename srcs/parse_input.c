@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 09:14:23 by mviinika          #+#    #+#             */
-/*   Updated: 2022/11/15 12:44:15 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/11/15 13:29:11 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,31 +61,7 @@ static void	see_quote(t_quotes *quots, char *input, int i)
 	}
 }
 
-char *remove_quotes(char *input)
-{
-	int 	i;
-	int 	k;
-	char	quote;
-	char	*fresh;
 
-	i = 0;
-	k = 0;
-	quote = 0;
-	fresh = ft_strnew(ft_strlen(input));
-	while (input[i])
-	{
-		
-		if ((input[i] == '\'' && quote == 0)|| (input[i] == '\"' && quote == 0))
-			quote = input[i];
-		else if (input[i] == quote)
-			quote = 0;
-		else if (input[i] != quote)
-			fresh[k++] = input[i];
-		i++;
-	}
-	ft_strdel(&input);
-	return (fresh);
-}
 
 int	is_redirect(char *input, int i, t_quotes *quots)
 {

@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 13:37:00 by mviinika          #+#    #+#             */
-/*   Updated: 2022/11/15 12:55:34 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/11/15 13:29:13 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,31 @@ int	fork1(void)
 		error_print(NULL, NULL, E_NOFORK);
 	return pid;
 }
+char *remove_quotes(char *input)
+{
+	int 	i;
+	int 	k;
+	char	quote;
+	char	*fresh;
+
+	i = 0;
+	k = 0;
+	quote = 0;
+	fresh = ft_strnew(ft_strlen(input));
+	while (input[i])
+	{
+		
+		if ((input[i] == '\'' && quote == 0)|| (input[i] == '\"' && quote == 0))
+			quote = input[i];
+		else if (input[i] == quote)
+			quote = 0;
+		else if (input[i] != quote)
+			fresh[k++] = input[i];
+		i++;
+	}
+	ft_strdel(&input);
+	return (fresh);
+}
 
 // Expands variables from environment
 void expandables(t_ast **tree, t_env *env)
@@ -76,6 +101,7 @@ void expandables(t_ast **tree, t_env *env)
 			}
 			k++;
 		}
+		(*tree)->cmd[i] = remove_quotes((*tree)->cmd[i]);
 		k = 0;
 	 	i++;
 	}
@@ -95,7 +121,6 @@ int exec_single_command(t_ast *tree, int rb, char **builtins, t_env *env)
 		
 		update_env(env->env, tree->cmd[ft_linecount(tree->cmd) - 1], "_");
 	}
-
 	if (rb == 0)
 	{
 		ft_putstr("exit\n");
