@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 13:37:00 by mviinika          #+#    #+#             */
-/*   Updated: 2022/11/14 15:54:16 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/11/15 12:55:34 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,39 +37,59 @@ static int	check_builtins(char **input, char **builtins, t_env *env)
 	k = -1;
 	while (builtins[++k])
 	{
-		//ft_printf("%d\n", input[0]);
-		
 		if (ft_strequ(builtins[k], input[0]))
 		{
 			g_builtins[k](input, env);
 			return (1);
 		}
 	}
-	
 	return (0);
 }
+// Fork wrapper, with pid check.
 int	fork1(void)
 {
 	int pid;
 
 	pid = fork();
 	if(pid == -1)
-		error_print(NULL, NULL, E_NODIGIT);
+		error_print(NULL, NULL, E_NOFORK);
 	return pid;
 }
 
+// Expands variables from environment
+void expandables(t_ast **tree, t_env *env)
+{
+	int i;
+	int k;
+
+	
+	k = 0;
+	i = 0;
+	while((*tree)->type != TOKEN_PIPE && (*tree)->cmd[i])
+	{
+		while ((*tree)->cmd[i][k])
+		{	
+			if (is_expansion((*tree)->cmd[i], k))
+			{
+				(*tree)->cmd[i] = handle_expansions((*tree)->cmd[i], env->env);
+				(*tree)->type = TOKEN_WORD;
+			}
+			k++;
+		}
+		k = 0;
+	 	i++;
+	}
+}
+
+// Executes single command, so no pipe sequnce was deteced. Also expand
+// variables if found
 int exec_single_command(t_ast *tree, int rb, char **builtins, t_env *env)
 {
+	
 	if ((rb && !tree) || (!rb && !tree))
 		return 1;
-		
 	env->path = get_path(env->env);
-	if (tree->type == TOKEN_DOLLAR || (tree->cmd[0][0] == '~' && tree->cmd[0][0] != '$'))
-	{
-		
-		tree->cmd[0] = handle_expansions(tree->cmd[0], env->env);
-		tree->type = TOKEN_WORD;
-	}
+	expandables(&tree, env);
 	if (rb && tree->type == TOKEN_WORD)
 	{
 		
@@ -95,28 +115,22 @@ int exec_single_command(t_ast *tree, int rb, char **builtins, t_env *env)
 	return 1;
 }
 
+// Executes syntax tree node by node from left to right
+// trees root is always PIPE. Depending of TOKEN, it executes necessary
+// actions with that node. When PIPE is found, recursively executes tree.
+// Does proper piping in child processes and waits them to finish. in the
+// end closes pipes and exits child process.
 int	exec_tree(t_ast *tree, int rb, char **builtins, t_env *env)
 {
 	int fd[2];
-	int stdin;
-	int stdout;
 	int i;
-
+	
 	i = 0;
-	stdin = dup(0);
-	stdout = dup(1);
 	if ((!tree) || (!rb && !tree))
 		return 1;
 	env->path = get_path(env->env);
-	while(tree->cmd[i])
-	{
-		
-		if (tree->type == TOKEN_DOLLAR || (tree->cmd[0][0] == '~' && tree->cmd[0][0] != '$'))
-		{
-			tree->cmd[i] = handle_expansions(tree->cmd[i], env->env);
-			tree->type = TOKEN_WORD;
-		}
-	}
+	expandables(&tree, env);
+
 	//word = remove_quotes(word);
 	if (rb && tree->type == TOKEN_WORD)
 		update_env(env->env, tree->cmd[ft_linecount(tree->cmd) - 1], "_");
@@ -137,7 +151,7 @@ int	exec_tree(t_ast *tree, int rb, char **builtins, t_env *env)
 	{
 		if (pipe(fd) < 0)
 			error_print(NULL, NULL, E_PIPEFAIL);
-		if ( (fork1()) == 0)
+		if ((fork1()) == 0)
 		{
 			close(1);
 			dup(fd[1]);
@@ -155,10 +169,6 @@ int	exec_tree(t_ast *tree, int rb, char **builtins, t_env *env)
 		}
 		close(fd[0]);
 		close(fd[1]);
-		dup2(stdin, 0);
-		dup2(stdout, 1);
-		close(stdin);
-		close(stdout);
 		wait(0);
 		wait(0);
 	}

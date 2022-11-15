@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/03 11:22:36 by mviinika          #+#    #+#             */
-/*   Updated: 2022/11/08 13:34:47 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/11/15 11:33:41 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 typedef struct s_tlist
 {
-	int			type;
+	int				type;
 	char			*str;
 	struct s_tlist	*next;
 }				t_tlist;

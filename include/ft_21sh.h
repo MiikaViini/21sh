@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 08:59:36 by mviinika          #+#    #+#             */
-/*   Updated: 2022/11/14 15:50:42 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/11/15 12:42:46 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,7 @@ int		is_end_of_word(char c, t_quotes *quots);
 int 	is_operator (char c, t_quotes *quots);
 
 t_ast	*make_ast(t_tlist **tokens);
-void 	ast_travers(t_ast *tree);
+void 	ast_travers(t_ast *tree, t_env *env);
 
 typedef int					(*t_builtins)(char **input, t_env *env);
 

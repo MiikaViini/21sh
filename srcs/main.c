@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 19:07:23 by mviinika          #+#    #+#             */
-/*   Updated: 2022/11/14 15:39:06 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/11/15 12:15:36 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,32 +52,29 @@ static int	ft_21sh(t_env *env, char **builtins)
 	i = 0;
 	ft_memset(buf, '\0', MAX_LINE + 1);
 	tree = NULL;
-	if (rb != 0)
+	rb = read(0, &buf, MAX_LINE);
+	if (rb == -1)
+		exit(1);
+	set_pars_struct(&parsed, buf);
+	if (check_quotes(buf))
+		error_print(NULL, NULL, E_QUOT);
+	else
 	{
-		rb = read(0, &buf, MAX_LINE);
-		if (rb == -1)
-			exit(1);
-		set_pars_struct(&parsed, buf);
-		if (check_quotes(buf))
-			error_print(NULL, NULL, E_QUOT);
+		if (*parsed.trimmed)
+			tree = parse_input(env, &parsed);
 		else
+			return 1;
+		while(tree[i])
 		{
-			if (*parsed.trimmed)
-				tree = parse_input(env, &parsed);
-			else
-				return 1;
-			while(tree[i])
+			if (is_pipe_sequence(tree[i]))
 			{
-				if (is_pipe_sequence(tree[i]))
-				{
-					if (fork() == 0)
-						rb = exec_tree(tree[i], rb, builtins, env);
-					wait(0);
-				}
-				else
-					rb = exec_single_command(tree[i]->left, rb, builtins, env);
-				i++;
+				if (fork() == 0)
+					exec_tree(tree[i], rb, builtins, env);
+				wait(0);
 			}
+			else
+				exec_single_command(tree[i]->left, rb, builtins, env);
+			i++;
 		}
 		ft_memset(buf, '\0', 4096);
 		free_parsed_input(parsed.parsed);

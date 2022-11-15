@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/03 12:54:32 by mviinika          #+#    #+#             */
-/*   Updated: 2022/11/14 16:01:41 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/11/15 12:42:12 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,16 +34,7 @@ t_ast	*create_pipe_node(int type)
 	return (root);
 }
 
-void ast_travers(t_ast *tree)
-{
-	if (tree == NULL)
-		return ;
-	ast_travers(tree->left);
-	// if (tree->cmd)
-	// 	ft_printf("%s -> ", tree->cmd[0]);
-	ft_printf("here %d\n", tree->type);
-	ast_travers(tree->right);
-}
+
 
 // void initialize_ast(t_ast *ast)
 // {
@@ -59,25 +50,26 @@ static t_ast *simple_command(t_ast *node, t_tlist ***tokens)
 	int i;
 
 	i = 0;
-	static int k;
-	k++;
-	
-	if ((**tokens)->type == TOKEN_WORD || (**tokens)->type == TOKEN_DOLLAR)
+	node = ft_memalloc(sizeof(node));
+	node->cmd = (char **)ft_memalloc(sizeof(char *) * 2);
+	while(**tokens)
 	{
-		node = ft_memalloc(sizeof(node));
-		node->cmd = (char **)ft_memalloc(sizeof(char *) * 2);
-		while((**tokens))
+		if (((**tokens) && (**tokens)->type == TOKEN_WORD) || ((**tokens) && (**tokens)->type == TOKEN_DOLLAR))
 		{
-			if ((**tokens)->type != TOKEN_WORD || (**tokens)->type != TOKEN_DOLLAR)
-				break;
 			node->cmd[i++] = ft_strdup((**tokens)->str);
-			node->type = TOKEN_WORD;
+			if ((**tokens)->type == TOKEN_WORD)
+				node->type = TOKEN_WORD;
+			else
+				node->type = TOKEN_DOLLAR;
 			node->left = NULL;
 			node->right = NULL;
 			(**tokens) = (**tokens)->next;
 		}
-		node->cmd[i] = NULL;
+		else
+			break;
 	}
+	
+	node->cmd[i] = NULL;
 	return (node);
 }
 
@@ -117,10 +109,11 @@ t_ast	*make_ast(t_tlist **tokens)
 		tree->right = simple_command(tree, &(tokens));
 		return(tree);
 	}
-	else if ((*tokens) && (*tokens)->type == TOKEN_PIPE)
+	else if ((*tokens)->type == TOKEN_PIPE)
 	{
 		(*tokens) = (*tokens)->next;
 		tree->right = make_ast(tokens);
 	}
+	// (*tokens) = (*tokens)->next;
 	return (tree);
 }

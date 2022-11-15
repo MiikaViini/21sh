@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 09:14:23 by mviinika          #+#    #+#             */
-/*   Updated: 2022/11/14 16:06:35 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/11/15 12:44:15 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ static t_tlist	*newlst(char *content, char type)
 	fresh->str = ft_strnew(ft_strlen(content));
 	ft_memcpy(fresh->str, content, ft_strlen(content));
 	fresh->type = type;
+	
 	fresh->next = NULL;
 	return (fresh);
 }
@@ -182,7 +183,8 @@ t_ast	**parse_input(t_env *env, t_pars *pars)
 	i = 0;
 	total = 0;
 	tokens = NULL;
-	tree = (t_ast **)ft_memalloc(sizeof(t_ast *) * 100);;
+		
+	tree = (t_ast **)ft_memalloc(sizeof(t_ast *) * 100);
 	while (i < pars->len)
 	{
 		lstaddlast(&tokens, get_token(pars,env ,i, &total));
@@ -196,7 +198,7 @@ t_ast	**parse_input(t_env *env, t_pars *pars)
 			tokens = tokens->next;
 		i++;
 	}
-	tree[i] = NULL;
+	//ast_travers(tree[i]);
 	ft_strdel(&pars->trimmed);
 	return (tree);
 }
