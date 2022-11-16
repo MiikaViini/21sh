@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/03 12:11:30 by mviinika          #+#    #+#             */
-/*   Updated: 2022/11/10 09:54:44 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/11/16 14:27:55 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,8 @@ typedef struct s_ast
 {
 	int				type;
 	char			**cmd;
-	//char			**args;
-	int				in_file;
-	int				out_file;
+	char			*file;
+	char			redir_type;
 	struct s_ast	*left;
 	struct s_ast	*right;
 }				t_ast;

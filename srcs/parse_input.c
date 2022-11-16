@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 09:14:23 by mviinika          #+#    #+#             */
-/*   Updated: 2022/11/15 15:12:45 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/11/16 14:29:28 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,9 +94,15 @@ static t_tlist	*get_token(t_pars *pars, t_env *env, int i, int *total)
 			else if (pars->trimmed[i] == ';')
 				type = TOKEN_SEMICOLON;
 			else if (pars->trimmed[i] == '<')
-				type = TOKEN_GT;
+				type = TOKEN_REDIRECT;
 			else if (pars->trimmed[i] == '>')
-				type = TOKEN_LT;
+			{
+				type = TOKEN_REDIRECT;
+				if (pars->trimmed[i + 1] == '>')
+				{
+					word[0] = '+';
+				}
+			}
 			else if (pars->trimmed[i] == '&')
 				type = TOKEN_AGGR;
 			else
@@ -107,9 +113,7 @@ static t_tlist	*get_token(t_pars *pars, t_env *env, int i, int *total)
 			break ;
 		}
 		if (is_end_of_word(pars->trimmed[i], &quots) && (*total)++)
-		{
 			break ;
-		}
 		if (can_be_added(pars->trimmed[i], &quots))
 			add_letter(word, pars->trimmed[i++], total, &ints.k);
 	}

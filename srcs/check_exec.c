@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 13:37:00 by mviinika          #+#    #+#             */
-/*   Updated: 2022/11/15 15:42:04 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/11/16 14:58:31 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ void expand_and_remove_quotes(t_ast **tree, t_env *env)
 	k = 0;
 	i = 0;
 	initialise_structs(&quotes, NULL, NULL);
-	while((*tree)->type != NODE_PIPE && (*tree)->cmd[i])
+	while((*tree)->type != NODE_PIPE && (*tree)->type != NODE_REDIR && (*tree)->cmd[i])
 	{
 		see_quote(&quotes, (*tree)->cmd[i], k);
 		while ((*tree)->cmd[i][k])
@@ -112,12 +112,32 @@ void expand_and_remove_quotes(t_ast **tree, t_env *env)
 	 	i++;
 	}
 }
+void redirection(t_ast *tree, int rb, char **builtins, t_env *env)
+{
+	int fd;
+	int cf;
 
+	cf = 1;
+	if (tree->redir_type == '>')
+	{
+		if (tree->redir_type == '>')
+			fd = open(tree->file, O_CREAT | O_WRONLY | O_APPEND, 0755);
+		else
+			fd = open(tree->file, O_CREAT | O_WRONLY, 0755);
+	}
+	else if (tree->redir_type == '<')
+	{
+		fd = open(tree->file, O_RDONLY);
+		cf = 0;
+	}
+	dup2(fd, cf);
+	close(fd);
+	wait(0);
+}
 // Executes single command, so no pipe sequnce was deteced. Also expand
 // variables if found
 int exec_single_command(t_ast *tree, int rb, char **builtins, t_env *env)
 {
-	
 	if ((rb && !tree) || (!rb && !tree))
 		return 1;
 	env->path = get_path(env->env);
@@ -131,6 +151,10 @@ int exec_single_command(t_ast *tree, int rb, char **builtins, t_env *env)
 		ft_putstr("exit\n");
 		return 0;
 	}
+	if (tree->type == NODE_REDIR)
+	{
+		redirection(tree, rb, builtins, env);
+	}
 	if (check_builtins(tree->cmd, builtins, env))
 		;
 	else
@@ -139,6 +163,8 @@ int exec_single_command(t_ast *tree, int rb, char **builtins, t_env *env)
 	return 1;
 }
 
+
+
 // executing pipe sequences
 void	pipe_executor(t_ast *tree, int rb, char **builtins, t_env *env)
 {
@@ -146,27 +172,29 @@ void	pipe_executor(t_ast *tree, int rb, char **builtins, t_env *env)
 
 	if (pipe(fd) < 0)
 			error_print(NULL, NULL, E_PIPEFAIL);
-		if ((fork1()) == 0)
-		{
-			close(1);
-			dup(fd[1]);
-			close(fd[0]);
-			close(fd[1]);
-			exec_tree(tree->left, rb, builtins, env);
-		}
-		if ((fork1()) == 0)
-		{
-			close(0);
-			dup(fd[0]);
-			close(fd[0]);
-			close(fd[1]);
-			exec_tree(tree->right, rb, builtins, env);
-		}
+	if ((fork1()) == 0)
+	{
+		close(1);
+		dup(fd[1]);
 		close(fd[0]);
 		close(fd[1]);
-		wait(0);
-		wait(0);
+		exec_tree(tree->left, rb, builtins, env);
+	}
+	if ((fork1()) == 0)
+	{
+		close(0);
+		dup(fd[0]);
+		close(fd[0]);
+		close(fd[1]);
+		exec_tree(tree->right, rb, builtins, env);
+	}
+	close(fd[0]);
+	close(fd[1]);
+	wait(0);
+	wait(0);
 }
+
+
 // Executes syntax tree node by node from left to right
 // trees root is always PIPE. Depending of TOKEN, it executes necessary
 // actions with that node. When PIPE is found, recursively executes tree.
@@ -194,6 +222,13 @@ int	exec_tree(t_ast *tree, int rb, char **builtins, t_env *env)
 			;
 		else
 			check_command(tree->cmd, env->path, env->env, 1);
+	}
+	else if (tree->type == NODE_REDIR)
+	{
+
+		redirection(tree, rb, builtins, env);
+		exec_tree(tree->left, rb, builtins, env);
+		
 	}
 	else if (tree->type == NODE_PIPE)
 		pipe_executor(tree, rb, builtins, env);
