@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/03 11:22:36 by mviinika          #+#    #+#             */
-/*   Updated: 2022/11/16 12:47:53 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/11/17 11:40:24 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 typedef struct s_tlist
 {
 	int				type;
+	int				redir_type;
 	char			*str;
 	struct s_tlist	*next;
 }				t_tlist;
@@ -26,6 +27,7 @@ typedef enum e_tokens
 	TOKEN_SEMICOLON,
 	TOKEN_PIPE,
 	TOKEN_REDIRECT,
+	TOKEN_REDI_APPEND,
 	TOKEN_AGGR,
 	TOKEN_TILDE,
 	TOKEN_ELSE

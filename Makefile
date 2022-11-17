@@ -6,7 +6,7 @@
 #    By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/07/09 19:07:08 by mviinika          #+#    #+#              #
-#    Updated: 2022/11/15 14:29:27 by mviinika         ###   ########.fr        #
+#    Updated: 2022/11/17 08:44:27 by mviinika         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -46,7 +46,7 @@ SRCS = $(addprefix $(DIR_S)/,$(SRC_FILES))
 
 OBJS = $(addprefix $(DIR_O)/,$(SRC_FILES:.c=.o))
 
-#FLAGS = -Wall -Wextra -Werror -g -pedantic
+FLAGS = -Wall -Wextra -Werror -g -pedantic
 
 LIBFT = ./libft/libft.a
 

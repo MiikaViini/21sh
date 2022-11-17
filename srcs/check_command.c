@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 20:41:14 by mviinika          #+#    #+#             */
-/*   Updated: 2022/11/16 15:00:29 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/11/17 08:46:15 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 static int	execute_command(char **input, char *exec, char **env)
 {
-	int			pid;
 	struct stat	stat_;
 
 	if (stat(exec, &stat_) != -1 && !S_ISREG(stat_.st_mode))

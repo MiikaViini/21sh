@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/03 12:54:32 by mviinika          #+#    #+#             */
-/*   Updated: 2022/11/16 14:57:01 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/11/17 11:42:49 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ static t_ast *simple_command(t_ast *node, t_tlist ***tokens)
 		}
 		else if ((**tokens)->type == TOKEN_REDIRECT)
 		{
-			node->redir_type = (**tokens)->str[0];
+			node->redir_type = (**tokens)->redir_type;
 			(**tokens) = (**tokens)->next;
 			node->file = ft_strdup((**tokens)->str);
 			node->type = NODE_REDIR;
@@ -77,8 +77,6 @@ int	peek_for_last_pipe(t_tlist *tokens)
 t_ast	*make_ast(t_tlist **tokens)
 {
 	t_ast *tree;
-	t_ast *temp;
-	t_ast *newtree;
 
 	tree = create_pipe_node(NODE_PIPE);
 	tree->left = simple_command(tree, &(tokens));
@@ -90,7 +88,6 @@ t_ast	*make_ast(t_tlist **tokens)
 	{
 		(*tokens) = (*tokens)->next;
 		tree->right = simple_command(tree, &(tokens));
-		ft_printf("%s\n", tree->right->cmd[0]);
 	}
 	else if ((*tokens)->type == TOKEN_PIPE)
 	{

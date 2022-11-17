@@ -6,13 +6,13 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 09:14:23 by mviinika          #+#    #+#             */
-/*   Updated: 2022/11/16 14:29:28 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/11/17 14:20:37 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
 
-static t_tlist	*newlst(char *content, char type)
+static t_tlist	*newlst(char *content, char type, int redir)
 {
 	t_tlist	*fresh;
 
@@ -21,13 +21,14 @@ static t_tlist	*newlst(char *content, char type)
 	{
 		fresh->str = NULL;
 		fresh->type = 0;
+		//fresh->type = 0;
 		fresh->next = NULL;
 		return (fresh);
 	}
 	fresh->str = ft_strnew(ft_strlen(content));
 	ft_memcpy(fresh->str, content, ft_strlen(content));
 	fresh->type = type;
-	
+	fresh->redir_type = redir;
 	fresh->next = NULL;
 	return (fresh);
 }
@@ -77,9 +78,13 @@ static t_tlist	*get_token(t_pars *pars, t_env *env, int i, int *total)
 	t_word		ints;
 	t_tlist		*token;
 	char		type;
+	int			redir;
+	int			k;
 
 	type = TOKEN_WORD;
+	redir = -1;
 	(void)env;
+	k = 0;
 	initialise_structs(&quots, &ints, pars->trimmed);
 	word = ft_strnew(ft_strlen(pars->trimmed));
 	while (ft_isspace(pars->trimmed[i]) && (*total)++)
@@ -87,37 +92,56 @@ static t_tlist	*get_token(t_pars *pars, t_env *env, int i, int *total)
 	while (i < ints.len)
 	{
 		see_quote(&quots, pars->trimmed, i);
-		if (is_operator(pars->trimmed[i], &quots))
+		
+			
+		// 	ft_strdel(&word);
+		// 	word = ft_strndup(&pars->trimmed[i], 1);
+		// 	(*total)++;
+		// 	i += 1;
+		// 	break ;
+		// }
+		if (is_end_of_word(pars->trimmed[i], &quots) && word[k - 1])
+		{
+			if (!is_operator(pars->trimmed[i],&quots))
+				(*total)++;
+			break ;
+		}
+		else if (can_be_added(pars->trimmed[i], &quots))
+		{
+			add_letter(word, pars->trimmed[i++], total, &ints.k);
+			k++;
+		}
+		if (is_operator(word[0],&quots))
 		{
 			if (pars->trimmed[i] == '|')
 				type = TOKEN_PIPE;
 			else if (pars->trimmed[i] == ';')
 				type = TOKEN_SEMICOLON;
 			else if (pars->trimmed[i] == '<')
+			{
 				type = TOKEN_REDIRECT;
+				redir = 0;
+			}
+				
 			else if (pars->trimmed[i] == '>')
 			{
 				type = TOKEN_REDIRECT;
 				if (pars->trimmed[i + 1] == '>')
 				{
-					word[0] = '+';
+					redir = 1;
 				}
+				else
+					redir = 2;
 			}
 			else if (pars->trimmed[i] == '&')
 				type = TOKEN_AGGR;
 			else
 				type = TOKEN_ELSE;
-			word[0] = pars->trimmed[i];
-			(*total)++;
-			i += 1;
 			break ;
 		}
-		if (is_end_of_word(pars->trimmed[i], &quots) && (*total)++)
-			break ;
-		if (can_be_added(pars->trimmed[i], &quots))
-			add_letter(word, pars->trimmed[i++], total, &ints.k);
 	}
-	token = newlst(word, type);
+	ft_printf("%s\n", word);
+	token = newlst(word, type, redir);
 	return (token);
 }
 
@@ -172,7 +196,8 @@ t_ast	**parse_input(t_env *env, t_pars *pars)
 			tokens = tokens->next;
 		i++;
 	}
-	//ast_travers(tree[i]);
+	// ast_travers(tree[i],env);
+	// exit(1);
 	ft_strdel(&pars->trimmed);
 	return (tree);
 }

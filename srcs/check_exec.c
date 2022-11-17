@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 13:37:00 by mviinika          #+#    #+#             */
-/*   Updated: 2022/11/16 14:58:31 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/11/17 12:55:11 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,17 +118,23 @@ void redirection(t_ast *tree, int rb, char **builtins, t_env *env)
 	int cf;
 
 	cf = 1;
-	if (tree->redir_type == '>')
-	{
-		if (tree->redir_type == '>')
-			fd = open(tree->file, O_CREAT | O_WRONLY | O_APPEND, 0755);
-		else
-			fd = open(tree->file, O_CREAT | O_WRONLY, 0755);
-	}
-	else if (tree->redir_type == '<')
+	(void)builtins;
+	(void)rb;
+	(void)env;
+	
+	if (tree->redir_type == 1)
+		fd = open(tree->file, O_CREAT | O_WRONLY | O_APPEND, 0664);
+	else if (tree->redir_type == 2)
+		fd = open(tree->file, O_CREAT | O_WRONLY, 0664);
+	else if (tree->redir_type == 0)
 	{
 		fd = open(tree->file, O_RDONLY);
 		cf = 0;
+	}
+	if (fd < 0)
+	{
+		error_print(tree->file, NULL, E_NOEX);
+		exit(1);
 	}
 	dup2(fd, cf);
 	close(fd);
@@ -202,9 +208,6 @@ void	pipe_executor(t_ast *tree, int rb, char **builtins, t_env *env)
 // end closes pipes and exits child process.
 int	exec_tree(t_ast *tree, int rb, char **builtins, t_env *env)
 {
-	int i;
-	
-	i = 0;
 	if ((!tree) || (!rb && !tree))
 		return 1;
 	env->path = get_path(env->env);
@@ -225,10 +228,11 @@ int	exec_tree(t_ast *tree, int rb, char **builtins, t_env *env)
 	}
 	else if (tree->type == NODE_REDIR)
 	{
-
 		redirection(tree, rb, builtins, env);
-		exec_tree(tree->left, rb, builtins, env);
-		
+		if (check_builtins(tree->cmd, builtins, env))
+			;
+		else
+			check_command(tree->cmd, env->path, env->env, 1);
 	}
 	else if (tree->type == NODE_PIPE)
 		pipe_executor(tree, rb, builtins, env);

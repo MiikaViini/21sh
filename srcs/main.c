@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 19:07:23 by mviinika          #+#    #+#             */
-/*   Updated: 2022/11/16 15:02:06 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/11/17 11:50:37 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	set_pars_struct(t_pars *pars, char *input)
 
 int is_pipe_sequence(t_ast *tree)
 {
-	if (tree->right->type == NODE_CMD);
+	if (tree->right)
 		return (1);
 	return (0);
 }
@@ -64,18 +64,18 @@ static int	ft_21sh(t_env *env, char **builtins)
 			return 1;
 		while(tree[i])
 		{
-			// if (is_pipe_sequence(tree[i]))
-			// {
-			// 	if (fork() == 0)
-			// 		exec_tree(tree[i], rb, builtins, env);
-			// 	wait(0);
-			// }
-			// else
-			// {
+			if (is_pipe_sequence(tree[i]))
+			{
+				if (fork() == 0)
+					exec_tree(tree[i], rb, builtins, env);
+				wait(0);
+			}
+			else
+			{
 				if (fork() == 0)
 					exec_single_command(tree[i]->left, rb, builtins, env);
 				wait(0);
-			//}
+			}
 			i++;
 		}
 		ft_memset(buf, '\0', 4096);

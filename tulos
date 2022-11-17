@@ -1,0 +1,7 @@
+ls: cannot access 'kakki': No such file or directory
+ls: cannot access 'jee': No such file or directory
+include:
+ast.h
+error.h
+ft_21sh.h
+tokens.h
