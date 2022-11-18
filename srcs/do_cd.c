@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/03 09:14:35 by mviinika          #+#    #+#             */
-/*   Updated: 2022/11/15 14:18:58 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/11/18 09:40:01 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,11 +88,12 @@ static int env_dir(char *input, char **env)
 
 // Execute cd builtin. Tries to access given directory. Does proper checking
 // before trying to set it to current working directory.
-int	do_cd(char **input, t_env *env)
+int	do_cd(char **input, t_env *env, int fd)
 {
 	char	old_cwd[MAX_PATH + 1];
 	char	cwd[MAX_PATH + 1];
 
+	(void)fd;
 	ft_memset(old_cwd, '\0', 1025);
 	ft_memset(cwd, '\0', 1025);
 	getcwd(old_cwd, MAX_PATH);

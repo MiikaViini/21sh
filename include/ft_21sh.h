@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 08:59:36 by mviinika          #+#    #+#             */
-/*   Updated: 2022/11/16 12:51:11 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/11/18 09:38:52 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,12 +78,12 @@ typedef struct s_word
 int		check_command(char **input, char **path, char **env, int tree);
 int		exec_tree(t_ast *tree, int rb, char **builtins, t_env *env);
 int		check_quotes(char *input);
-int		do_cd(char **input, t_env *env);
-int		do_echo(char **input, t_env *env);
-int		do_env(char **input, t_env *env);
-int		do_exit(char **input, t_env *env);
-int		do_setenv(char **input, t_env *env);
-int		do_unsetenv(char **input, t_env *env);
+int		do_cd(char **input, t_env *env, int fd);
+int		do_echo(char **input, t_env *env, int fd);
+int		do_env(char **input, t_env *env, int fd);
+int		do_exit(char **input, t_env *env, int fd);
+int		do_setenv(char **input, t_env *env, int fd);
+int		do_unsetenv(char **input, t_env *env, int fd);
 char	*dollar_expansion(char *expanded, char *word, char **env, int len);
 void	error_print(char *word, char *command, char *e_msg);
 void	get_env(t_env *dest, char **environ, int argc, char **argv);
@@ -124,7 +124,7 @@ int 	is_operator (char c, t_quotes *quots);
 t_ast	*make_ast(t_tlist **tokens);
 void 	ast_travers(t_ast *tree, t_env *env);
 
-typedef int					(*t_builtins)(char **input, t_env *env);
+typedef int					(*t_builtins)(char **input, t_env *env, int fd);
 
 static const t_builtins		g_builtins[7] = {
 	do_echo,

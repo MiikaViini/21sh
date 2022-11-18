@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 13:37:00 by mviinika          #+#    #+#             */
-/*   Updated: 2022/11/17 12:55:11 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/11/18 11:42:03 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static char	**get_path(char **env)
 }
 
 // Check if cmd is builtin
-static int	check_builtins(char **input, char **builtins, t_env *env)
+static int	check_builtins(char **input, char **builtins, t_env *env, int fd)
 {
 	int k;
 
@@ -41,7 +41,7 @@ static int	check_builtins(char **input, char **builtins, t_env *env)
 	{
 		if (ft_strequ(builtins[k], input[0]))
 		{
-			g_builtins[k](input, env);
+			g_builtins[k](input, env, fd);
 			return (1);
 		}
 	}
@@ -112,6 +112,7 @@ void expand_and_remove_quotes(t_ast **tree, t_env *env)
 	 	i++;
 	}
 }
+
 void redirection(t_ast *tree, int rb, char **builtins, t_env *env)
 {
 	int fd;
@@ -121,7 +122,6 @@ void redirection(t_ast *tree, int rb, char **builtins, t_env *env)
 	(void)builtins;
 	(void)rb;
 	(void)env;
-	
 	if (tree->redir_type == 1)
 		fd = open(tree->file, O_CREAT | O_WRONLY | O_APPEND, 0664);
 	else if (tree->redir_type == 2)
@@ -140,10 +140,17 @@ void redirection(t_ast *tree, int rb, char **builtins, t_env *env)
 	close(fd);
 	wait(0);
 }
-// Executes single command, so no pipe sequnce was deteced. Also expand
-// variables if found
+
+// Executes single command, so no pipe seqeunce was deteced. Also expand
+// variables if found.
+// For built-ins there is a duplicate from STD_OUT, since it cant open 
+// it again so we open it end of the cycle.
 int exec_single_command(t_ast *tree, int rb, char **builtins, t_env *env)
 {
+	int fd = 1;
+	int std_out; 
+	
+	std_out = dup(1);
 	if ((rb && !tree) || (!rb && !tree))
 		return 1;
 	env->path = get_path(env->env);
@@ -160,12 +167,18 @@ int exec_single_command(t_ast *tree, int rb, char **builtins, t_env *env)
 	if (tree->type == NODE_REDIR)
 	{
 		redirection(tree, rb, builtins, env);
+		//check_builtins(tree->cmd, builtins, env, fd);
 	}
-	if (check_builtins(tree->cmd, builtins, env))
+	if (check_builtins(tree->cmd, builtins, env, fd))
 		;
 	else
+	{
 		check_command(tree->cmd, env->path, env->env, 0);
+	}
 	free_strarr(env->path);
+	dup2(std_out, STDOUT_FILENO);
+	// if (fd < 1)
+	// 	close(fd);
 	return 1;
 }
 
@@ -208,6 +221,9 @@ void	pipe_executor(t_ast *tree, int rb, char **builtins, t_env *env)
 // end closes pipes and exits child process.
 int	exec_tree(t_ast *tree, int rb, char **builtins, t_env *env)
 {
+	int fd;
+
+	fd = 1;
 	if ((!tree) || (!rb && !tree))
 		return 1;
 	env->path = get_path(env->env);
@@ -221,7 +237,7 @@ int	exec_tree(t_ast *tree, int rb, char **builtins, t_env *env)
 	}
 	if (tree->type == NODE_CMD)
 	{
-		if (check_builtins(tree->cmd, builtins, env))
+		if (check_builtins(tree->cmd, builtins, env, fd))
 			;
 		else
 			check_command(tree->cmd, env->path, env->env, 1);
@@ -229,7 +245,7 @@ int	exec_tree(t_ast *tree, int rb, char **builtins, t_env *env)
 	else if (tree->type == NODE_REDIR)
 	{
 		redirection(tree, rb, builtins, env);
-		if (check_builtins(tree->cmd, builtins, env))
+		if (check_builtins(tree->cmd, builtins, env, fd))
 			;
 		else
 			check_command(tree->cmd, env->path, env->env, 1);

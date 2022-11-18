@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 11:08:24 by mviinika          #+#    #+#             */
-/*   Updated: 2022/11/11 09:56:37 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/11/18 09:46:13 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,12 @@ static int check_exit_code(char *exit_status)
 	return 1;
 }
 
-int	do_exit(char **input, t_env *env)
+int	do_exit(char **input, t_env *env, int fd)
 {
 	int	exit_status;
 
 	(void)env;
+	(void)fd;
 	exit_status = 0;
 	ft_putendl("exit");
 	if (input[1])

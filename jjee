@@ -1,0 +1,20 @@
+total 280
+-rw-rw-r--  1 miika miika    831 marras 17 12:44 -
+drwxrwxr-x  9 miika miika   4096 marras 17 15:19 .
+drwxrwxr-x 17 miika miika   4096 marras 10 09:12 ..
+-rw-rw-r--  1 miika miika      0 marras 17 15:14 1
+-rwxrwxr-x  1 miika miika 219720 marras 17 15:19 21sh
+-rw-rw-r--  1 miika miika      9 marras 10 09:11 author
+drwxrwxr-x  2 miika miika   4096 marras 10 09:11 eval_tests
+drwxrwxr-x  8 miika miika   4096 marras 17 14:22 .git
+drwxrwxr-x  2 miika miika   4096 marras 15 10:37 include
+-rwxr-xr-x  1 miika miika    780 marras 17 12:11 jaa
+-rw-rw-r--  1 miika miika    989 marras 17 15:17 jee
+-rw-rw-r--  1 miika miika      0 marras 17 15:19 jjee
+drwxrwxr-x  6 miika miika   4096 marras 17 15:16 libft
+-rw-rw-r--  1 miika miika   2241 marras 17 08:44 Makefile
+drwxrwxr-x  2 miika miika   4096 marras 17 15:19 objs
+drwxrwxr-x  2 miika miika   4096 marras 15 15:23 srcs
+-rwxr-xr-x  1 miika miika    146 marras 17 12:22 tulos
+-rw-rw-r--  1 miika miika    885 marras 17 12:53 uusi
+drwxrwxr-x  2 miika miika   4096 marras 10 09:28 .vscode

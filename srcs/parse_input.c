@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 09:14:23 by mviinika          #+#    #+#             */
-/*   Updated: 2022/11/17 14:20:37 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/11/18 10:55:20 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ static t_tlist	*newlst(char *content, char type, int redir)
 	{
 		fresh->str = NULL;
 		fresh->type = 0;
-		//fresh->type = 0;
 		fresh->next = NULL;
 		return (fresh);
 	}
@@ -92,55 +91,47 @@ static t_tlist	*get_token(t_pars *pars, t_env *env, int i, int *total)
 	while (i < ints.len)
 	{
 		see_quote(&quots, pars->trimmed, i);
-		
-			
-		// 	ft_strdel(&word);
-		// 	word = ft_strndup(&pars->trimmed[i], 1);
-		// 	(*total)++;
-		// 	i += 1;
-		// 	break ;
-		// }
 		if (is_end_of_word(pars->trimmed[i], &quots) && word[k - 1])
 		{
-			if (!is_operator(pars->trimmed[i],&quots))
-				(*total)++;
+			(*total)++;
 			break ;
 		}
 		else if (can_be_added(pars->trimmed[i], &quots))
 		{
+			
 			add_letter(word, pars->trimmed[i++], total, &ints.k);
 			k++;
 		}
 		if (is_operator(word[0],&quots))
 		{
-			if (pars->trimmed[i] == '|')
+			if (word[0] == '|')
 				type = TOKEN_PIPE;
-			else if (pars->trimmed[i] == ';')
+			else if (word[0] == ';')
 				type = TOKEN_SEMICOLON;
-			else if (pars->trimmed[i] == '<')
+			else if (word[0] == '<')
 			{
 				type = TOKEN_REDIRECT;
 				redir = 0;
 			}
-				
-			else if (pars->trimmed[i] == '>')
+			else if (word[0] == '>')
 			{
 				type = TOKEN_REDIRECT;
-				if (pars->trimmed[i + 1] == '>')
+				if (pars->trimmed[i] == '>')
 				{
+					(*total)++;
+				 	i += 1;
 					redir = 1;
 				}
 				else
 					redir = 2;
 			}
-			else if (pars->trimmed[i] == '&')
+			else if (word[0] == '&' && ft_isdigit(pars->trimmed[i - 1]))
 				type = TOKEN_AGGR;
 			else
 				type = TOKEN_ELSE;
 			break ;
 		}
 	}
-	ft_printf("%s\n", word);
 	token = newlst(word, type, redir);
 	return (token);
 }

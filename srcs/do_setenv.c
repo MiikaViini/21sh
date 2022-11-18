@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/29 08:48:51 by mviinika          #+#    #+#             */
-/*   Updated: 2022/10/20 09:04:56 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/11/18 09:45:55 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ static int find_env(char *input, t_env *env, int *added, int *k)
 	return (*added);
 }
 
-int do_setenv(char **input, t_env *env)
+int do_setenv(char **input, t_env *env, int fd)
 {
 	int i;
 	int k;
@@ -103,6 +103,7 @@ int do_setenv(char **input, t_env *env)
 
 	k = 0;
 	i = 0;
+	(void)fd;
 	if (check_validity(input))
 		return (1);
 	while (input[++i])

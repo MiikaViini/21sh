@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 14:30:06 by mviinika          #+#    #+#             */
-/*   Updated: 2022/10/20 09:04:55 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/11/18 09:45:37 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void delete_var(t_env *env, int *k)
 	env->env[*k] = NULL;
 }
 
-int do_unsetenv(char **input, t_env *env)
+int do_unsetenv(char **input, t_env *env, int fd)
 {
 	int i;
 	int k;
@@ -32,6 +32,7 @@ int do_unsetenv(char **input, t_env *env)
 
 	i = 0;
 	len = 0;
+	(void)fd;
 	while (input[++i])
 	{
 		k = -1;
