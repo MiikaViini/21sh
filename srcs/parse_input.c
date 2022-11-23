@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 09:14:23 by mviinika          #+#    #+#             */
-/*   Updated: 2022/11/23 14:41:33 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/11/23 15:41:46 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,6 +118,7 @@ static t_tlist	*get_token(t_pars *pars, t_env *env, int i, int *total)
 		i++;
 	while (i < ints.len)
 	{
+		//ft_printf("%s\n",&pars->trimmed[i]);
 		//ft_printf("%c\n", pars->trimmed[i]);
 		see_quote(&quots, pars->trimmed, i);
 		if (is_end_of_word(pars->trimmed[i], &quots) && word[k - 1])
@@ -129,17 +130,20 @@ static t_tlist	*get_token(t_pars *pars, t_env *env, int i, int *total)
 		{
 			if (ft_isdigit(word[j]))
 			{
-				while(ft_isdigit(pars->trimmed[--i]))
-					;
-				while (pars->trimmed[i++] != '>')
+				i--;
+				while (pars->trimmed[i])
 				{
-					word[j++] = pars->trimmed[i];
+					if ((pars->trimmed[i] == '>' && pars->trimmed[i + 1] != '&')
+						|| pars->trimmed[i] == '&')
+					{
+						break;
+					}
+					word[j++] = pars->trimmed[i++];
 					(*total)++;
 				}
 				if (pars->trimmed[i] == '&')
 				{
-					word[j] = pars->trimmed[i++];
-					(*total)++;
+					word[j] = pars->trimmed[i];
 				}
 				break;
 			}
@@ -190,11 +194,9 @@ static t_tlist	*get_token(t_pars *pars, t_env *env, int i, int *total)
 				type = TOKEN_ELSE;
 			break ;
 		}
-		
-		
 	}
 	token = newlst(word, type, redir);
-	//ft_printf("%d\n", token->type);
+	ft_printf("%s\n", word);
 	return (token);
 }
 
