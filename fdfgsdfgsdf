@@ -1,0 +1,27 @@
+total 232
+-rw-r--r--   1 mviinika  2020    831 Nov 22 09:54 -
+drwxr-xr-x  26 mviinika  2020    884 Nov 23 12:38 .
+drwxr-xr-x  30 mviinika  2020   1020 Nov  3 09:23 ..
+drwxr-xr-x  14 mviinika  2020    476 Nov 22 09:54 .git
+drwxr-xr-x   3 mviinika  2020    102 Nov 11 09:55 .vscode
+-rw-r--r--   1 mviinika  2020     33 Nov 23 12:34 1
+-rwxr-xr-x   1 mviinika  2020  69148 Nov 23 12:28 21sh
+-rw-r--r--   1 mviinika  2020   2241 Nov 22 09:54 Makefile
+-rw-r--r--   1 mviinika  2020      9 Oct 20 08:57 author
+drwxr-xr-x   2 mviinika  2020     68 Oct 24 13:14 dir
+-rw-r--r--   1 mviinika  2020      0 Nov 22 10:48 echo
+drwxr-xr-x   3 mviinika  2020    102 Oct 20 08:57 eval_tests
+-rw-r--r--   1 mviinika  2020      0 Nov 23 12:38 fdfgsdfgsdf
+-rw-r--r--   1 mviinika  2020     33 Nov 22 12:17 file
+drwxr-xr-x   6 mviinika  2020    204 Nov 22 09:54 include
+-rw-r--r--   1 mviinika  2020     14 Nov 22 11:02 jaa
+-rw-r--r--   1 mviinika  2020     49 Nov 22 13:42 jee
+-rw-r--r--   1 mviinika  2020     36 Nov 22 13:00 karb
+-rw-r--r--   1 mviinika  2020     19 Nov 22 12:05 kuningas
+-rw-r--r--   1 mviinika  2020      7 Nov 22 09:54 kylla
+drwxr-xr-x   9 mviinika  2020    306 Nov 22 10:36 libft
+drwxr-xr-x  26 mviinika  2020    884 Nov 23 12:28 objs
+-rw-r--r--   1 mviinika  2020    568 Nov 23 10:04 redirection_cases
+drwxr-xr-x  26 mviinika  2020    884 Nov 22 09:54 srcs
+drwxr-xr-x   2 mviinika  2020     68 Nov 14 11:53 test
+-rwxr-xr-x   1 mviinika  2020    146 Nov 22 09:54 tulos

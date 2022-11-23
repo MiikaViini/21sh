@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/03 12:54:32 by mviinika          #+#    #+#             */
-/*   Updated: 2022/11/17 11:42:49 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/11/22 11:02:05 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,8 @@ static t_ast *simple_command(t_ast *node, t_tlist ***tokens)
 		{
 			
 			node->cmd[i++] = ft_strdup((**tokens)->str);
-			node->type = NODE_CMD;
+			if (node->type != NODE_REDIR)
+				node->type = NODE_CMD;
 			node->left = NULL;
 			node->right = NULL;
 			(**tokens) = (**tokens)->next;

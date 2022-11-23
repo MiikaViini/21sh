@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/12 09:56:41 by mviinika          #+#    #+#             */
-/*   Updated: 2022/11/17 15:23:20 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/11/23 10:07:03 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,5 +53,5 @@ int is_operator (char c, t_quotes *quots)
 	(void)quots;
 	if ((quots->d_quote && !quots->closed) || (quots->s_quote && !quots->closed))
 		return 0;
-	return ((c == '|' ) | (c == ';') | (c == '<') | (c == '>'));
+	return ((c == '|' ) | (c == ';'));
 }

@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 13:37:00 by mviinika          #+#    #+#             */
-/*   Updated: 2022/11/18 11:42:03 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/11/23 14:31:39 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,10 +122,11 @@ void redirection(t_ast *tree, int rb, char **builtins, t_env *env)
 	(void)builtins;
 	(void)rb;
 	(void)env;
+	fd = -1;
 	if (tree->redir_type == 1)
 		fd = open(tree->file, O_CREAT | O_WRONLY | O_APPEND, 0664);
 	else if (tree->redir_type == 2)
-		fd = open(tree->file, O_CREAT | O_WRONLY, 0664);
+		fd = open(tree->file, O_CREAT | O_WRONLY | O_TRUNC, 0664);
 	else if (tree->redir_type == 0)
 	{
 		fd = open(tree->file, O_RDONLY);
