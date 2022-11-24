@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/03 12:54:32 by mviinika          #+#    #+#             */
-/*   Updated: 2022/11/22 11:02:05 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/11/24 15:33:56 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,16 +26,18 @@ t_ast	*create_pipe_node(int type)
 static t_ast *simple_command(t_ast *node, t_tlist ***tokens)
 {
 	int i;
+	int k;
+	char *num;
 
+	num = NULL;
 	i = 0;
+	k = 0;
 	node = ft_memalloc(sizeof(node));
-	node->cmd = (char **)ft_memalloc(sizeof(char *) * 2);
+	node->cmd = (char **)ft_memalloc(sizeof(char *) * 100);
 	while(**tokens)
 	{
-		
 		if ((**tokens)->type == TOKEN_WORD)
 		{
-			
 			node->cmd[i++] = ft_strdup((**tokens)->str);
 			if (node->type != NODE_REDIR)
 				node->type = NODE_CMD;
@@ -46,6 +48,16 @@ static t_ast *simple_command(t_ast *node, t_tlist ***tokens)
 		else if ((**tokens)->type == TOKEN_REDIRECT)
 		{
 			node->redir_type = (**tokens)->redir_type;
+			//node->redir_fd = ft_atoi(num);
+			if (node->redir_type == REDIR_AGGR)
+			{
+				DB
+				while(ft_isdigit((**tokens)->str[k++]))
+					;
+				num = ft_strndup((**tokens)->str, k);
+				node->redir_fd = ft_atoi(num);
+	
+			}
 			(**tokens) = (**tokens)->next;
 			node->file = ft_strdup((**tokens)->str);
 			node->type = NODE_REDIR;

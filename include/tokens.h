@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/03 11:22:36 by mviinika          #+#    #+#             */
-/*   Updated: 2022/11/17 11:40:24 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/11/24 11:56:38 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 typedef struct s_tlist
 {
 	int				type;
+	int				in_fd;
+	int				out_fd;
 	int				redir_type;
 	char			*str;
 	struct s_tlist	*next;
@@ -40,5 +42,15 @@ typedef enum e_nodes
 	NODE_SEMICOLON,
 	NODE_REDIR
 }			t_nodes;
+
+typedef enum e_redirs
+{
+	REDIR_TRUNC,
+	REDIR_APPEND,
+	REDIR_IN,
+	REDIR_HERED,
+	REDIR_AGGR_IO,
+	REDIR_AGGR
+}			t_redirs;
 
 #endif

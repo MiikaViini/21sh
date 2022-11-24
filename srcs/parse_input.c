@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 09:14:23 by mviinika          #+#    #+#             */
-/*   Updated: 2022/11/23 15:41:46 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/11/24 15:33:30 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,9 @@ static t_tlist	*newlst(char *content, char type, int redir)
 		fresh->next = NULL;
 		return (fresh);
 	}
-	fresh->str = ft_strnew(ft_strlen(content));
-	ft_memcpy(fresh->str, content, ft_strlen(content));
+	// fresh->str = ft_strnew(ft_strlen(content));
+	// ft_memcpy(fresh->str, content, ft_strlen(content));
+	fresh->str = ft_strdup(content);
 	fresh->type = type;
 	fresh->redir_type = redir;
 	fresh->next = NULL;
@@ -122,59 +123,59 @@ static t_tlist	*get_token(t_pars *pars, t_env *env, int i, int *total)
 		//ft_printf("%c\n", pars->trimmed[i]);
 		see_quote(&quots, pars->trimmed, i);
 		if (is_end_of_word(pars->trimmed[i], &quots) && word[k - 1])
-		{
-			(*total)++;
 			break ;
-		}
-		if (is_redirect(pars->trimmed[i], &quots))
+		if (is_redirect(pars->trimmed[i], &quots) || (is_redirect(pars->trimmed[i], &quots) && pars->trimmed[i - 1] == '&'))
 		{
-			if (ft_isdigit(word[j]))
+			type = TOKEN_REDIRECT;
+			if (ft_isdigit(word[j]))				// Checks if there is a digit before redirecting
 			{
 				i--;
 				while (pars->trimmed[i])
 				{
+					(*total)++;
 					if ((pars->trimmed[i] == '>' && pars->trimmed[i + 1] != '&')
-						|| pars->trimmed[i] == '&')
+						|| pars->trimmed[i] == '&' || !ft_isdigit(pars->trimmed[i]))
 					{
 						break;
 					}
 					word[j++] = pars->trimmed[i++];
-					(*total)++;
+					
 				}
-				if (pars->trimmed[i] == '&')
+				//ft_printf("%c\n", pars->trimmed[i]);
+				if (pars->trimmed[++i] == '&')
 				{
-					word[j] = pars->trimmed[i];
+					word[++j] = pars->trimmed[i];
+					redir = REDIR_AGGR;
 				}
 				break;
 			}
-			else if (word[j] == '&')
+			else if (pars->trimmed[i - 1] == '&') 				// Check for aggregation/duplication
 			{
-				j++;
-				word[j] = pars->trimmed[i++];
+				redir = REDIR_AGGR_IO;
+				word[j++] = pars->trimmed[i++];
 				if (pars->trimmed[i] == '>')
 				{
-					j++;
-					word[j] = pars->trimmed[i++];
+					word[j] = pars->trimmed[i];
+					(*total)++;
 				}
-			}
-			else if (pars->trimmed[i] == '>')
-			{
 				(*total)++;
-				redir = 2;
+			}
+			else if (pars->trimmed[i] == '>')		// Check for append redirection
+			{
+				redir = REDIR_TRUNC;
 				i++;
-				type = TOKEN_REDIRECT;
 				if (pars->trimmed[i++] == '>')
 				{
 					(*total)++;
-					redir  = 1;
+					redir  = REDIR_APPEND;
 				}
+				(*total)++;
 			}
-			else if (pars->trimmed[i] == '<')
+			else if (pars->trimmed[i] == '<')		// Check for STD_IN redirect
 			{
 				(*total)++;
-				redir = 0;
+				redir = REDIR_IN;
 				i++;
-				type = TOKEN_REDIRECT;
 			}
 			break;
 		}
@@ -183,20 +184,19 @@ static t_tlist	*get_token(t_pars *pars, t_env *env, int i, int *total)
 			add_letter(word, pars->trimmed[i++], total, &ints.k);
 			k++;
 		}
-		if (is_operator(word[0], &quots))
+		if (is_operator(word[0], &quots) && !is_redirect(pars->trimmed[i], &quots))
 		{
-			//ft_printf("%c\n", pars->trimmed[i]);
 			if (word[0] == '|')
 				type = TOKEN_PIPE;
 			else if (word[0] == ';')
 				type = TOKEN_SEMICOLON;
 			else
 				type = TOKEN_ELSE;
-			break ;
+			break;
+			// i++;
 		}
 	}
 	token = newlst(word, type, redir);
-	ft_printf("%s\n", word);
 	return (token);
 }
 
@@ -252,7 +252,6 @@ t_ast	**parse_input(t_env *env, t_pars *pars)
 		i++;
 	}
 	// ast_travers(tree[i],env);
-	// exit(1);
 	ft_strdel(&pars->trimmed);
 	return (tree);
 }

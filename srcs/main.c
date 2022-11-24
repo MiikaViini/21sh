@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 19:07:23 by mviinika          #+#    #+#             */
-/*   Updated: 2022/11/18 10:10:12 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/11/24 14:18:15 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,10 +72,9 @@ static int	ft_21sh(t_env *env, char **builtins)
 			}
 			else
 			{
-				if (fork() == 0)
-					exec_single_command(tree[i]->left, rb, builtins, env);
-				wait(0);
+				exec_single_command(tree[i]->left, rb, builtins, env);
 			}
+			
 			i++;
 		}
 		ft_memset(buf, '\0', 4096);
