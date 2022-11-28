@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/03 12:54:32 by mviinika          #+#    #+#             */
-/*   Updated: 2022/11/28 17:28:10 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/11/28 17:30:51 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ static t_ast *simple_command(t_ast *node, t_tlist ***tokens)
 			ft_printf("%d\n", node->out_fd);
 			//close(node->out_fd);
 			node->file = open((**tokens)->str, O_CREAT | O_WRONLY | O_TRUNC, 0664);
-			dup2(node->file, node->out_fd);
+			dup(node->file);
 		//	ft_printf("%s\n",(**tokens)->str);
 			node->type = NODE_REDIR;
 			
