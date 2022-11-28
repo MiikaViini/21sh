@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 13:37:00 by mviinika          #+#    #+#             */
-/*   Updated: 2022/11/24 15:33:23 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/11/28 15:36:13 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ static int	check_builtins(char **input, char **builtins, t_env *env, int fd)
 	int k;
 
 	k = -1;
+	fd = 1;
 	while (builtins[++k])
 	{
 		if (ft_strequ(builtins[k], input[0]))
@@ -113,54 +114,54 @@ void expand_and_remove_quotes(t_ast **tree, t_env *env)
 	}
 }
 
-void redirection(t_ast *tree)
-{
-	int fd;
-	int cf;
+// void redirection(t_ast *tree)
+// {
+// 	int fd;
+// 	int cf;
 
-	cf = 1;
-	fd = -1;
-	if (tree->redir_type == REDIR_APPEND)
-		fd = open(tree->file, O_CREAT | O_WRONLY | O_APPEND, 0664);
-	else if (tree->redir_type == REDIR_TRUNC)
-		fd = open(tree->file, O_CREAT | O_WRONLY | O_TRUNC, 0664);
-	else if (tree->redir_type == REDIR_IN)
-	{
-		fd = open(tree->file, O_RDONLY);
-		cf = 0;
-	}
-	if (fd < 0)
-		error_print(tree->file, NULL, E_NOEX);
-	dup2(fd, cf);
-	close(fd);
-	wait(0);
-}
+// 	cf = 1;
+// 	fd = -1;
+// 	if (tree->redir_type == REDIR_APPEND)
+// 		fd = open(tree->file, O_CREAT | O_WRONLY | O_APPEND, 0664);
+// 	else if (tree->redir_type == REDIR_TRUNC)
+// 		fd = open(tree->file, O_CREAT | O_WRONLY | O_TRUNC, 0664);
+// 	else if (tree->redir_type == REDIR_IN)
+// 	{
+// 		fd = open(tree->file, O_RDONLY);
+// 		cf = 0;
+// 	}
+// 	if (fd < 0)
+// 		error_print(tree->file, NULL, E_NOEX);
+// 	dup2(fd, cf);
+// 	close(fd);
+// 	wait(0);
+// }
 
-void duplicate_fildes(t_ast *tree)
-{
-	int fd;
-	fd = -1;
-	if (tree->redir_type == REDIR_AGGR_IO)
-	{
-		fd = open(tree->file, O_CREAT | O_WRONLY | O_TRUNC, 0664);
-	}
+// void duplicate_fildes(t_ast *tree)
+// {
+// 	int fd;
+// 	fd = -1;
+// 	if (tree->redir_type == REDIR_AGGR_IO)
+// 	{
+// 		fd = open(tree->file, O_CREAT | O_WRONLY | O_TRUNC, 0664);
+// 	}
 		
-	else 
-		fd = ft_atoi(tree->file);
-	if (fd < 0)
-		error_print(tree->file, NULL, E_NOEX);
-	// close(tree->redir_fd);
-	// close(fd);
-	// dup(tree->redir_fd);
-	// dup(fd);
-	// dup(fd);
-	//dup2(fd, tree->redir_fd);
-	dup2(fd, STDERR_FILENO);
-	dup2(fd, STDOUT_FILENO);
-	//close(fd);
-	close(tree->redir_fd);
-	wait(0);
-}
+// 	else 
+// 		fd = ft_atoi(tree->file);
+// 	if (fd < 0)
+// 		error_print(tree->file, NULL, E_NOEX);
+// 	// close(tree->redir_fd);
+// 	// close(fd);
+// 	// dup(tree->redir_fd);
+// 	// dup(fd);
+// 	// dup(fd);
+// 	//dup2(fd, tree->redir_fd);
+// 	dup2(fd, STDERR_FILENO);
+// 	dup2(fd, STDOUT_FILENO);
+// 	//close(fd);
+// 	close(tree->redir_fd);
+// 	wait(0);
+// }
 
 // Executes single command, so no pipe sequence was deteced. Also expand
 // variables if found.
@@ -169,13 +170,13 @@ void duplicate_fildes(t_ast *tree)
 int exec_single_command(t_ast *tree, int rb, char **builtins, t_env *env)
 {
 	int fd = 1;
-	int std_out;
-	int std_in;
-	int std_err;
+	// int std_out;
+	// int std_in;
+	// int std_err;
 	
-	std_err = dup(2);
-	std_out = dup(1);
-	std_in = dup(0);
+	// std_err = dup(2);
+	// std_out = dup(1);
+	// std_in = dup(0);
 	if ((rb && !tree) || (!rb && !tree))
 		return 1;
 	env->path = get_path(env->env);
@@ -189,27 +190,27 @@ int exec_single_command(t_ast *tree, int rb, char **builtins, t_env *env)
 		ft_putstr("exit\n");
 		return 0;
 	}
-	if (tree->type == NODE_REDIR)
-	{
-		if (tree->redir_type == REDIR_AGGR 
-			|| tree->redir_type == REDIR_AGGR_IO)
-		{
-			duplicate_fildes(tree);
-		}
-		else
-			redirection(tree);
-	}
+	// if (tree->type == NODE_REDIR)
+	// {
+	// 	// if (tree->redir_type == REDIR_AGGR 
+	// 	// 	|| tree->redir_type == REDIR_AGGR_IO)
+	// 	// {
+	// 	// 	duplicate_fildes(tree);
+	// 	// }
+	// 	//else
+	// 	redirection(tree);
+	// }
 	
 	if (check_builtins(tree->cmd, builtins, env, fd))
 		;
 	else
 		check_command(tree->cmd, env->path, env->env, 0);
 	free_strarr(env->path);
-	dup2(std_out, STDOUT_FILENO);
-	dup2(std_err, STDERR_FILENO);
-	dup2(std_in, STDIN_FILENO);
-	if (fd < 1)
-		close(fd);
+	// dup2(std_out, STDOUT_FILENO);
+	// dup2(std_err, STDERR_FILENO);
+	// dup2(std_in, STDIN_FILENO);
+	// if (fd < 1)
+	// 	close(fd);
 	return 1;
 }
 
@@ -273,14 +274,14 @@ int	exec_tree(t_ast *tree, int rb, char **builtins, t_env *env)
 		else
 			check_command(tree->cmd, env->path, env->env, 1);
 	}
-	else if (tree->type == NODE_REDIR)
-	{
-		redirection(tree);
-		if (check_builtins(tree->cmd, builtins, env, fd))
-			;
-		else
-			check_command(tree->cmd, env->path, env->env, 1);
-	}
+	// else if (tree->type == NODE_REDIR)
+	// {
+	// 	redirection(tree);
+	// 	if (check_builtins(tree->cmd, builtins, env, fd))
+	// 		;
+	// 	else
+	// 		check_command(tree->cmd, env->path, env->env, 1);
+	// }
 	else if (tree->type == NODE_PIPE)
 		pipe_executor(tree, rb, builtins, env);
 	free_strarr(env->path);

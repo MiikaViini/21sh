@@ -6,13 +6,13 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 09:14:23 by mviinika          #+#    #+#             */
-/*   Updated: 2022/11/24 15:33:30 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/11/28 16:16:27 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
 
-static t_tlist	*newlst(char *content, char type, int redir)
+static t_tlist	*newlst(char *content, char type, int redir, int redir_way)
 {
 	t_tlist	*fresh;
 
@@ -24,11 +24,10 @@ static t_tlist	*newlst(char *content, char type, int redir)
 		fresh->next = NULL;
 		return (fresh);
 	}
-	// fresh->str = ft_strnew(ft_strlen(content));
-	// ft_memcpy(fresh->str, content, ft_strlen(content));
 	fresh->str = ft_strdup(content);
 	fresh->type = type;
 	fresh->redir_type = redir;
+	fresh->redir_way = redir_way;
 	fresh->next = NULL;
 	return (fresh);
 }
@@ -105,11 +104,13 @@ static t_tlist	*get_token(t_pars *pars, t_env *env, int i, int *total)
 	t_tlist		*token;
 	char		type;
 	int			redir;
+	int			redir_way;
 	int			k;
 	int			j;
 
 	type = TOKEN_WORD;
 	redir = -1;
+	redir_way = 0;
 	(void)env;
 	k = 0;
 	j = 0;
@@ -142,10 +143,26 @@ static t_tlist	*get_token(t_pars *pars, t_env *env, int i, int *total)
 					
 				}
 				//ft_printf("%c\n", pars->trimmed[i]);
-				if (pars->trimmed[++i] == '&')
+				if (pars->trimmed[i] == '&')
 				{
-					word[++j] = pars->trimmed[i];
+					word[j] = pars->trimmed[i];
 					redir = REDIR_AGGR;
+				}
+				else if (pars->trimmed[i] == '>')		// Check for append redirection
+				{
+					redir_way = REDIR_TRUNC;
+					word[j++] = pars->trimmed[i++];
+					if (pars->trimmed[i] == '>')
+					{
+						word[j] = pars->trimmed[i];
+						(*total)++;
+						redir_way  = REDIR_APPEND;
+					}
+				}
+				else if (pars->trimmed[i] == '<')		// Check for STD_IN redirect
+				{
+					word[j] = pars->trimmed[i++];
+					redir_way = REDIR_IN;
 				}
 				break;
 			}
@@ -162,19 +179,19 @@ static t_tlist	*get_token(t_pars *pars, t_env *env, int i, int *total)
 			}
 			else if (pars->trimmed[i] == '>')		// Check for append redirection
 			{
-				redir = REDIR_TRUNC;
+				redir_way = REDIR_TRUNC;
 				i++;
 				if (pars->trimmed[i++] == '>')
 				{
 					(*total)++;
-					redir  = REDIR_APPEND;
+					redir_way  = REDIR_APPEND;
 				}
 				(*total)++;
 			}
 			else if (pars->trimmed[i] == '<')		// Check for STD_IN redirect
 			{
 				(*total)++;
-				redir = REDIR_IN;
+				redir_way = REDIR_IN;
 				i++;
 			}
 			break;
@@ -196,7 +213,8 @@ static t_tlist	*get_token(t_pars *pars, t_env *env, int i, int *total)
 			// i++;
 		}
 	}
-	token = newlst(word, type, redir);
+	//ft_printf("%s\n", word);
+	token = newlst(word, type, redir, redir_way);
 	return (token);
 }
 
