@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/03 12:16:42 by mviinika          #+#    #+#             */
-/*   Updated: 2022/11/15 12:55:58 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/11/28 20:27:13 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,5 +28,7 @@
 # define E_NODIGIT "numeric argument required"
 # define E_PIPEFAIL "failed to open with pipe()"
 # define E_NOFORK "failed to to fork process"
-
+# define E_SYNERR "syntax error"
+# define E_AMB "ambigous redirect"
+# define E_BFD "Bad file descriptor"
 #endif

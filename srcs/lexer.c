@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/03 12:54:32 by mviinika          #+#    #+#             */
-/*   Updated: 2022/11/28 17:30:51 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/11/28 21:40:04 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,16 +33,35 @@ void dup_fildes(t_ast *tree)
 	tree->out_fd = dup2(tree->out_fd, STDOUT_FILENO);
 	tree->err_fd = dup2(tree->err_fd, STDERR_FILENO);
 }
+
+// char *check_fildes(char *num)
+// {
+// 	DIR *dirp;
+// 	struct dirent *ent;
+// 	int i;
+	
+// 	i = 0;
+// 	dirp = opendir("/dev/fd");
+// 	ent = readdir(dirp);
+// 	while(entity != NULL)
+// 	{
+// 		dirname = ft_strjoin()
+// 	}
+// }
+
 static t_ast *simple_command(t_ast *node, t_tlist ***tokens)
 {
 	int i;
 	int k;
 	char *num;
+	struct stat buf;
+	char *temp;
 
 	num = NULL;
 	i = 0;
 	k = 0;
 	node = ft_memalloc(sizeof(node));
+	temp = NULL;
 	node->cmd = (char **)ft_memalloc(sizeof(char *) * 100);
 	dup_fildes(node);
 	while(**tokens)
@@ -59,49 +78,88 @@ static t_ast *simple_command(t_ast *node, t_tlist ***tokens)
 		}
 		else if ((**tokens)->type == TOKEN_REDIRECT)
 		{
-			ft_printf("[%s]\n",(**tokens)->str);
+			
 			node->redir_type = (**tokens)->redir_type;
 			if (node->redir_type == REDIR_AGGR)
 			{
+				ft_printf("[%s]\n",(**tokens)->str);
 				while(ft_isdigit((**tokens)->str[k++]))
 					;
 				num = ft_strndup((**tokens)->str, k);
-				close(STDERR_FILENO);
-				if ((**tokens)->redir_way == REDIR_TRUNC || (**tokens)->redir_way == REDIR_APPEND)
-					node->out_fd = dup2(node->out_fd, ft_atoi(num));
-				else if ((**tokens)->redir_way == REDIR_IN)
-					node->in_fd = dup2(node->out_fd, ft_atoi(num));
-				ft_strdel(&num);
+			
+			
 				k = 0;
-				
+				(**tokens) = (**tokens)->next;
+				ft_printf(" tah toine [%s]\n",(**tokens)->str);
+				if (**tokens == NULL)
+				{
+					error_print(NULL, NULL, E_SYNERR);
+					return (NULL);
+				}
+				else
+				{
+					//close(ft_atoi(num));
+					ft_printf("[%d]\n",ft_atoi(num));
+					ft_strdel(&num);
+					while (ft_isdigit((**tokens)->str[k]))
+							k++;
+					ft_printf(" toine [%d]\n",(**tokens)->str[k]);
+					if (!ft_isspace((**tokens)->str[k]) && (**tokens)->str[k] != 0 )
+					{
+						error_print(NULL, NULL, E_SYNERR);
+						return (NULL);
+					}
+					else
+						num = ft_strndup((**tokens)->str, k);
+				}
+				if (fstat(ft_atoi(num), &buf) == -1)
+				{
+					error_print(NULL, NULL, E_BFD);
+					return (NULL);
+				}
+				else
+				{
+					temp = ft_strjoin("/dev/fd/", num);
+					
+				}
+				if ((**tokens)->redir_way == REDIR_TRUNC || (**tokens)->redir_way == REDIR_APPEND)
+					node->file = open(temp, O_CREAT | O_WRONLY | O_TRUNC, 0664);
+				else if ((**tokens)->redir_way == REDIR_IN)
+					node->file = open(temp, O_RDONLY);
+				ft_printf("%d\n", node->file);
+				dup(node->file);
+				ft_strdel(&num);
+				ft_strdel(&temp);
+				k = 0;
 			}
 		
 			//ft_printf("[%s]\n",(**tokens)->str);
 			
 			//node->file = ft_strdup((**tokens)->str);
-			if (ft_isdigit((**tokens)->str[k]))
+			else if (ft_isdigit((**tokens)->str[k]))
 			{
 				//close(STDOUT_FILENO);
 				while(ft_isdigit((**tokens)->str[k++]))
 				{
 					;
 				}
-				
 				num = ft_strndup((**tokens)->str, k - 1);
-				ft_printf("ju [%s]\n",num);
 				close(ft_atoi(num));
-				//dup2(ft_atoi(num), node->out_fd);
-				//node->out_fd = dup(ft_atoi(num));
 				ft_strdel(&num);
+				(**tokens) = (**tokens)->next;
+				node->file = open((**tokens)->str, O_CREAT | O_WRONLY | O_TRUNC, 0664);
+				dup(node->file);
+				node->type = NODE_REDIR;
 			}
-			(**tokens) = (**tokens)->next;
-			ft_printf("%d\n", node->out_fd);
-			//close(node->out_fd);
-			node->file = open((**tokens)->str, O_CREAT | O_WRONLY | O_TRUNC, 0664);
-			dup(node->file);
-		//	ft_printf("%s\n",(**tokens)->str);
-			node->type = NODE_REDIR;
-			
+			else
+			{
+				(**tokens) = (**tokens)->next;
+				//close(node->out_fd);
+				node->file = open((**tokens)->str, O_CREAT | O_WRONLY | O_TRUNC, 0664);
+				dup2(node->file, node->out_fd);
+				//	ft_printf("%s\n",(**tokens)->str);
+				node->type = NODE_REDIR;
+			}
 			(**tokens) = (**tokens)->next;
 		}
 		else

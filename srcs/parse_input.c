@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 09:14:23 by mviinika          #+#    #+#             */
-/*   Updated: 2022/11/28 16:16:27 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/11/28 21:22:05 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,7 +143,7 @@ static t_tlist	*get_token(t_pars *pars, t_env *env, int i, int *total)
 					
 				}
 				//ft_printf("%c\n", pars->trimmed[i]);
-				if (pars->trimmed[i] == '&')
+				if (pars->trimmed[i + 1] == '&')
 				{
 					word[j] = pars->trimmed[i];
 					redir = REDIR_AGGR;
