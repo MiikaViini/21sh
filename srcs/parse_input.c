@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 09:14:23 by mviinika          #+#    #+#             */
-/*   Updated: 2022/11/28 21:22:05 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/11/29 15:30:35 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,6 @@ static t_tlist	*get_token(t_pars *pars, t_env *env, int i, int *total)
 	while (i < ints.len)
 	{
 		//ft_printf("%s\n",&pars->trimmed[i]);
-		//ft_printf("%c\n", pars->trimmed[i]);
 		see_quote(&quots, pars->trimmed, i);
 		if (is_end_of_word(pars->trimmed[i], &quots) && word[k - 1])
 			break ;
@@ -180,16 +179,17 @@ static t_tlist	*get_token(t_pars *pars, t_env *env, int i, int *total)
 			else if (pars->trimmed[i] == '>')		// Check for append redirection
 			{
 				redir_way = REDIR_TRUNC;
-				i++;
-				if (pars->trimmed[i++] == '>')
+				word[j++] = pars->trimmed[i++];
+				if (pars->trimmed[i] == '>')
 				{
-					(*total)++;
+					word[j] = pars->trimmed[i];
 					redir_way  = REDIR_APPEND;
 				}
 				(*total)++;
 			}
 			else if (pars->trimmed[i] == '<')		// Check for STD_IN redirect
 			{
+				word[j] = pars->trimmed[i];
 				(*total)++;
 				redir_way = REDIR_IN;
 				i++;
@@ -213,8 +213,9 @@ static t_tlist	*get_token(t_pars *pars, t_env *env, int i, int *total)
 			// i++;
 		}
 	}
-	//ft_printf("%s\n", word);
+	//ft_printf("[%s]\n", word);
 	token = newlst(word, type, redir, redir_way);
+	//ft_printf("token str[%s] token type %d token redirype %d\n",token->str, token->type, token->redir_type);
 	return (token);
 }
 
@@ -267,6 +268,7 @@ t_ast	**parse_input(t_env *env, t_pars *pars)
 		tree[i] = make_ast(&tokens);
 		if (tokens && tokens->type == TOKEN_SEMICOLON)
 			tokens = tokens->next;
+			
 		i++;
 	}
 	// ast_travers(tree[i],env);

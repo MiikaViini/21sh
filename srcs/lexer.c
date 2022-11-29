@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/03 12:54:32 by mviinika          #+#    #+#             */
-/*   Updated: 2022/11/29 11:25:15 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/11/29 15:34:27 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,8 @@ t_ast	*create_pipe_node(int type)
 void dup_fildes(t_ast *tree)
 {
 	tree->in_fd = dup2(tree->in_fd,STDIN_FILENO);
-	tree->out_fd = dup2(tree->out_fd, STDOUT_FILENO);
-	tree->err_fd = dup2(tree->err_fd, STDERR_FILENO);
+	tree->out_fd = dup2(tree->out_fd,STDOUT_FILENO);
+	tree->err_fd = dup2(tree->err_fd,STDERR_FILENO);
 }
 
 // char *check_fildes(char *num)
@@ -150,18 +150,24 @@ static t_ast *simple_command(t_ast *node, t_tlist ***tokens)
 			}
 			else
 			{
+				ft_printf("reg %s\n", (**tokens)->str);
+				ft_printf("reg %d\n", node->out_fd);
 				(**tokens) = (**tokens)->next;
-				//close(node->out_fd);
+				ft_printf("reg %s\n", (**tokens)->str);
+				close(node->out_fd);
 				node->file = open((**tokens)->str, O_CREAT | O_WRONLY | O_TRUNC, 0664);
+				ft_printf("reg %d\n", node->out_fd);
 				dup2(node->file, node->out_fd);
+				//dup(node->file);
 				node->type = NODE_REDIR;
-				close(node->file);
+				//close(node->file);
 			}
 			(**tokens) = (**tokens)->next;
 		}
 		else
 			break;
 	}
+	ft_printf("out fd %d\n", node->out_fd);
 	node->cmd[i] = NULL;
 	return (node);
 }

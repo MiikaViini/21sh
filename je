@@ -1,0 +1,21 @@
+reg 1
+out fd 1
+-rw-rw-r--  1 miika miika      0 marras 29 09:56 '
+-rw-rw-r--  1 miika miika    831 marras 17 12:44 -
+drwxrwxr-x  9 miika miika   4096 marras 29 15:25 .
+drwxrwxr-x 18 miika miika   4096 marras 28 13:28 ..
+-rwxrwxr-x  1 miika miika 226400 marras 29 15:25 21sh
+-rw-rw-r--  1 miika miika      9 marras 10 09:11 author
+drwxrwxr-x  2 miika miika   4096 marras 10 09:11 eval_tests
+-rw-rw-r--  1 miika miika      6 marras 29 11:50 file
+drwxrwxr-x  8 miika miika   4096 marras 29 11:27 .git
+drwxrwxr-x  2 miika miika   4096 marras 15 10:37 include
+-rw-rw-r--  1 miika miika     15 marras 29 15:25 je
+-rw-rw-r--  1 miika miika     24 marras 29 15:24 jee
+drwxrwxr-x  6 miika miika   4096 marras 29 11:27 libft
+-rw-rw-r--  1 miika miika   2241 marras 17 08:44 Makefile
+drwxrwxr-x  2 miika miika   4096 marras 29 15:25 objs
+-rw-rw-r--  1 miika miika    812 marras 24 09:04 redirection_cases
+drwxrwxr-x  2 miika miika   4096 marras 24 09:04 srcs
+drwxrwxr-x  2 miika miika   4096 marras 10 09:28 .vscode
+21sh$ 

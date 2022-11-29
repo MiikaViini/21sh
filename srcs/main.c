@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 19:07:23 by mviinika          #+#    #+#             */
-/*   Updated: 2022/11/29 10:55:24 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/11/29 15:28:28 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,11 @@ static int	ft_21sh(t_env *env, char **builtins)
 	t_ast	**tree;
 	t_pars	parsed;
 	int		i;
+	// int		stdin;
+	// int		stdout;
+
+	// stdout = dup(1);
+	// stdin = dup(0);
 
 	rb = 1;
 	i = 0;
@@ -71,23 +76,34 @@ static int	ft_21sh(t_env *env, char **builtins)
 			return 1;
 		while(tree[i])
 		{
-			if (is_pipe_sequence(tree[i]))
+			//ft_printf("in out %d %d\n", tree[1]->in_fd, tree[1]->out_fd);
+			if (fork() == 0)
 			{
-				if (fork() == 0)
+				if (is_pipe_sequence(tree[i]))
+				{
+					
 					exec_tree(tree[i], rb, builtins, env);
-				wait(0);
+					
+				}
+				else
+				{
+					
+					exec_single_command(tree[i]->left, rb, builtins, env);
+					
+				}
+			
 			}
-			else
-			{
-				
-				exec_single_command(tree[i]->left, rb, builtins, env);
-				
-			}
-			dup2(tree[i]->in_fd, STDIN_FILENO);
+			wait(0);
+			// close(stdin);
+			
+			// dup(STDIN_FILENO);
 			dup2(tree[i]->out_fd, STDOUT_FILENO);
-			dup2(tree[i]->err_fd, STDERR_FILENO);
+			//dup2(tree[i]->err_fd, STDERR_FILENO);
+			//ft_printf("%d %d %d\n", tree[i]->in_fd, tree[i]->out_fd ,tree[i]->err_fd);
 			i++;
 		}
+		// close(stdin);
+		// close(stdout);
 		ft_memset(buf, '\0', 4096);
 		free_parsed_input(parsed.parsed);
 		free(parsed.parsed);

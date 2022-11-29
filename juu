@@ -1,0 +1,23 @@
+reg 1
+out fd 1
+total 80
+drwxrwxr-x 18 miika miika 4096 marras 28 13:28 .
+drwxr-xr-x 23 miika miika 4096 marras 29 10:31 ..
+-rw-rw-r--  1 miika miika 1056 marras 28 13:25 1
+-rw-rw-r--  1 miika miika 1126 marras 28 13:28 2
+drwxrwxr-x  9 miika miika 4096 marras 29 15:39 21sh
+drwxrwxr-x  3 miika miika 4096 helmi   3  2022 attesfillit
+drwxrwxr-x  2 miika miika 4096 joulu  12  2021 Bitwise
+drwxrwxr-x  3 miika miika 4096 helmi   3  2022 fillit
+drwxrwxr-x  2 miika miika 4096 tammi  12  2022 GNL
+drwxrwxr-x  4 miika miika 4096 tammi  19  2022 gnlnew
+drwxrwxr-x  8 miika miika 4096 marras 28 12:31 jumanner_alex21sh
+drwxrwxr-x  3 miika miika 4096 syys    2 21:12 libft
+drwxrwxr-x  2 miika miika 4096 joulu   8  2021 linkedlists
+drwxrwxr-x  2 miika miika 4096 syys    2 21:21 minishell
+drwxrwxr-x  8 miika miika 4096 loka   18 21:29 minishell_v2
+drwxrwxr-x  6 miika miika 4096 marras  2 11:36 MIT-sh
+drwxrwxr-x  4 miika miika 4096 tammi   3  2022 test_zone
+drwxrwxr-x  2 miika miika 4096 marras  2 14:22 tree_exer
+drwxrwxr-x  9 miika miika 4096 joulu  27  2021 unit-test
+drwxrwxr-x  2 miika miika 4096 joulu  27  2021 .vscode

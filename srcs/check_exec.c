@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 13:37:00 by mviinika          #+#    #+#             */
-/*   Updated: 2022/11/28 15:36:13 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/11/29 15:27:47 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,54 +114,7 @@ void expand_and_remove_quotes(t_ast **tree, t_env *env)
 	}
 }
 
-// void redirection(t_ast *tree)
-// {
-// 	int fd;
-// 	int cf;
 
-// 	cf = 1;
-// 	fd = -1;
-// 	if (tree->redir_type == REDIR_APPEND)
-// 		fd = open(tree->file, O_CREAT | O_WRONLY | O_APPEND, 0664);
-// 	else if (tree->redir_type == REDIR_TRUNC)
-// 		fd = open(tree->file, O_CREAT | O_WRONLY | O_TRUNC, 0664);
-// 	else if (tree->redir_type == REDIR_IN)
-// 	{
-// 		fd = open(tree->file, O_RDONLY);
-// 		cf = 0;
-// 	}
-// 	if (fd < 0)
-// 		error_print(tree->file, NULL, E_NOEX);
-// 	dup2(fd, cf);
-// 	close(fd);
-// 	wait(0);
-// }
-
-// void duplicate_fildes(t_ast *tree)
-// {
-// 	int fd;
-// 	fd = -1;
-// 	if (tree->redir_type == REDIR_AGGR_IO)
-// 	{
-// 		fd = open(tree->file, O_CREAT | O_WRONLY | O_TRUNC, 0664);
-// 	}
-		
-// 	else 
-// 		fd = ft_atoi(tree->file);
-// 	if (fd < 0)
-// 		error_print(tree->file, NULL, E_NOEX);
-// 	// close(tree->redir_fd);
-// 	// close(fd);
-// 	// dup(tree->redir_fd);
-// 	// dup(fd);
-// 	// dup(fd);
-// 	//dup2(fd, tree->redir_fd);
-// 	dup2(fd, STDERR_FILENO);
-// 	dup2(fd, STDOUT_FILENO);
-// 	//close(fd);
-// 	close(tree->redir_fd);
-// 	wait(0);
-// }
 
 // Executes single command, so no pipe sequence was deteced. Also expand
 // variables if found.
@@ -225,6 +178,7 @@ void	pipe_executor(t_ast *tree, int rb, char **builtins, t_env *env)
 			error_print(NULL, NULL, E_PIPEFAIL);
 	if ((fork1()) == 0)
 	{
+		//ft_printf("reg terve %d %d\n", tree->in_fd, tree->out_fd);
 		close(1);
 		dup(fd[1]);
 		close(fd[0]);
@@ -244,8 +198,28 @@ void	pipe_executor(t_ast *tree, int rb, char **builtins, t_env *env)
 	wait(0);
 	wait(0);
 }
+void redirection(t_ast *tree)
+{
 
+	//int cf;
 
+	//cf = 1;
+
+	// if (tree->redir_type == REDIR_APPEND)
+	// 	fd = open(tree->file, O_CREAT | O_WRONLY | O_APPEND, 0664);
+	// else if (tree->redir_type == REDIR_TRUNC)
+	// 	fd = open(tree->file, O_CREAT | O_WRONLY | O_TRUNC, 0664);
+	// else if (tree->redir_type == REDIR_IN)
+	// {
+	// 	fd = open(tree->file, O_RDONLY);
+	// 	cf = 0;
+	// }
+	// if (fd < 0)
+	// 	error_print(tree->file, NULL, E_NOEX);
+	dup2(tree->out_fd, STDOUT_FILENO);
+	//dup2(fd, cf);
+	//wait(0);
+}
 // Executes syntax tree node by node from left to right
 // trees root is always PIPE. Depending of TOKEN, it executes necessary
 // actions with that node. When PIPE is found, recursively executes tree.
@@ -274,16 +248,44 @@ int	exec_tree(t_ast *tree, int rb, char **builtins, t_env *env)
 		else
 			check_command(tree->cmd, env->path, env->env, 1);
 	}
-	// else if (tree->type == NODE_REDIR)
-	// {
-	// 	redirection(tree);
-	// 	if (check_builtins(tree->cmd, builtins, env, fd))
-	// 		;
-	// 	else
-	// 		check_command(tree->cmd, env->path, env->env, 1);
-	// }
+	else if (tree->type == NODE_REDIR)
+	{
+		redirection(tree);
+		if (check_builtins(tree->cmd, builtins, env, fd))
+			;
+		else
+			check_command(tree->cmd, env->path, env->env, 1);
+		close(tree->out_fd);
+	}
 	else if (tree->type == NODE_PIPE)
 		pipe_executor(tree, rb, builtins, env);
 	free_strarr(env->path);
 	exit(1);
 }
+
+
+// void duplicate_fildes(t_ast *tree)
+// {
+// 	int fd;
+// 	fd = -1;
+// 	if (tree->redir_type == REDIR_AGGR_IO)
+// 	{
+// 		fd = open(tree->file, O_CREAT | O_WRONLY | O_TRUNC, 0664);
+// 	}
+		
+// 	else 
+// 		fd = ft_atoi(tree->file);
+// 	if (fd < 0)
+// 		error_print(tree->file, NULL, E_NOEX);
+// 	// close(tree->redir_fd);
+// 	// close(fd);
+// 	// dup(tree->redir_fd);
+// 	// dup(fd);
+// 	// dup(fd);
+// 	//dup2(fd, tree->redir_fd);
+// 	dup2(fd, STDERR_FILENO);
+// 	dup2(fd, STDOUT_FILENO);
+// 	//close(fd);
+// 	close(tree->redir_fd);
+// 	wait(0);
+// }
