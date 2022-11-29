@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/03 12:54:32 by mviinika          #+#    #+#             */
-/*   Updated: 2022/11/28 21:40:04 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/11/29 11:25:15 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,6 @@ static t_ast *simple_command(t_ast *node, t_tlist ***tokens)
 	dup_fildes(node);
 	while(**tokens)
 	{
-		ft_printf("%s\n",(**tokens)->str);
 		if ((**tokens)->type == TOKEN_WORD)
 		{
 			node->cmd[i++] = ft_strdup((**tokens)->str);
@@ -78,19 +77,14 @@ static t_ast *simple_command(t_ast *node, t_tlist ***tokens)
 		}
 		else if ((**tokens)->type == TOKEN_REDIRECT)
 		{
-			
 			node->redir_type = (**tokens)->redir_type;
 			if (node->redir_type == REDIR_AGGR)
 			{
-				ft_printf("[%s]\n",(**tokens)->str);
 				while(ft_isdigit((**tokens)->str[k++]))
 					;
 				num = ft_strndup((**tokens)->str, k);
-			
-			
 				k = 0;
 				(**tokens) = (**tokens)->next;
-				ft_printf(" tah toine [%s]\n",(**tokens)->str);
 				if (**tokens == NULL)
 				{
 					error_print(NULL, NULL, E_SYNERR);
@@ -98,19 +92,20 @@ static t_ast *simple_command(t_ast *node, t_tlist ***tokens)
 				}
 				else
 				{
-					//close(ft_atoi(num));
-					ft_printf("[%d]\n",ft_atoi(num));
-					ft_strdel(&num);
 					while (ft_isdigit((**tokens)->str[k]))
 							k++;
-					ft_printf(" toine [%d]\n",(**tokens)->str[k]);
 					if (!ft_isspace((**tokens)->str[k]) && (**tokens)->str[k] != 0 )
 					{
 						error_print(NULL, NULL, E_SYNERR);
 						return (NULL);
 					}
 					else
+					{
+						ft_printf("closed %d\n", ft_atoi(num));
+						close(ft_atoi(num));
+						ft_strdel(&num);
 						num = ft_strndup((**tokens)->str, k);
+					}
 				}
 				if (fstat(ft_atoi(num), &buf) == -1)
 				{
@@ -120,21 +115,17 @@ static t_ast *simple_command(t_ast *node, t_tlist ***tokens)
 				else
 				{
 					temp = ft_strjoin("/dev/fd/", num);
-					
 				}
 				if ((**tokens)->redir_way == REDIR_TRUNC || (**tokens)->redir_way == REDIR_APPEND)
 					node->file = open(temp, O_CREAT | O_WRONLY | O_TRUNC, 0664);
 				else if ((**tokens)->redir_way == REDIR_IN)
 					node->file = open(temp, O_RDONLY);
-				ft_printf("%d\n", node->file);
-				dup(node->file);
+				dup2(node->file, node->out_fd);
 				ft_strdel(&num);
 				ft_strdel(&temp);
 				k = 0;
 			}
-		
 			//ft_printf("[%s]\n",(**tokens)->str);
-			
 			//node->file = ft_strdup((**tokens)->str);
 			else if (ft_isdigit((**tokens)->str[k]))
 			{
@@ -144,11 +135,17 @@ static t_ast *simple_command(t_ast *node, t_tlist ***tokens)
 					;
 				}
 				num = ft_strndup((**tokens)->str, k - 1);
+				(**tokens) = (**tokens)->next;
+				if (**tokens == NULL)
+				{
+					error_print(NULL, NULL, E_SYNERR);
+					return (NULL);
+				}
 				close(ft_atoi(num));
 				ft_strdel(&num);
-				(**tokens) = (**tokens)->next;
 				node->file = open((**tokens)->str, O_CREAT | O_WRONLY | O_TRUNC, 0664);
 				dup(node->file);
+				close(node->file);
 				node->type = NODE_REDIR;
 			}
 			else
@@ -157,8 +154,8 @@ static t_ast *simple_command(t_ast *node, t_tlist ***tokens)
 				//close(node->out_fd);
 				node->file = open((**tokens)->str, O_CREAT | O_WRONLY | O_TRUNC, 0664);
 				dup2(node->file, node->out_fd);
-				//	ft_printf("%s\n",(**tokens)->str);
 				node->type = NODE_REDIR;
+				close(node->file);
 			}
 			(**tokens) = (**tokens)->next;
 		}

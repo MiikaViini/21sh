@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 19:07:23 by mviinika          #+#    #+#             */
-/*   Updated: 2022/11/28 15:44:54 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/11/29 10:55:24 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,13 +52,7 @@ static int	ft_21sh(t_env *env, char **builtins)
 	t_ast	**tree;
 	t_pars	parsed;
 	int		i;
-	int std_in;
-	int std_out;
-	int std_err;
 
-	std_in = dup(STDIN_FILENO);
-	std_out = dup(STDOUT_FILENO);
-	std_err = dup(STDERR_FILENO);
 	rb = 1;
 	i = 0;
 	ft_memset(buf, '\0', MAX_LINE + 1);
@@ -85,11 +79,13 @@ static int	ft_21sh(t_env *env, char **builtins)
 			}
 			else
 			{
+				
 				exec_single_command(tree[i]->left, rb, builtins, env);
+				
 			}
-			dup2(std_out, STDOUT_FILENO);
-			dup2(std_err, STDERR_FILENO);
-			dup2(std_in, STDIN_FILENO);
+			dup2(tree[i]->in_fd, STDIN_FILENO);
+			dup2(tree[i]->out_fd, STDOUT_FILENO);
+			dup2(tree[i]->err_fd, STDERR_FILENO);
 			i++;
 		}
 		ft_memset(buf, '\0', 4096);
