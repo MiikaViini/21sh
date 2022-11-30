@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 13:37:00 by mviinika          #+#    #+#             */
-/*   Updated: 2022/11/30 14:47:35 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/11/30 20:35:57 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,19 +116,21 @@ void expand_and_remove_quotes(t_ast **tree, t_env *env)
 void redirection(t_ast *tree)
 {
 
-	int fd;
 
-	fd = -1;
 
 	if (tree->redir_type == REDIR_TRUNC)
 	{
 		close(1);
 		open(tree->file, O_CREAT | O_WRONLY | O_TRUNC, 0664);
 	}
-	if (tree->redir_type == REDIR_IN)
+	else if (tree->redir_type == REDIR_IN)
 	{
 		close(0);
 		open(tree->file, O_RDONLY);
+	}
+	else if (tree->redir_type == REDIR_AGGR_IN)
+	{
+		dup2(tree->to_fd, tree->from_fd);
 	}
 	// 	fd = open(tree->file, O_CREAT | O_WRONLY | O_APPEND, 0664);
 	// else if (tree->redir_type == REDIR_TRUNC)
@@ -140,8 +142,8 @@ void redirection(t_ast *tree)
 	// }
 	// if (fd < 0)
 	// 	error_print(tree->file, NULL, E_NOEX);
-	if (tree->redir_type == REDIR_AGGR)
-		dup2(tree->out_fd, STDOUT_FILENO);
+	// if (tree->redir_type == REDIR_AGGR)
+	// 	dup2(tree->out_fd, STDOUT_FILENO);
 	//dup2(fd, cf);
 	//wait(0);
 }
@@ -267,7 +269,7 @@ int	exec_tree(t_ast *tree, int rb, char **builtins, t_env *env)
 			;
 		else
 			check_command(tree->cmd, env->path, env->env, 0);
-		close(tree->out_fd);
+		//close(tree->out_fd);
 	}
 	else if (tree->type == NODE_PIPE)
 		pipe_executor(tree, rb, builtins, env);
