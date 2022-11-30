@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 19:07:23 by mviinika          #+#    #+#             */
-/*   Updated: 2022/11/29 15:28:28 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/11/30 14:48:17 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ static int	ft_21sh(t_env *env, char **builtins)
 	t_ast	**tree;
 	t_pars	parsed;
 	int		i;
+	char *str = ttyname(1);
 	// int		stdin;
 	// int		stdout;
 
@@ -77,33 +78,26 @@ static int	ft_21sh(t_env *env, char **builtins)
 		while(tree[i])
 		{
 			//ft_printf("in out %d %d\n", tree[1]->in_fd, tree[1]->out_fd);
-			if (fork() == 0)
+			if (is_pipe_sequence(tree[i]))
 			{
-				if (is_pipe_sequence(tree[i]))
-				{
-					
+				if (fork() == 0)
 					exec_tree(tree[i], rb, builtins, env);
-					
-				}
-				else
-				{
-					
-					exec_single_command(tree[i]->left, rb, builtins, env);
-					
-				}
-			
+				wait(0);
 			}
-			wait(0);
-			// close(stdin);
-			
-			// dup(STDIN_FILENO);
-			dup2(tree[i]->out_fd, STDOUT_FILENO);
-			//dup2(tree[i]->err_fd, STDERR_FILENO);
-			//ft_printf("%d %d %d\n", tree[i]->in_fd, tree[i]->out_fd ,tree[i]->err_fd);
+			else
+			{
+
+				exec_single_command(tree[i]->left, rb, builtins, env);
+			}
 			i++;
+			close(0);
+			open(str, O_RDWR);
+			close(1);
+			open(str, O_RDWR);
+			close(2);
+			open(str, O_RDWR);
 		}
-		// close(stdin);
-		// close(stdout);
+		
 		ft_memset(buf, '\0', 4096);
 		free_parsed_input(parsed.parsed);
 		free(parsed.parsed);

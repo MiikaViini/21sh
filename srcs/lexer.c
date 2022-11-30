@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/03 12:54:32 by mviinika          #+#    #+#             */
-/*   Updated: 2022/11/29 15:34:27 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/11/30 14:44:43 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,14 @@ t_ast	*create_pipe_node(int type)
 // }
 void dup_fildes(t_ast *tree)
 {
-	tree->in_fd = dup2(tree->in_fd,STDIN_FILENO);
-	tree->out_fd = dup2(tree->out_fd,STDOUT_FILENO);
-	tree->err_fd = dup2(tree->err_fd,STDERR_FILENO);
+	tree->in_fd = 0;
+	tree->out_fd = 1;
+	tree->err_fd = 2;
+	tree->in_fd = dup2(tree->in_fd, 0);
+	tree->out_fd = dup2(tree->out_fd, 1);
+	tree->err_fd = dup2(tree->err_fd, 2);
+	perror(NULL);
+	ft_printf("%d %d %d\n", tree->in_fd, tree->out_fd, tree->err_fd);
 }
 
 // char *check_fildes(char *num)
@@ -116,13 +121,13 @@ static t_ast *simple_command(t_ast *node, t_tlist ***tokens)
 				{
 					temp = ft_strjoin("/dev/fd/", num);
 				}
-				if ((**tokens)->redir_way == REDIR_TRUNC || (**tokens)->redir_way == REDIR_APPEND)
-					node->file = open(temp, O_CREAT | O_WRONLY | O_TRUNC, 0664);
-				else if ((**tokens)->redir_way == REDIR_IN)
-					node->file = open(temp, O_RDONLY);
-				dup2(node->file, node->out_fd);
-				ft_strdel(&num);
-				ft_strdel(&temp);
+				// if ((**tokens)->redir_way == REDIR_TRUNC || (**tokens)->redir_way == REDIR_APPEND)
+				// 	node->file = open(temp, O_CREAT | O_WRONLY | O_TRUNC, 0664);
+				// else if ((**tokens)->redir_way == REDIR_IN)
+				// 	node->file = open(temp, O_RDONLY);
+				// dup2(node->file, node->out_fd);
+				// ft_strdel(&num);
+				// ft_strdel(&temp);
 				k = 0;
 			}
 			//ft_printf("[%s]\n",(**tokens)->str);
@@ -143,21 +148,36 @@ static t_ast *simple_command(t_ast *node, t_tlist ***tokens)
 				}
 				close(ft_atoi(num));
 				ft_strdel(&num);
-				node->file = open((**tokens)->str, O_CREAT | O_WRONLY | O_TRUNC, 0664);
-				dup(node->file);
-				close(node->file);
+				node->file = ft_strdup((**tokens)->str);
+				// dup(node->file);
+				// close(node->file);
 				node->type = NODE_REDIR;
 			}
 			else
 			{
-				ft_printf("reg %s\n", (**tokens)->str);
-				ft_printf("reg %d\n", node->out_fd);
-				(**tokens) = (**tokens)->next;
-				ft_printf("reg %s\n", (**tokens)->str);
-				close(node->out_fd);
-				node->file = open((**tokens)->str, O_CREAT | O_WRONLY | O_TRUNC, 0664);
-				ft_printf("reg %d\n", node->out_fd);
-				dup2(node->file, node->out_fd);
+				ft_printf("string %s\n", (**tokens)->str);
+				ft_printf("node %d\n", node->out_fd);
+				ft_printf("node %d\n",  (**tokens)->redir_way);
+				
+				ft_printf("next string %s\n", (**tokens)->str);
+				if ((**tokens)->redir_way == REDIR_TRUNC)
+				{
+					node->redir_type = REDIR_TRUNC;
+					// close(node->out_fd);
+					(**tokens) = (**tokens)->next;
+					node->file = ft_strdup((**tokens)->str);
+					// node->file = open((**tokens)->str, O_CREAT | O_WRONLY | O_TRUNC, 0664);
+					// dup2(node->file, node->out_fd);
+				}
+				else if ((**tokens)->redir_way == REDIR_IN)
+				{
+					node->redir_type = REDIR_IN;
+					(**tokens) = (**tokens)->next;
+					node->file = ft_strdup((**tokens)->str);
+					//close(node->file);
+				}
+				ft_printf("file %d\n", node->file);
+				
 				//dup(node->file);
 				node->type = NODE_REDIR;
 				//close(node->file);
@@ -167,7 +187,7 @@ static t_ast *simple_command(t_ast *node, t_tlist ***tokens)
 		else
 			break;
 	}
-	ft_printf("out fd %d\n", node->out_fd);
+	ft_printf("out fd [%d] [%s]\n", node->in_fd, node->cmd[0]);
 	node->cmd[i] = NULL;
 	return (node);
 }

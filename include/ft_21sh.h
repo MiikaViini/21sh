@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 08:59:36 by mviinika          #+#    #+#             */
-/*   Updated: 2022/11/18 09:38:52 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/11/30 10:42:26 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@
 # include <dirent.h>
 # include <fcntl.h>
 # include <pwd.h>
+# include <stdio.h>
+# include <error.h>
 
 #ifdef __linux__
 #define LIN 1

@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 09:14:23 by mviinika          #+#    #+#             */
-/*   Updated: 2022/11/29 15:30:35 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/11/30 13:45:21 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,10 +120,13 @@ static t_tlist	*get_token(t_pars *pars, t_env *env, int i, int *total)
 		i++;
 	while (i < ints.len)
 	{
-		//ft_printf("%s\n",&pars->trimmed[i]);
+		ft_printf("%s\n",&pars->trimmed[i]);
 		see_quote(&quots, pars->trimmed, i);
 		if (is_end_of_word(pars->trimmed[i], &quots) && word[k - 1])
+		{
 			break ;
+		}
+			
 		if (is_redirect(pars->trimmed[i], &quots) || (is_redirect(pars->trimmed[i], &quots) && pars->trimmed[i - 1] == '&'))
 		{
 			type = TOKEN_REDIRECT;
@@ -139,7 +142,6 @@ static t_tlist	*get_token(t_pars *pars, t_env *env, int i, int *total)
 						break;
 					}
 					word[j++] = pars->trimmed[i++];
-					
 				}
 				//ft_printf("%c\n", pars->trimmed[i]);
 				if (pars->trimmed[i + 1] == '&')
@@ -210,10 +212,10 @@ static t_tlist	*get_token(t_pars *pars, t_env *env, int i, int *total)
 			else
 				type = TOKEN_ELSE;
 			break;
-			// i++;
+			i++;
 		}
 	}
-	//ft_printf("[%s]\n", word);
+	ft_printf("[%s]\n", word);
 	token = newlst(word, type, redir, redir_way);
 	//ft_printf("token str[%s] token type %d token redirype %d\n",token->str, token->type, token->redir_type);
 	return (token);
