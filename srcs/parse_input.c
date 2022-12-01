@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 09:14:23 by mviinika          #+#    #+#             */
-/*   Updated: 2022/11/30 20:27:33 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/01 13:30:08 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,11 +148,13 @@ static t_tlist	*get_token(t_pars *pars, t_env *env, int i, int *total)
 				{
 					word[j] = pars->trimmed[i];
 					redir = REDIR_AGGR_IN;
+					type = TOKEN_AGGR;
 				}
 				else if (pars->trimmed[i + 1] == '&' && pars->trimmed[i] == '<')
 				{
 					word[j] = pars->trimmed[i];
 					redir = REDIR_AGGR_OUT;
+					type = TOKEN_AGGR;
 				}
 				else if (pars->trimmed[i] == '>')		// Check for append redirection
 				{
@@ -220,7 +222,7 @@ static t_tlist	*get_token(t_pars *pars, t_env *env, int i, int *total)
 			i++;
 		}
 	}
-	ft_printf("[%s]\n", word);
+	ft_printf("word [%s] [%d]\n", word, type);
 	token = newlst(word, type, redir, redir_way);
 	//ft_printf("token str[%s] token type %d token redirype %d\n",token->str, token->type, token->redir_type);
 	return (token);

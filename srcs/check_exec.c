@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 13:37:00 by mviinika          #+#    #+#             */
-/*   Updated: 2022/11/30 20:35:57 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/01 14:12:45 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,9 +115,7 @@ void expand_and_remove_quotes(t_ast **tree, t_env *env)
 }
 void redirection(t_ast *tree)
 {
-
-
-
+	ft_printf("taalla\n");
 	if (tree->redir_type == REDIR_TRUNC)
 	{
 		close(1);
@@ -130,6 +128,7 @@ void redirection(t_ast *tree)
 	}
 	else if (tree->redir_type == REDIR_AGGR_IN)
 	{
+		ft_printf("aggr\n");
 		dup2(tree->to_fd, tree->from_fd);
 	}
 	// 	fd = open(tree->file, O_CREAT | O_WRONLY | O_APPEND, 0664);
@@ -206,12 +205,11 @@ int exec_single_command(t_ast *tree, int rb, char **builtins, t_env *env)
 void	pipe_executor(t_ast *tree, int rb, char **builtins, t_env *env)
 {
 	int fd[2];
-
 	if (pipe(fd) < 0)
 			error_print(NULL, NULL, E_PIPEFAIL);
 	if ((fork1()) == 0)
 	{
-		//ft_printf("reg terve %d %d\n", tree->in_fd, tree->out_fd);
+		
 		close(1);
 		dup(fd[1]);
 		close(fd[0]);
@@ -265,10 +263,10 @@ int	exec_tree(t_ast *tree, int rb, char **builtins, t_env *env)
 	else if (tree->type == NODE_REDIR)
 	{
 		redirection(tree);
-		if (check_builtins(tree->cmd, builtins, env, fd))
-			;
-		else
-			check_command(tree->cmd, env->path, env->env, 0);
+		// if (check_builtins(tree->cmd, builtins, env, fd))
+		// 	;
+		// else
+		// 	check_command(tree->cmd, env->path, env->env, 0);
 		//close(tree->out_fd);
 	}
 	else if (tree->type == NODE_PIPE)

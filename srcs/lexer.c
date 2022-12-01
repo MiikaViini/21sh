@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/03 12:54:32 by mviinika          #+#    #+#             */
-/*   Updated: 2022/11/30 20:47:52 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/01 14:56:17 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,45 +80,42 @@ static t_ast *simple_command(t_ast *node, t_tlist ***tokens)
 		}
 		else if ((**tokens)->type == TOKEN_REDIRECT)
 		{
+			//create_aggr_node(&node, &(*tokens)->next);
 			node->redir_type = (**tokens)->redir_type;
 			node->type = NODE_REDIR;
 			if (node->redir_type == REDIR_AGGR_IN || node->redir_type == REDIR_AGGR_OUT)
-			{
-				while(ft_isdigit((**tokens)->str[k++]))
-					;
-				num = ft_strndup((**tokens)->str, k);
-				node->from_fd = ft_atoi(num);
-				k = 0;
-				ft_strdel(&num);
-				(**tokens) = (**tokens)->next;
-				if (**tokens == NULL)
-				{
-					error_print("no token", NULL, E_SYNERR);
-					return (NULL);
-				}
-				else
-				{
-					while (ft_isdigit((**tokens)->str[k]))
-							k++;
-					if ((**tokens)->str[k] != 0 && !ft_isspace((**tokens)->str[k]))
-					{
-						error_print("weird fd", NULL, E_SYNERR);
-						return (NULL);
-					}
-					else
-					{
-						num = ft_strndup((**tokens)->str, k);
-						node->to_fd = ft_atoi(num);
-						ft_strdel(&num);
-					}
-				}
-				// if (fstat(ft_atoi(num), &buf) == -1)
-				// {
-				// 	error_print(NULL, NULL, E_BFD);
-				// 	return (NULL);
-				// }
-			}
-			else if (ft_isdigit((**tokens)->str[k]))
+				ft_printf("(*tokens)->str %s\n", (**	tokens)->str);
+			// {
+			// 	while(ft_isdigit((**tokens)->str[k++]))
+			// 		;
+			// 	num = ft_strndup((**tokens)->str, k);
+			// 	node->from_fd = ft_atoi(num);
+			// 	k = 0;
+			// 	ft_strdel(&num);
+			// 	(**tokens) = (**tokens)->next;
+			// 	if (**tokens == NULL)
+			// 	{
+			// 		error_print("no token", NULL, E_SYNERR);
+			// 		return (NULL);
+			// 	}
+			// 	else
+			// 	{
+			// 		while (ft_isdigit((**tokens)->str[k]))
+			// 				k++;
+			// 		if ((**tokens)->str[k] != 0 && !ft_isspace((**tokens)->str[k]))
+			// 		{
+			// 			error_print("weird fd", NULL, E_SYNERR);
+			// 			return (NULL);
+			// 		}
+			// 		else
+			// 		{
+			// 			num = ft_strndup((**tokens)->str, k);
+			// 			node->to_fd = ft_atoi(num);
+			// 			ft_strdel(&num);
+			// 		}
+			// 	}
+			// }
+			if (ft_isdigit((**tokens)->str[k]))
 			{
 				while(ft_isdigit((**tokens)->str[k++]))
 					;
@@ -151,7 +148,7 @@ static t_ast *simple_command(t_ast *node, t_tlist ***tokens)
 		else
 			break;
 	}
-	//ft_printf("out fd [] [%s]\n", node->cmd[0]);
+	ft_printf("out fd [] [%s]\n", node->cmd[0]);
 	node->cmd[i] = NULL;
 	return (node);
 }
@@ -172,26 +169,134 @@ int	peek_for_last_pipe(t_tlist *tokens)
 	return 1;
 }
 
+void set_aggr_values(int *from, int *to, t_tlist **tokens)
+{
+	char *num;
+	int	k;
+
+	k = 0;
+	//ft_printf("(*tokens)->str %s\n", (*tokens)->str);
+	while (ft_isdigit((*tokens)->str[k++]))
+		;
+	num = ft_strndup((*tokens)->str, k);
+	*from = ft_atoi(num);
+	k = 0;
+	ft_strdel(&num);
+	(*tokens) = (*tokens)->next;
+	//ft_printf("(*tokens)->str %s\n", (*tokens)->str);
+	if ((*tokens) == NULL)
+	{
+		error_print("no token", NULL, E_SYNERR);
+		return ;
+	}
+	else
+	{
+		while (ft_isdigit((*tokens)->str[k]))
+				k++;
+		if ((*tokens)->str[k] != 0 && !ft_isspace((*tokens)->str[k]))
+		{
+			error_print("weird fd", NULL, E_SYNERR);
+			return ;
+		}
+		else
+		{
+			num = ft_strndup((*tokens)->str, k);
+			*to = ft_atoi(num);
+			ft_strdel(&num);
+		}
+	}
+}
+
+void create_aggr_node(t_ast **node, t_tlist **tokens)
+{
+
+	(*node)->redir_type = REDIR_AGGR_IN;
+	(*node)->type = NODE_REDIR;
+	(*node)->cmd[0] = NULL;
+	set_aggr_values(&(*node)->from_fd, &(*node)->to_fd, tokens);
+}
+
+t_ast *aggr_node(t_ast *node, t_tlist ***tokens)
+{
+	t_tlist	*temp;
+	
+	temp = **tokens;
+	node = ft_memalloc(sizeof(node));
+	node->type = NODE_CMD;
+	while ((**tokens))
+	{
+		//ft_printf("tokens left [%s] type [%d]\n",(**tokens)->str, (**tokens)->type);
+		if ((**tokens)->type == TOKEN_REDIRECT || (**tokens)->type == TOKEN_SEMICOLON 
+			|| (**tokens)->type == TOKEN_PIPE)
+			{
+				break ;
+			}
+			
+		else if ((**tokens)->type == TOKEN_AGGR)
+		{
+			create_aggr_node(&node, &(**tokens));
+			ft_strdel(&(**tokens)->next->str);
+			free((**tokens)->next);
+			(**tokens) = (**tokens)->next;
+			break ;
+		}
+		**tokens = (**tokens)->next;
+	}
+	
+	// ft_printf("token 3[%s]\n", (*tokens)->next->next->str);
+	
+	(**tokens) = temp;
+	//ft_printf("token 2[%s]\n", (**tokens)->str);
+	//ft_printf("redir 1[%d]\n", node->redir_type);
+	return (node);
+}
+
 
 t_ast	*make_ast(t_tlist **tokens)
 {
 	t_ast *tree;
 
 	tree = create_pipe_node(NODE_PIPE);
-	tree->left = simple_command(tree, &(tokens));
+	tree->left = aggr_node(tree, &tokens);
+	ft_printf("tokens left [%s]\n",(*tokens)->str);
+	//ft_printf("token 3[%d]\n", tree->left->redir_type);
+	// exit(1);
+	if (tree->left->type == NODE_CMD)
+	{
+		ft_printf("tokens left\n");
+		tree->left = simple_command(tree, &(tokens));
+	}
 	if (!(*tokens))
 		return tree;
 	if ((*tokens)->type == TOKEN_SEMICOLON)
 		return tree;
 	if (peek_for_last_pipe((*tokens)->next))
 	{
+		ft_printf("right 3[%s]\n", (*tokens)->str);
+		// if ((*tokens)->type == TOKEN_SEMICOLON || (*tokens)->type == TOKEN_PIPE)
+		tree->right = aggr_node(tree, &tokens);
+		exit(1);
 		(*tokens) = (*tokens)->next;
-		tree->right = simple_command(tree, &(tokens));
+		
+		//ft_printf("token 3[%d]\n", (*tokens)->type);
+		//tree->right = aggr_node(tree, (&tokens));
+		
+		ft_printf("token 3[%d]\n", tree->right->redir_type);
+		if (tree->right->type == NODE_CMD)
+		{
+				tree->right = simple_command(tree, &(tokens));
+				ft_printf("tokens left\n");
+				exit(1);
+		}
+		
 	}
 	else if ((*tokens)->type == TOKEN_PIPE)
 	{
 		(*tokens) = (*tokens)->next;
 		tree->right = make_ast(tokens);
 	}
+	
+	//ft_printf("token 3[%d]\n", tree->right->redir_type);
+	
 	return (tree);
 }

@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 19:07:23 by mviinika          #+#    #+#             */
-/*   Updated: 2022/11/30 14:48:17 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/01 14:22:11 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ static int	ft_21sh(t_env *env, char **builtins)
 			//ft_printf("in out %d %d\n", tree[1]->in_fd, tree[1]->out_fd);
 			if (is_pipe_sequence(tree[i]))
 			{
+				ft_printf("tree left %d tree right %d\n", tree[i]->left->type, tree[i]->right->type);
 				if (fork() == 0)
 					exec_tree(tree[i], rb, builtins, env);
 				wait(0);
