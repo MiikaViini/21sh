@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/03 12:54:32 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/02 16:17:34 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/02 16:41:09 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ t_ast	*create_pipe_node(int type)
 int set_aggr_values(int *from, int *to, t_tlist **tokens)
 {
 	char *num;
+	struct stat buf;
 	int	k;
 
 	k = 0;
@@ -92,6 +93,12 @@ int set_aggr_values(int *from, int *to, t_tlist **tokens)
 			ft_strdel(&num);
 		}
 	}
+	if (fstat(*from, &buf) == -1 || fstat(*to, &buf))
+	{
+		error_print(NULL, NULL, E_BFD);
+		return -1;
+	}
+		
 	return 0;
 }
 
