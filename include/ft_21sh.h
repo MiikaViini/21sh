@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 08:59:36 by mviinika          #+#    #+#             */
-/*   Updated: 2022/11/30 10:42:26 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/02 10:15:26 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,8 +74,20 @@ typedef struct s_word
 	int		len;
 	int		expan;
 	int		k;
+	int		type;
 	int		redir;
+	int		redir_way;
+	char	*file;
+	
 }			t_word;
+
+// typedef struct s_word_attr
+// {
+// 	int		len;
+// 	int		expan;
+// 	int		k;
+// 	int		redir;
+// }			t_word_attr;
 
 int		check_command(char **input, char **path, char **env, int tree);
 int		exec_tree(t_ast *tree, int rb, char **builtins, t_env *env);

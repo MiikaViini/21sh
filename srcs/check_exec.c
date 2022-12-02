@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 13:37:00 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/01 14:12:45 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/02 15:52:09 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,24 +113,33 @@ void expand_and_remove_quotes(t_ast **tree, t_env *env)
 	 	i++;
 	}
 }
-void redirection(t_ast *tree)
+void redirection(t_tlist *redirs)
 {
-	ft_printf("taalla\n");
-	if (tree->redir_type == REDIR_TRUNC)
+	int fd;
+	fd = 0;
+	if (!redirs)
+		return ;
+	if (redirs->redir_type == REDIR_TRUNC)
 	{
 		close(1);
-		open(tree->file, O_CREAT | O_WRONLY | O_TRUNC, 0664);
+		open(redirs->file, O_CREAT | O_WRONLY | O_TRUNC, 0664);
 	}
-	else if (tree->redir_type == REDIR_IN)
+	else if (redirs->redir_type == REDIR_APPEND)
+	{
+		close(1);
+		fd = open(redirs->file, O_CREAT | O_WRONLY | O_APPEND, 0664);
+
+	}
+	else if (redirs->redir_type == REDIR_IN)
 	{
 		close(0);
-		open(tree->file, O_RDONLY);
+		open(redirs->file, O_RDONLY);
 	}
-	else if (tree->redir_type == REDIR_AGGR_IN)
+	else if (redirs->redir_type == REDIR_AGGR_IN || redirs->redir_type == REDIR_AGGR_OUT)
 	{
-		ft_printf("aggr\n");
-		dup2(tree->to_fd, tree->from_fd);
+		dup2(redirs->to_fd, redirs->from_fd);
 	}
+	redirection(redirs->next);
 	// 	fd = open(tree->file, O_CREAT | O_WRONLY | O_APPEND, 0664);
 	// else if (tree->redir_type == REDIR_TRUNC)
 	// 	fd = open(tree->file, O_CREAT | O_WRONLY | O_TRUNC, 0664);
@@ -177,15 +186,8 @@ int exec_single_command(t_ast *tree, int rb, char **builtins, t_env *env)
 	}
 	if (tree->type == NODE_REDIR)
 	{
-		// if (tree->redir_type == REDIR_AGGR 
-		// 	|| tree->redir_type == REDIR_AGGR_IO)
-		// {
-		// 	duplicate_fildes(tree);
-		// }
-		//else
-		redirection(tree);
+		redirection(tree->redirs);
 	}
-	
 	if (check_builtins(tree->cmd, builtins, env, fd))
 		;
 	else
@@ -262,11 +264,11 @@ int	exec_tree(t_ast *tree, int rb, char **builtins, t_env *env)
 	}
 	else if (tree->type == NODE_REDIR)
 	{
-		redirection(tree);
-		// if (check_builtins(tree->cmd, builtins, env, fd))
-		// 	;
-		// else
-		// 	check_command(tree->cmd, env->path, env->env, 0);
+		redirection(tree->redirs);
+		if (check_builtins(tree->cmd, builtins, env, fd))
+			;
+		else
+			check_command(tree->cmd, env->path, env->env, 0);
 		//close(tree->out_fd);
 	}
 	else if (tree->type == NODE_PIPE)

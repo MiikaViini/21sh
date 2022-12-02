@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 19:07:23 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/01 14:22:11 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/02 16:18:49 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,11 @@ static int	ft_21sh(t_env *env, char **builtins)
 			tree = parse_input(env, &parsed);
 		else
 			return 1;
+		if (tree == NULL)
+		{
+			return 1;
+		}
+			
 		while(tree[i])
 		{
 			//ft_printf("in out %d %d\n", tree[1]->in_fd, tree[1]->out_fd);
@@ -87,18 +92,17 @@ static int	ft_21sh(t_env *env, char **builtins)
 			}
 			else
 			{
-
 				exec_single_command(tree[i]->left, rb, builtins, env);
 			}
 			i++;
-			close(0);
-			open(str, O_RDWR);
-			close(1);
-			open(str, O_RDWR);
-			close(2);
-			open(str, O_RDWR);
+			
 		}
-		
+		close(0);
+		open(str, O_RDWR);
+		close(1);
+		open(str, O_RDWR);
+		close(2);
+		open(str, O_RDWR);
 		ft_memset(buf, '\0', 4096);
 		free_parsed_input(parsed.parsed);
 		free(parsed.parsed);
