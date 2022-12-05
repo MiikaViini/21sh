@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 09:14:23 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/05 10:44:57 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/05 15:57:08 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,11 +107,9 @@ static t_tlist	*get_token(t_pars *pars, t_env *env, int i, int *total)
 	t_word		ints;
 	t_tlist		*token;
 	int			k;
-	int			j;
 
 	(void)env;
 	k = 0;
-	j = 0;
 	initialise_structs(&quots, &ints, pars->trimmed);
 	word = ft_strnew(ft_strlen(pars->trimmed));
 	while (ft_isspace(pars->trimmed[i]) && (*total)++)
@@ -126,84 +124,39 @@ static t_tlist	*get_token(t_pars *pars, t_env *env, int i, int *total)
 		
 		if (is_redirect(pars->trimmed[i], &quots) || (is_redirect(pars->trimmed[i], &quots) && pars->trimmed[i - 1] == '&'))
 		{
+			(*total)++;
 			ints.type = TOKEN_REDIRECT;
-			if (ft_isdigit(word[0]))				// Checks if there is a digit before redirecting
+			if (pars->trimmed[i + 1] == '&' && pars->trimmed[i] == '>')
 			{
-				// i--;
-				// while (pars->trimmed[i])
-				// {
-				// 	(*total)++;
-				// 	if ((pars->trimmed[i] == '>' && pars->trimmed[i + 1] != '&')
-				// 		|| pars->trimmed[i] == '&' || !ft_isdigit(pars->trimmed[i]))
-				// 	{
-				// 		break;
-				// 	}
-				// 	word[j++] = pars->trimmed[i++];
-				// }
-				//ft_printf("%c\n", pars->trimmed[i]);
-				if (pars->trimmed[i + 1] == '&' && pars->trimmed[i] == '>')
-				{
-					word[k++] = pars->trimmed[i++];
-					word[k] = pars->trimmed[i];
-					(*total)++;
-					(*total)++;
-					ints.redir = REDIR_AGGR_IN;
-				//	ints.type = TOKEN_REDIRECT;
-				}
-				else if (pars->trimmed[i + 1] == '&' && pars->trimmed[i] == '<')
-				{
-					word[k++] = pars->trimmed[i++];
-					word[k] = pars->trimmed[i];
-					(*total)++;
-					ints.redir = REDIR_AGGR_OUT;
-					//ints.type = TOKEN_AGGR;
-				}
-				else if (pars->trimmed[i] == '>')		// Check for append redirection
-				{
-					ints.redir = REDIR_TRUNC;
-					word[j++] = pars->trimmed[i++];
-					if (pars->trimmed[i] == '>')
-					{
-						word[j] = pars->trimmed[i];
-						(*total)++;
-						ints.redir  = REDIR_APPEND;
-					}
-				}
-				else if (pars->trimmed[i] == '<')		// Check for STD_IN redirect
-				{
-					word[j] = pars->trimmed[i++];
-					ints.redir = REDIR_IN;
-				}
-				break;
-			}
-			else if (pars->trimmed[i - 1] == '&') 				// Check for aggregation/duplication
-			{
-				ints.redir = REDIR_AGGR_IO;
-				word[j++] = pars->trimmed[i++];
-				if (pars->trimmed[i] == '>')
-				{
-					word[j] = pars->trimmed[i];
-					(*total)++;
-				}
+				word[k++] = pars->trimmed[i++];
+				word[k] = pars->trimmed[i];
 				(*total)++;
+				ints.redir = REDIR_AGGR_OUT;
+			//	ints.type = TOKEN_REDIRECT;
+			}
+			else if (pars->trimmed[i + 1] == '&' && pars->trimmed[i] == '<')
+			{
+				word[k++] = pars->trimmed[i++];
+				word[k] = pars->trimmed[i];
+				(*total)++;
+				ints.redir = REDIR_AGGR_IN;
+				//ints.type = TOKEN_AGGR;
 			}
 			else if (pars->trimmed[i] == '>')		// Check for append redirection
 			{
 				ints.redir = REDIR_TRUNC;
-				word[j++] = pars->trimmed[i++];
-				if (pars->trimmed[i] == '>')
+				word[k++] = pars->trimmed[i];
+				while (pars->trimmed[++i] == '>')
 				{
-					word[j] = pars->trimmed[i];
+					word[k] = pars->trimmed[i];
+					//(*total)++;
 					ints.redir  = REDIR_APPEND;
 				}
-				(*total)++;
 			}
 			else if (pars->trimmed[i] == '<')		// Check for STD_IN redirect
 			{
-				word[j] = pars->trimmed[i];
-				(*total)++;
+				word[k] = pars->trimmed[i++];
 				ints.redir = REDIR_IN;
-				i++;
 			}
 			break;
 		}
@@ -224,12 +177,10 @@ static t_tlist	*get_token(t_pars *pars, t_env *env, int i, int *total)
 			i++;
 		}
 	}
-	//ft_printf("word [%s] [%d]\n", word, ints.type);
+	ft_printf("%s\n", word);
 	token = newlst(word, &ints);
 	return (token);
 }
-
-
 
 static void	lstaddlast(t_tlist **alst, t_tlist *new)
 {
@@ -252,7 +203,22 @@ static void	lstaddlast(t_tlist **alst, t_tlist *new)
 	}
 }
 
+void tokens_del(t_tlist **tokens)
+{
+	t_tlist *temp;
+	t_tlist	*list;
 
+	list = *tokens;
+	while(list != NULL)
+	{
+		temp = list->next;
+		ft_strdel(&list->str);
+		ft_strdel(&list->file);
+		//free(list);
+		list = temp;
+	}
+	*tokens = NULL;
+}
 // Parsing and lexing input, *get_token()* will make token list as a linked list
 // *make_ast()* will make abstract syntax tree from tokens
 t_ast	**parse_input(t_env *env, t_pars *pars)
@@ -261,33 +227,32 @@ t_ast	**parse_input(t_env *env, t_pars *pars)
 	static int	total;
 	t_ast		**tree;
 	t_tlist		*tokens;
+	t_tlist	*temp;
 
 	i = 0;
 	total = 0;
 	tokens = NULL;
-		
 	tree = (t_ast **)ft_memalloc(sizeof(t_ast *) * 100);
 	while (i < pars->len)
 	{
 		lstaddlast(&tokens, get_token(pars,env ,i, &total));
 		i = total;
 	}
-	
 	i = 0;
+	temp = tokens;
 	while(tokens)
 	{
 		tree[i] = make_ast(&tokens);
 		if (tree[i] == NULL)
 		{
-			free(tree);
+			free(tree[i]);
 			return (NULL);
 		}
 		else if (tokens && tokens->type == TOKEN_SEMICOLON)
 			tokens = tokens->next;
-			
 		i++;
 	}
-	// ast_travers(tree[i],env);
+	tokens_del(&temp);
 	ft_strdel(&pars->trimmed);
 	return (tree);
 }

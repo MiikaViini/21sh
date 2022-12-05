@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/03 12:54:32 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/05 10:44:11 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/05 15:56:03 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,46 +23,22 @@ t_ast	*create_pipe_node(int type)
 	return (root);
 }
 
-// void change_fd(char *str, int *in, int *out)
-// {
-	
-// }
-// void dup_fildes(t_ast *tree)
-// {
-// 	tree->in_fd = 0;
-// 	tree->out_fd = 1;
-// 	tree->err_fd = 2;
-// 	tree->in_fd = dup2(tree->in_fd, 0);
-// 	tree->out_fd = dup2(tree->out_fd, 1);
-// 	tree->err_fd = dup2(tree->err_fd, 2);
-// 	perror(NULL);
-// 	ft_printf("%d %d %d\n", tree->in_fd, tree->out_fd, tree->err_fd);
-// }
-
-// char *check_fildes(char *num)
-// {
-// 	DIR *dirp;
-// 	struct dirent *ent;
-// 	int i;
-	
-// 	i = 0;
-// 	dirp = opendir("/dev/fd");
-// 	ent = readdir(dirp);
-// 	while(entity != NULL)
-// 	{
-// 		dirname = ft_strjoin()
-// 	}
-// }
-
 int set_aggr_values(int *from, int *to, t_tlist **tokens)
 {
 	char *num;
 	struct stat buf;
+	int i;
 
+	i = 0;
+	(*tokens)->fd_close = 0;
 	num = ft_strdup((*tokens)->str);
 	*from = ft_atoi(num);
+	if (((*tokens)->redir_type == REDIR_TRUNC && *from == 0)
+		|| ((*tokens)->redir_type == REDIR_AGGR_OUT && *from == 0))
+		*from = 1;
 	ft_strdel(&num);
 	(*tokens) = (*tokens)->next;
+	printf("%s\n", (*tokens)->str);
 	if ((*tokens) == NULL)
 	{
 		error_print("no token", NULL, E_SYNERR);
@@ -70,11 +46,38 @@ int set_aggr_values(int *from, int *to, t_tlist **tokens)
 	}
 	else
 	{
+		while (ft_isdigit((*tokens)->str[i]))
+			i++;
+		printf("%c %d %d\n", (*tokens)->str[i], *from, (*tokens)->redir_type);
+		if ((*tokens)->str[i] != '\0')
+		{
+			printf("%c\n", (*tokens)->str[i]);
+			if (*from > 1 && (*tokens)->str[0] != '-')
+			{
+				error_print(NULL, (*tokens)->str, E_AMB);
+				return (-1);
+			}
+			else if ((*tokens)->str[0] == '-')
+			{
+				(*tokens)->fd_close = 1;
+				return 1;
+			}
+			else
+			{
+				(*tokens)->file = ft_strdup((*tokens)->str);
+				(*tokens)->redir_type = REDIR_TRUNC;
+				ft_putendl("adsasdasd");
+			}
+			
+			return 0;
+		}
 		num = ft_strdup((*tokens)->str);
 		*to = ft_atoi(num);
+		printf("%d\n", *to);
 		ft_strdel(&num);
 		
 	}
+	printf("%d\n", *from);
 	if (fstat(*from, &buf) == -1 || fstat(*to, &buf))
 	{
 		num = ft_itoa(*to);
@@ -82,7 +85,7 @@ int set_aggr_values(int *from, int *to, t_tlist **tokens)
 		ft_strdel(&num);
 		return -1;
 	}
-	return 0;
+	return 1;
 }
 
 static void	lstaddlast(t_tlist **alst, t_tlist *new)
@@ -126,11 +129,19 @@ static t_tlist	*newlst(char *content, char *file, int from, int redir_type)
 	return (fresh);
 }
 
+void free_token(t_tlist *token)
+{
+	ft_strdel(&token->file);
+	ft_strdel(&token->file);
+	free(token);
+}
 static t_ast *simple_command(t_ast *node, t_tlist ***tokens)
 {
 	int i;
 	t_tlist *redirs;
+	int aggrs;
 
+	aggrs = 0;
 	i = 0;
 	node = ft_memalloc(sizeof(node));
 	node->cmd = (char **)ft_memalloc(sizeof(char *) * 100);
@@ -144,15 +155,14 @@ static t_ast *simple_command(t_ast *node, t_tlist ***tokens)
 				node->type = NODE_CMD;
 			node->left = NULL;
 			node->right = NULL;
+			free_token((**tokens));
 			(**tokens) = (**tokens)->next;
 		}
 		else if ((**tokens)->type == TOKEN_REDIRECT)
 		{
-			//create_aggr_node(&node, &(*tokens)->next);
 			node->redir_type = (**tokens)->redir_type;
 			node->type = NODE_REDIR;
 			node->redirs = newlst((**tokens)->str, NULL, 0, (**tokens)->redir_type);
-			//node->redirs->next = NULL;
 			if (node->redir_type == REDIR_TRUNC || node->redir_type == REDIR_IN || node->redir_type == REDIR_APPEND )
 			{
 				(**tokens) = (**tokens)->next;
@@ -162,86 +172,29 @@ static t_ast *simple_command(t_ast *node, t_tlist ***tokens)
 			}
 			else if (node->redir_type == REDIR_AGGR_IN || node->redir_type == REDIR_AGGR_OUT)
 			{
-				if(set_aggr_values(&node->redirs->from_fd, &node->redirs->to_fd, *tokens) == -1)
+				aggrs = set_aggr_values(&node->redirs->from_fd, &node->redirs->to_fd, *tokens);
+				if( aggrs == -1)
 				{
 					node->type = NODE_CMD;
-					//free(*tokens);
 					return ((NULL));
 					
 				}
-					
+				else if (aggrs == 0)
+				{
+					printf("%d\n", (**tokens)->redir_type);
+					node->redirs->redir_type = (**tokens)->redir_type;
+					node->redirs->file = (**tokens)->file;
+				}
+				node->redirs->fd_close = (**tokens)->fd_close;
 			}
 			lstaddlast(&redirs, node->redirs);
-			//	ft_printf("(*tokens)->str %s\n", (**	tokens)->str);
-			// {
-			// 	while(ft_isdigit((**tokens)->str[k++]))
-			// 		;
-			// 	num = ft_strndup((**tokens)->str, k);
-			// 	node->from_fd = ft_atoi(num);
-			// 	k = 0;
-			// 	ft_strdel(&num);
-			// 	(**tokens) = (**tokens)->next;
-			// 	if (**tokens == NULL)
-			// 	{
-			// 		error_print("no token", NULL, E_SYNERR);
-			// 		return (NULL);
-			// 	}
-			// 	else
-			// 	{
-			// 		while (ft_isdigit((**tokens)->str[k]))
-			// 				k++;
-			// 		if ((**tokens)->str[k] != 0 && !ft_isspace((**tokens)->str[k]))
-			// 		{
-			// 			error_print("weird fd", NULL, E_SYNERR);
-			// 			return (NULL);
-			// 		}
-			// 		else
-			// 		{
-			// 			num = ft_strndup((**tokens)->str, k);
-			// 			node->to_fd = ft_atoi(num);
-			// 			ft_strdel(&num);
-			// 		}
-			// 	}
-			// }
-			// if (ft_isdigit((**tokens)->str[k]))
-			// {
-			// 	while(ft_isdigit((**tokens)->str[k++]))
-			// 		;
-			// 	num = ft_strndup((**tokens)->str, k - 1);
-			// 	(**tokens) = (**tokens)->next;
-			// 	if (**tokens == NULL)
-			// 	{
-			// 		error_print(NULL, NULL, E_SYNERR);
-			// 		return (NULL);
-			// 	}
-			// 	node->file = ft_strdup((**tokens)->str);
-			// }
-			// else
-			// {
-			// 	if ((**tokens)->redir_way == REDIR_TRUNC)
-			// 	{
-			// 		node->redir_type = REDIR_TRUNC;
-			// 		(**tokens) = (**tokens)->next;
-			// 		node->file = ft_strdup((**tokens)->str);
-			// 	}
-			// 	else if ((**tokens)->redir_way == REDIR_IN)
-			// 	{
-			// 		node->redir_type = REDIR_IN;
-			// 		(**tokens) = (**tokens)->next;
-			// 		node->file = ft_strdup((**tokens)->str);
-			// 	}
-			// }
 			(**tokens) = (**tokens)->next;
 		}
 		else
 			break;
 	}
+	ft_printf("Good node\n");
 	node->redirs = redirs;
-	// ft_printf("out fd [] [%d]\n", node->type);
-	
-	// ft_printf("out fd [] [%d]\n", node->redirs->from_fd);
-	// ft_printf("out fd [] [%s]\n", node->redirs->next->file);
-	// exit(1);
 	node->cmd[i] = NULL;
 	return (node);
 }
@@ -315,15 +268,10 @@ t_ast	*make_ast(t_tlist **tokens)
 
 	tree = create_pipe_node(NODE_PIPE);
 	tree->left = simple_command(tree, &(tokens));
-	if (!(*tokens))
-	{
-		return tree;
-	}
 	if (!tree->left)
-	{
 		return (NULL);
-	}
-		
+	if (!(*tokens))
+		return tree;
 	if ((*tokens)->type == TOKEN_SEMICOLON)
 		return tree;
 	if (peek_for_last_pipe((*tokens)->next))

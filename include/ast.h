@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/03 12:11:30 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/05 09:40:47 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/05 13:11:49 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ typedef struct s_ast
 	int				to_fd;
 	int				from_fd;
 	int				err_fd;
+	int				fd_close;
 	struct s_tlist	*redirs;
 	struct s_ast	*left;
 	struct s_ast	*right;

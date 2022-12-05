@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 19:07:23 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/05 10:04:30 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/05 15:39:18 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,32 @@ void reset_fds_to_default(char *terminal)
 	open(terminal, O_RDWR);
 }
 
+void delete_node(t_ast *node)
+{
+	if (node == NULL)
+		return ;
+	delete_node(node->left);
+	if (node->cmd)
+		free_strarr(node->cmd);
+	if (node->file)
+		ft_strdel(&node->file);
+	//free(node);
+	delete_node(node->right);
+}
+
+void delete_trees(t_ast **tree)
+{
+	int i;
+
+	i = 0;
+	while(tree[i])
+	{
+		delete_node(tree[i]);
+		free(tree[i]);
+		i++;
+	}
+}
+
 static int	ft_21sh(t_env *env, char **builtins, char *terminal)
 {
 	int		rb;
@@ -57,11 +83,6 @@ static int	ft_21sh(t_env *env, char **builtins, char *terminal)
 	t_ast	**tree;
 	t_pars	parsed;
 	int		i;
-	// int		stdin;
-	// int		stdout;
-
-	// stdout = dup(1);
-	// stdin = dup(0);
 
 	rb = 1;
 	i = 0;
@@ -102,6 +123,8 @@ static int	ft_21sh(t_env *env, char **builtins, char *terminal)
 			reset_fds_to_default(terminal);
 		}
 		ft_memset(buf, '\0', 4096);
+		delete_trees(tree);
+		free(tree);
 		free_parsed_input(parsed.parsed);
 		free(parsed.parsed);
 	}

@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 13:37:00 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/05 09:49:01 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/05 13:43:17 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ void expand_and_remove_quotes(t_ast **tree, t_env *env)
 	k = 0;
 	i = 0;
 	initialise_structs(&quotes, NULL, NULL);
-	while((*tree)->type != NODE_PIPE && (*tree)->type != NODE_REDIR && (*tree)->cmd[i])
+	while((*tree)->type != NODE_PIPE  && (*tree)->cmd[i])
 	{
 		see_quote(&quotes, (*tree)->cmd[i], k);
 		while ((*tree)->cmd[i][k])
@@ -143,7 +143,11 @@ int redirection(t_tlist *redirs)
 	}
 	else if (redirs->redir_type == REDIR_AGGR_IN || redirs->redir_type == REDIR_AGGR_OUT)
 	{
-		dup2(redirs->to_fd, redirs->from_fd);
+		ft_printf("%d %d\n", redirs->from_fd, redirs->fd_close);
+		if (redirs->fd_close)
+			close(redirs->from_fd);
+		else
+			dup2(redirs->to_fd, redirs->from_fd);
 	}
 	redirection(redirs->next);
 	return 0;
@@ -179,6 +183,7 @@ int exec_single_command(t_ast *tree, int rb, char **builtins, t_env *env)
 	}
 	if (tree->type == NODE_REDIR)
 	{
+		printf("jeee\n");
 		if (redirection(tree->redirs) == -1)
 			return 1;
 	}
