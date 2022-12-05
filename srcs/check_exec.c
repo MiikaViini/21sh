@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 13:37:00 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/02 16:29:46 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/05 09:49:01 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,12 +113,13 @@ void expand_and_remove_quotes(t_ast **tree, t_env *env)
 	 	i++;
 	}
 }
-void redirection(t_tlist *redirs)
+int redirection(t_tlist *redirs)
 {
 	int fd;
+	
 	fd = 0;
 	if (!redirs)
-		return ;
+		return 0;
 	if (redirs->redir_type == REDIR_TRUNC)
 	{
 		close(1);
@@ -127,33 +128,25 @@ void redirection(t_tlist *redirs)
 	else if (redirs->redir_type == REDIR_APPEND)
 	{
 		close(1);
-		fd = open(redirs->file, O_CREAT | O_WRONLY | O_APPEND, 0664);
+		redirs->file_fd = open(redirs->file, O_CREAT | O_WRONLY | O_APPEND, 0664);
 
 	}
 	else if (redirs->redir_type == REDIR_IN)
 	{
 		close(0);
-		open(redirs->file, O_RDONLY);
+		redirs->file_fd = open(redirs->file, O_RDONLY);
+		if(fd == -1)
+		{
+			error_print(redirs->file, NULL, E_NOEX);
+			return -1;
+		}
 	}
 	else if (redirs->redir_type == REDIR_AGGR_IN || redirs->redir_type == REDIR_AGGR_OUT)
 	{
 		dup2(redirs->to_fd, redirs->from_fd);
 	}
 	redirection(redirs->next);
-	// 	fd = open(tree->file, O_CREAT | O_WRONLY | O_APPEND, 0664);
-	// else if (tree->redir_type == REDIR_TRUNC)
-	// 	fd = open(tree->file, O_CREAT | O_WRONLY | O_TRUNC, 0664);
-	// else if (tree->redir_type == REDIR_IN)
-	// {
-	// 	fd = open(tree->file, O_RDONLY);
-	// 	cf = 0;
-	// }
-	// if (fd < 0)
-	// 	error_print(tree->file, NULL, E_NOEX);
-	// if (tree->redir_type == REDIR_AGGR)
-	// 	dup2(tree->out_fd, STDOUT_FILENO);
-	//dup2(fd, cf);
-	//wait(0);
+	return 0;
 }
 
 
@@ -186,7 +179,8 @@ int exec_single_command(t_ast *tree, int rb, char **builtins, t_env *env)
 	}
 	if (tree->type == NODE_REDIR)
 	{
-		redirection(tree->redirs);
+		if (redirection(tree->redirs) == -1)
+			return 1;
 	}
 	if (check_builtins(tree->cmd, builtins, env, fd))
 		;

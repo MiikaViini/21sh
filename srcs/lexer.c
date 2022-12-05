@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/03 12:54:32 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/02 16:41:09 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/05 10:44:11 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,18 +58,11 @@ int set_aggr_values(int *from, int *to, t_tlist **tokens)
 {
 	char *num;
 	struct stat buf;
-	int	k;
 
-	k = 0;
-	//ft_printf("(*tokens)->str %s\n", (*tokens)->str);
-	while (ft_isdigit((*tokens)->str[k++]))
-		;
-	num = ft_strndup((*tokens)->str, k);
+	num = ft_strdup((*tokens)->str);
 	*from = ft_atoi(num);
-	k = 0;
 	ft_strdel(&num);
 	(*tokens) = (*tokens)->next;
-	//ft_printf("(*tokens)->str %s\n", (*tokens)->str);
 	if ((*tokens) == NULL)
 	{
 		error_print("no token", NULL, E_SYNERR);
@@ -77,28 +70,18 @@ int set_aggr_values(int *from, int *to, t_tlist **tokens)
 	}
 	else
 	{
-		while (ft_isdigit((*tokens)->str[k]))
-				k++;
-		if ((*tokens)->str[k] != 0 && !ft_isspace((*tokens)->str[k]) && (*tokens)->str[k] != '-')
-		{
-			error_print("weird fd", NULL, E_SYNERR);
-			// ft_strdel(&(*tokens)->str);
-			//ft_strdel(&(*tokens)->str);
-			return -1;
-		}
-		else
-		{
-			num = ft_strndup((*tokens)->str, k);
-			*to = ft_atoi(num);
-			ft_strdel(&num);
-		}
+		num = ft_strdup((*tokens)->str);
+		*to = ft_atoi(num);
+		ft_strdel(&num);
+		
 	}
 	if (fstat(*from, &buf) == -1 || fstat(*to, &buf))
 	{
-		error_print(NULL, NULL, E_BFD);
+		num = ft_itoa(*to);
+		error_print(NULL, num, E_BFD);
+		ft_strdel(&num);
 		return -1;
 	}
-		
 	return 0;
 }
 
@@ -146,18 +129,11 @@ static t_tlist	*newlst(char *content, char *file, int from, int redir_type)
 static t_ast *simple_command(t_ast *node, t_tlist ***tokens)
 {
 	int i;
-	int k;
-	char *num;
 	t_tlist *redirs;
-	
-	//struct stat buf;
 
-	num = NULL;
 	i = 0;
-	k = 0;
 	node = ft_memalloc(sizeof(node));
 	node->cmd = (char **)ft_memalloc(sizeof(char *) * 100);
-	//dup_fildes(node);
 	redirs = NULL;
 	while(**tokens)
 	{

@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 19:07:23 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/02 16:18:49 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/05 10:04:30 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,19 +40,23 @@ int is_pipe_sequence(t_ast *tree)
 
 
 
-// void open_stdfildes(int in, int out, int err)
-// {
-	
-// }
+void reset_fds_to_default(char *terminal)
+{
+	close(STDIN_FILENO);
+	open(terminal, O_RDWR);
+	close(STDOUT_FILENO);
+	open(terminal, O_RDWR);
+	close(STDERR_FILENO);
+	open(terminal, O_RDWR);
+}
 
-static int	ft_21sh(t_env *env, char **builtins)
+static int	ft_21sh(t_env *env, char **builtins, char *terminal)
 {
 	int		rb;
 	char	buf[MAX_LINE + 1];
 	t_ast	**tree;
 	t_pars	parsed;
 	int		i;
-	char *str = ttyname(1);
 	// int		stdin;
 	// int		stdout;
 
@@ -66,6 +70,7 @@ static int	ft_21sh(t_env *env, char **builtins)
 	rb = read(0, &buf, MAX_LINE);
 	if (rb == -1)
 		exit(1);
+	
 	set_pars_struct(&parsed, buf);
 	if (check_quotes(buf))
 		error_print(NULL, NULL, E_QUOT);
@@ -79,7 +84,6 @@ static int	ft_21sh(t_env *env, char **builtins)
 		{
 			return 1;
 		}
-			
 		while(tree[i])
 		{
 			//ft_printf("in out %d %d\n", tree[1]->in_fd, tree[1]->out_fd);
@@ -95,14 +99,8 @@ static int	ft_21sh(t_env *env, char **builtins)
 				exec_single_command(tree[i]->left, rb, builtins, env);
 			}
 			i++;
-			
+			reset_fds_to_default(terminal);
 		}
-		close(0);
-		open(str, O_RDWR);
-		close(1);
-		open(str, O_RDWR);
-		close(2);
-		open(str, O_RDWR);
 		ft_memset(buf, '\0', 4096);
 		free_parsed_input(parsed.parsed);
 		free(parsed.parsed);
@@ -122,7 +120,9 @@ int	main(int argc, char **argv, char **environ)
 	t_env	env;
 	char	**builtins;
 	int		rb;
+	char *terminal;
 
+	terminal = ttyname(1);
 	rb = 1;
 	builtins = initialize_and_set_builtins();
 	get_env(&env, environ, argc, argv);
@@ -130,7 +130,7 @@ int	main(int argc, char **argv, char **environ)
 	while (rb != 0)
 	{
 		ft_putstr("21sh$ ");
-		rb = ft_21sh(&env, builtins);
+		rb = ft_21sh(&env, builtins, terminal);
 	}
 	free_strarr(env.env);
 	free_strarr(env.path);
