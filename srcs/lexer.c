@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/03 12:54:32 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/05 15:56:03 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/06 11:53:52 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,10 @@ t_ast	*create_pipe_node(int type)
 {
 	t_ast	*root;
 
-	root = ft_memalloc(sizeof(t_ast));
+	root = (t_ast *)ft_memalloc(sizeof(t_ast));
 	root->type = type;
+	root->cmd = NULL;
+	root->file = NULL;
 	root->left = NULL;
 	root->right = NULL;
 	return (root);
@@ -143,8 +145,9 @@ static t_ast *simple_command(t_ast *node, t_tlist ***tokens)
 
 	aggrs = 0;
 	i = 0;
-	node = ft_memalloc(sizeof(node));
+	node = (t_ast *)ft_memalloc(sizeof(t_ast));
 	node->cmd = (char **)ft_memalloc(sizeof(char *) * 100);
+	node->file = NULL;
 	redirs = NULL;
 	while(**tokens)
 	{
@@ -155,7 +158,6 @@ static t_ast *simple_command(t_ast *node, t_tlist ***tokens)
 				node->type = NODE_CMD;
 			node->left = NULL;
 			node->right = NULL;
-			free_token((**tokens));
 			(**tokens) = (**tokens)->next;
 		}
 		else if ((**tokens)->type == TOKEN_REDIRECT)
@@ -183,7 +185,7 @@ static t_ast *simple_command(t_ast *node, t_tlist ***tokens)
 				{
 					printf("%d\n", (**tokens)->redir_type);
 					node->redirs->redir_type = (**tokens)->redir_type;
-					node->redirs->file = (**tokens)->file;
+					node->redirs->file = ft_strdup((**tokens)->file);
 				}
 				node->redirs->fd_close = (**tokens)->fd_close;
 			}

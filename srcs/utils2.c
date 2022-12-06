@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/12 09:56:41 by mviinika          #+#    #+#             */
-/*   Updated: 2022/11/24 13:01:38 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/06 11:47:10 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,10 +42,10 @@ int can_be_added(char c, t_quotes *quots)
 	return ((c && quots->closed == 0) || (!ft_isspace(c) && quots->closed));
 }
 
-int is_end_of_word(char c, t_quotes *quots)
+int is_end_of_word(char c, t_quotes *quots, int index)
 {
 	return ((ft_isspace(c) && quots->s_quote + quots->d_quote == 0)
-		|| (ft_isspace(c) && quots->closed) || is_operator(c, quots));
+		|| (ft_isspace(c) && quots->closed) || (is_operator(c, quots) && index != 0));
 }
 
 int is_operator (char c, t_quotes *quots)
@@ -54,4 +54,23 @@ int is_operator (char c, t_quotes *quots)
 	if ((quots->d_quote && !quots->closed) || (quots->s_quote && !quots->closed))
 		return 0;
 	return ((c == '|' ) | (c == ';') | (c == '&'));
+}
+
+void tokens_del(t_tlist **tokens)
+{
+	t_tlist *temp;
+	t_tlist	*list;
+
+	list = *tokens;
+	while(list != NULL)
+	{
+		temp = list->next;
+		if (list->str)
+			ft_strdel(&list->str);
+		if (list->file)
+			ft_strdel(&list->file);
+		free(list);
+		list = temp;
+	}
+	*tokens = NULL;
 }

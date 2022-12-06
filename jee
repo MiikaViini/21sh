@@ -1,22 +1,64 @@
 2 0
+ls: cannot access 'kak': No such file or directory
+.:
 total 316
 -rw-rw-r--  1 miika miika      0 joulu   5 10:20 &
 -rw-rw-r--  1 miika miika    831 marras 17 12:44 -
-drwxrwxr-x  9 miika miika   4096 joulu   6 11:34 .
+drwxrwxr-x  9 miika miika   4096 joulu   6 11:57 .
 drwxrwxr-x 19 miika miika   4096 joulu   2 19:39 ..
--rw-rw-r--  1 miika miika      4 joulu   6 11:43 2
--rwxrwxr-x  1 miika miika 248320 joulu   6 11:34 21sh
+-rw-rw-r--  1 miika miika   1109 joulu   6 11:43 2
+-rwxrwxr-x  1 miika miika 248336 joulu   6 11:53 21sh
 -rw-rw-r--  1 miika miika     86 marras 30 19:58 author
 drwxrwxr-x  2 miika miika   4096 marras 10 09:11 eval_tests
 -rw-rw-r--  1 miika miika      6 marras 29 11:50 file
 drwxrwxr-x  8 miika miika   4096 joulu   5 15:58 .git
 drwxrwxr-x  2 miika miika   4096 joulu   5 08:59 include
--rw-rw-r--  1 miika miika     16 joulu   6 11:39 jee
+-rw-rw-r--  1 miika miika     55 joulu   6 11:57 jee
 -rw-rw-r--  1 miika miika   1129 marras 30 19:58 juu
 drwxrwxr-x  6 miika miika   4096 joulu   6 08:15 libft
 -rw-rw-r--  1 miika miika   2241 marras 17 08:44 Makefile
-drwxrwxr-x  2 miika miika   4096 joulu   6 11:34 objs
+drwxrwxr-x  2 miika miika   4096 joulu   6 11:53 objs
 -rw-rw-r--  1 miika miika    812 marras 24 09:04 redirection_cases
 -rw-rw-r--  1 miika miika   1105 joulu   5 14:00 sdf
 drwxrwxr-x  2 miika miika   4096 joulu   5 08:59 srcs
 drwxrwxr-x  2 miika miika   4096 marras 10 09:28 .vscode
+next 
+..:
+1
+2
+21sh
+AdventOfCode2022
+attesfillit
+Bitwise
+fillit
+GNL
+gnlnew
+jumanner_alex21sh
+libft
+linkedlists
+minishell
+minishell_v2
+MIT-sh
+test_zone
+tree_exer
+unit-test
+
+..:
+1
+2
+21sh
+AdventOfCode2022
+attesfillit
+Bitwise
+fillit
+GNL
+gnlnew
+jumanner_alex21sh
+libft
+linkedlists
+minishell
+minishell_v2
+MIT-sh
+test_zone
+tree_exer
+unit-test

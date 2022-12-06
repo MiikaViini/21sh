@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 19:07:23 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/05 15:39:18 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/06 11:34:08 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,28 +52,31 @@ void reset_fds_to_default(char *terminal)
 
 void delete_node(t_ast *node)
 {
+	//t_ast *temp;
 	if (node == NULL)
 		return ;
 	delete_node(node->left);
 	if (node->cmd)
-		free_strarr(node->cmd);
+	free_strarr(node->cmd);
 	if (node->file)
 		ft_strdel(&node->file);
-	//free(node);
+	if(node->redirs)
+		tokens_del(&node->redirs);
 	delete_node(node->right);
+	free(node);
+	
 }
 
-void delete_trees(t_ast **tree)
+void delete_tree(t_ast *tree)
 {
-	int i;
+	// int i;
 
-	i = 0;
-	while(tree[i])
-	{
-		delete_node(tree[i]);
-		free(tree[i]);
-		i++;
-	}
+	// i = 0;
+	// while(tree[i])
+	// {
+		delete_node(tree);
+	// 	i++;
+	// }
 }
 
 static int	ft_21sh(t_env *env, char **builtins, char *terminal)
@@ -119,11 +122,11 @@ static int	ft_21sh(t_env *env, char **builtins, char *terminal)
 			{
 				exec_single_command(tree[i]->left, rb, builtins, env);
 			}
-			i++;
+			delete_tree(tree[i]);
 			reset_fds_to_default(terminal);
+			i++;
 		}
 		ft_memset(buf, '\0', 4096);
-		delete_trees(tree);
 		free(tree);
 		free_parsed_input(parsed.parsed);
 		free(parsed.parsed);

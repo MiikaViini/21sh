@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 13:37:00 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/05 13:43:17 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/06 10:10:35 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,13 +161,7 @@ int redirection(t_tlist *redirs)
 int exec_single_command(t_ast *tree, int rb, char **builtins, t_env *env)
 {
 	int fd = 1;
-	// int std_out;
-	// int std_in;
-	// int std_err;
-	
-	// std_err = dup(2);
-	// std_out = dup(1);
-	// std_in = dup(0);
+
 	if ((rb && !tree) || (!rb && !tree))
 		return 1;
 	env->path = get_path(env->env);
@@ -192,11 +186,6 @@ int exec_single_command(t_ast *tree, int rb, char **builtins, t_env *env)
 	else
 		check_command(tree->cmd, env->path, env->env, 0);
 	free_strarr(env->path);
-	// dup2(std_out, STDOUT_FILENO);
-	// dup2(std_err, STDERR_FILENO);
-	// dup2(std_in, STDIN_FILENO);
-	// if (fd < 1)
-	// 	close(fd);
 	return 1;
 }
 
@@ -243,36 +232,42 @@ int	exec_tree(t_ast *tree, int rb, char **builtins, t_env *env)
 	fd = 1;
 	if ((!tree) || (!rb && !tree))
 		return 1;
-	env->path = get_path(env->env);
+	
 	expand_and_remove_quotes(&tree, env);
 	if (rb && tree->type == NODE_CMD)
 		update_env(env->env, tree->cmd[ft_linecount(tree->cmd) - 1], "_");
 	if (rb == 0)
 	{
+		free_strarr(env->path);
 		ft_putstr("exit\n");
 		return 0;
 	}
 	if (tree->type == NODE_CMD)
 	{
+		env->path = get_path(env->env);
 		if (check_builtins(tree->cmd, builtins, env, fd))
 			;
 		else
 		{	
 			check_command(tree->cmd, env->path, env->env, 1);
 		}
+		free_strarr(env->path);
 	}
 	else if (tree->type == NODE_REDIR)
 	{
+		env->path = get_path(env->env);
 		redirection(tree->redirs);
 		if (check_builtins(tree->cmd, builtins, env, fd))
 			;
 		else
 			check_command(tree->cmd, env->path, env->env, 0);
-		//close(tree->out_fd);
+		free_strarr(env->path);
 	}
 	else if (tree->type == NODE_PIPE)
+	{
 		pipe_executor(tree, rb, builtins, env);
-	free_strarr(env->path);
+	}
+	//free_strarr(env->path);
 	exit(1);
 }
 

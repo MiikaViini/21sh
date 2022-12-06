@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 09:14:23 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/05 15:57:08 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/06 11:32:28 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,8 +117,9 @@ static t_tlist	*get_token(t_pars *pars, t_env *env, int i, int *total)
 	while (i < ints.len)
 	{
 		see_quote(&quots, pars->trimmed, i);
-		if (is_end_of_word(pars->trimmed[i], &quots) && word[k - 1])
+		if (is_end_of_word(pars->trimmed[i], &quots, k))
 		{
+			(*total)++;
 			break ;
 		}
 		
@@ -177,8 +178,8 @@ static t_tlist	*get_token(t_pars *pars, t_env *env, int i, int *total)
 			i++;
 		}
 	}
-	ft_printf("%s\n", word);
 	token = newlst(word, &ints);
+	ft_strdel(&word);
 	return (token);
 }
 
@@ -203,21 +204,24 @@ static void	lstaddlast(t_tlist **alst, t_tlist *new)
 	}
 }
 
-void tokens_del(t_tlist **tokens)
-{
-	t_tlist *temp;
-	t_tlist	*list;
 
-	list = *tokens;
-	while(list != NULL)
+
+void init_tree(t_ast ***tree, size_t size)
+{
+	size_t i;
+	
+	i = 0;
+	while (i < size)
 	{
-		temp = list->next;
-		ft_strdel(&list->str);
-		ft_strdel(&list->file);
-		//free(list);
-		list = temp;
+		(*tree)[i]->type = 0;
+		(*tree)[i]->cmd = NULL;
+		(*tree)[i]->file = NULL;
+		(*tree)[i]->redir_type = -1;
+		(*tree)[i]->to_fd = 0;
+		(*tree)[i]->err_fd = 0;
+		(*tree)[i]->fd_close = 0;
+		i++;
 	}
-	*tokens = NULL;
 }
 // Parsing and lexing input, *get_token()* will make token list as a linked list
 // *make_ast()* will make abstract syntax tree from tokens

@@ -6,12 +6,23 @@
 #    By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/07/09 19:07:08 by mviinika          #+#    #+#              #
-#    Updated: 2022/11/17 08:44:27 by mviinika         ###   ########.fr        #
+#    Updated: 2022/12/06 12:21:24 by mviinika         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = 21sh
 
+CC = gcc 
+
+INCLUDE_DIR = ./include
+
+LIBFT = ./libft/libft.a
+LIBFT_DIR = ./libft/
+
+# SRC_DIR = ./src
+
+# AST_DIR = ast
+# AST_FILES = lexer.c
 SRC_FILES = main.c \
 			do_echo.c \
 			check_quotes.c \
@@ -48,9 +59,7 @@ OBJS = $(addprefix $(DIR_O)/,$(SRC_FILES:.c=.o))
 
 FLAGS = -Wall -Wextra -Werror -g -pedantic
 
-LIBFT = ./libft/libft.a
 
-LIBFT_DIR = ./libft/
 
 ##COLOURS##
 RED = \x1b[31;01m

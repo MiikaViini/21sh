@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 08:59:36 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/02 10:15:26 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/06 11:32:49 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,8 +132,9 @@ int		check_equalsign(char *input);
 int		is_valid_char(char c);
 void	add_letter(char *word, char c, int *total, int *k);
 int		can_be_added(char c, t_quotes *quots);
-int		is_end_of_word(char c, t_quotes *quots);
+int		is_end_of_word(char c, t_quotes *quots, int index);
 int 	is_operator (char c, t_quotes *quots);
+void 	tokens_del(t_tlist **tokens);
 
 t_ast	*make_ast(t_tlist **tokens);
 void 	ast_travers(t_ast *tree, t_env *env);
