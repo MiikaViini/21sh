@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 13:37:00 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/06 10:10:35 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/06 13:11:36 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,9 +103,7 @@ void expand_and_remove_quotes(t_ast **tree, t_env *env)
 		while ((*tree)->cmd[i][k])
 		{	
 			if (is_expansion((*tree)->cmd[i], k) && !quotes.s_quote)
-			{
 				(*tree)->cmd[i] = handle_expansions((*tree)->cmd[i], env->env);
-			}
 			k++;
 		}
 		(*tree)->cmd[i] = remove_quotes((*tree)->cmd[i]);
@@ -143,7 +141,6 @@ int redirection(t_tlist *redirs)
 	}
 	else if (redirs->redir_type == REDIR_AGGR_IN || redirs->redir_type == REDIR_AGGR_OUT)
 	{
-		ft_printf("%d %d\n", redirs->from_fd, redirs->fd_close);
 		if (redirs->fd_close)
 			close(redirs->from_fd);
 		else
@@ -176,11 +173,8 @@ int exec_single_command(t_ast *tree, int rb, char **builtins, t_env *env)
 		return 0;
 	}
 	if (tree->type == NODE_REDIR)
-	{
-		printf("jeee\n");
 		if (redirection(tree->redirs) == -1)
 			return 1;
-	}
 	if (check_builtins(tree->cmd, builtins, env, fd))
 		;
 	else

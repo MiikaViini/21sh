@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/12 09:56:41 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/06 11:47:10 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/06 13:32:03 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,3 +74,21 @@ void tokens_del(t_tlist **tokens)
 	}
 	*tokens = NULL;
 }
+
+void delete_node(t_ast *node)
+{
+	//t_ast *temp;
+	if (node == NULL)
+		return ;
+	delete_node(node->left);
+	if (node->cmd)
+	free_strarr(node->cmd);
+	if (node->file)
+		ft_strdel(&node->file);
+	if(node->redirs)
+		tokens_del(&node->redirs);
+	delete_node(node->right);
+	free(node);
+	
+}
+

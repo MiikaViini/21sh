@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 19:07:23 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/06 11:34:08 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/06 14:01:01 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,6 @@ int is_pipe_sequence(t_ast *tree)
 	return (0);
 }
 
-
-
 void reset_fds_to_default(char *terminal)
 {
 	close(STDIN_FILENO);
@@ -50,34 +48,7 @@ void reset_fds_to_default(char *terminal)
 	open(terminal, O_RDWR);
 }
 
-void delete_node(t_ast *node)
-{
-	//t_ast *temp;
-	if (node == NULL)
-		return ;
-	delete_node(node->left);
-	if (node->cmd)
-	free_strarr(node->cmd);
-	if (node->file)
-		ft_strdel(&node->file);
-	if(node->redirs)
-		tokens_del(&node->redirs);
-	delete_node(node->right);
-	free(node);
-	
-}
 
-void delete_tree(t_ast *tree)
-{
-	// int i;
-
-	// i = 0;
-	// while(tree[i])
-	// {
-		delete_node(tree);
-	// 	i++;
-	// }
-}
 
 static int	ft_21sh(t_env *env, char **builtins, char *terminal)
 {
@@ -94,7 +65,6 @@ static int	ft_21sh(t_env *env, char **builtins, char *terminal)
 	rb = read(0, &buf, MAX_LINE);
 	if (rb == -1)
 		exit(1);
-	
 	set_pars_struct(&parsed, buf);
 	if (check_quotes(buf))
 		error_print(NULL, NULL, E_QUOT);
@@ -104,25 +74,17 @@ static int	ft_21sh(t_env *env, char **builtins, char *terminal)
 			tree = parse_input(env, &parsed);
 		else
 			return 1;
-		if (tree == NULL)
+		while(tree && tree[i])
 		{
-			return 1;
-		}
-		while(tree[i])
-		{
-			//ft_printf("in out %d %d\n", tree[1]->in_fd, tree[1]->out_fd);
 			if (is_pipe_sequence(tree[i]))
 			{
-				ft_printf("tree left %d tree right %d\n", tree[i]->left->type, tree[i]->right->type);
 				if (fork() == 0)
 					exec_tree(tree[i], rb, builtins, env);
 				wait(0);
 			}
 			else
-			{
 				exec_single_command(tree[i]->left, rb, builtins, env);
-			}
-			delete_tree(tree[i]);
+			delete_node(tree[i]);
 			reset_fds_to_default(terminal);
 			i++;
 		}

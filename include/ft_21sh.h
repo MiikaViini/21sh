@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 08:59:36 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/06 11:32:49 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/06 13:33:04 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,6 +138,7 @@ void 	tokens_del(t_tlist **tokens);
 
 t_ast	*make_ast(t_tlist **tokens);
 void 	ast_travers(t_ast *tree, t_env *env);
+void 	delete_node(t_ast *node);
 
 typedef int					(*t_builtins)(char **input, t_env *env, int fd);
 

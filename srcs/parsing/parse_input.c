@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 09:14:23 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/06 11:32:28 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/06 14:03:33 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,10 +118,7 @@ static t_tlist	*get_token(t_pars *pars, t_env *env, int i, int *total)
 	{
 		see_quote(&quots, pars->trimmed, i);
 		if (is_end_of_word(pars->trimmed[i], &quots, k))
-		{
-			(*total)++;
 			break ;
-		}
 		
 		if (is_redirect(pars->trimmed[i], &quots) || (is_redirect(pars->trimmed[i], &quots) && pars->trimmed[i - 1] == '&'))
 		{
@@ -133,7 +130,6 @@ static t_tlist	*get_token(t_pars *pars, t_env *env, int i, int *total)
 				word[k] = pars->trimmed[i];
 				(*total)++;
 				ints.redir = REDIR_AGGR_OUT;
-			//	ints.type = TOKEN_REDIRECT;
 			}
 			else if (pars->trimmed[i + 1] == '&' && pars->trimmed[i] == '<')
 			{
@@ -141,7 +137,6 @@ static t_tlist	*get_token(t_pars *pars, t_env *env, int i, int *total)
 				word[k] = pars->trimmed[i];
 				(*total)++;
 				ints.redir = REDIR_AGGR_IN;
-				//ints.type = TOKEN_AGGR;
 			}
 			else if (pars->trimmed[i] == '>')		// Check for append redirection
 			{
@@ -150,7 +145,6 @@ static t_tlist	*get_token(t_pars *pars, t_env *env, int i, int *total)
 				while (pars->trimmed[++i] == '>')
 				{
 					word[k] = pars->trimmed[i];
-					//(*total)++;
 					ints.redir  = REDIR_APPEND;
 				}
 			}
@@ -249,7 +243,10 @@ t_ast	**parse_input(t_env *env, t_pars *pars)
 		tree[i] = make_ast(&tokens);
 		if (tree[i] == NULL)
 		{
-			free(tree[i]);
+			tokens_del(&temp);
+			delete_node(tree[i]);
+			ft_strdel(&pars->trimmed);
+			free(tree);
 			return (NULL);
 		}
 		else if (tokens && tokens->type == TOKEN_SEMICOLON)

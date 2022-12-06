@@ -1,0 +1,4 @@
+- remove fd variable from builtins 
+- add keyboard handling
+- NORM!!
+- remove unnecessary functions and variables from headers and from .c files
