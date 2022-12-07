@@ -6,9 +6,9 @@ Still in progress...
 
 Added features on top of minishell:
 
-Redirections > >> < 
-Aggregations fe. 2>&1 2>&-
-AST execution
-Piping |
-Command separating ;
+Redirections "> >> <" <br>
+Aggregations fe. "2>&1 2>&-" <br>
+AST execution <br>
+Piping "|" <br>
+Command separating ";"
 
