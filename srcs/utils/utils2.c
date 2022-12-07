@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/12 09:56:41 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/06 13:32:03 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/07 12:14:57 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,5 +90,15 @@ void delete_node(t_ast *node)
 	delete_node(node->right);
 	free(node);
 	
+}
+
+int	fork1(void)
+{
+	int pid;
+
+	pid = fork();
+	if(pid == -1)
+		error_print(NULL, NULL, E_NOFORK);
+	return pid;
 }
 

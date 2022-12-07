@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 08:59:36 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/06 13:33:04 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/07 15:31:12 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ typedef struct s_pars
 	char	*trimmed;
 	int		redir;
 	int		fd;
-	int		std_out;
+	char	*last_token_str;
 }			t_pars;
 
 typedef struct s_word
@@ -90,8 +90,9 @@ typedef struct s_word
 // }			t_word_attr;
 
 int		check_command(char **input, char **path, char **env, int tree);
-int		exec_tree(t_ast *tree, int rb, char **builtins, t_env *env);
+
 int		check_quotes(char *input);
+int		check_builtins(char **input, char **builtins, t_env *env, int fd);
 int		do_cd(char **input, t_env *env, int fd);
 int		do_echo(char **input, t_env *env, int fd);
 int		do_env(char **input, t_env *env, int fd);
@@ -100,7 +101,11 @@ int		do_setenv(char **input, t_env *env, int fd);
 int		do_unsetenv(char **input, t_env *env, int fd);
 char	*dollar_expansion(char *expanded, char *word, char **env, int len);
 void	error_print(char *word, char *command, char *e_msg);
+int 	exec_single_command(t_ast *tree, int rb, char **builtins, t_env *env);
+int		exec_tree(t_ast *tree, int rb, char **builtins, t_env *env);
+void 	expand_and_remove_quotes(t_ast **tree, t_env *env);
 void	get_env(t_env *dest, char **environ, int argc, char **argv);
+char	**get_path(char **env);
 char	*handle_expansions(char *input, char **env);
 int		is_expansion(char *str, int i);
 t_ast	**parse_input(t_env *env, t_pars *pars);
@@ -109,9 +114,8 @@ char	*tilde_expansion(char *word, char **env, char *expanded);
 void	update_env(char **env, char *input, char *var);
 char	*user_expansion(char *input);
 void	free_parsed_input(char **p_input);
-int		redirect(t_pars *pars, t_env *env);
-int exec_single_command(t_ast *tree, int rb, char **builtins, t_env *env);
-int	check_command_tree(char **input, char **path, char **env);
+int 	redirection(t_tlist *redirs);
+int		check_command_tree(char **input, char **path, char **env);
 
 void	initialise_structs(t_quotes *quotes, t_word *ints, char *input);
 void	see_quote(t_quotes *quots, char *input, int i);
@@ -136,9 +140,16 @@ int		is_end_of_word(char c, t_quotes *quots, int index);
 int 	is_operator (char c, t_quotes *quots);
 void 	tokens_del(t_tlist **tokens);
 
-t_ast	*make_ast(t_tlist **tokens);
+
 void 	ast_travers(t_ast *tree, t_env *env);
 void 	delete_node(t_ast *node);
+int		fork1(void);
+t_ast	*build_ast(t_tlist **tokens);
+t_tlist	*new_token(char *content, t_word *word_attrs);
+t_ast 	*simple_command(t_ast *node, t_tlist ***tokens);
+void	token_to_last(t_tlist **alst, t_tlist *new);
+t_tlist	*new_redir(char *content, char *file, int from, int redir_type);
+int 	set_aggr_values(int *from, int *to, t_tlist **tokens);
 
 typedef int					(*t_builtins)(char **input, t_env *env, int fd);
 

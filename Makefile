@@ -6,7 +6,7 @@
 #    By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/07/09 19:07:08 by mviinika          #+#    #+#              #
-#    Updated: 2022/12/06 13:02:04 by mviinika         ###   ########.fr        #
+#    Updated: 2022/12/07 15:11:04 by mviinika         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,11 +20,16 @@ LIBFT = ./libft/libft.a
 LIBFT_DIR = ./libft/
 LIB_INCLUDE_DIR = ./libft/include
 
+FLAGS = -Wall -Wextra -Werror -g -pedantic
 
-DIR_S = ./srcs
+UNAME :=$(shell uname)
 
 AST_DIR = ast
-AST_FILES = lexer.c
+AST_FILES = build_ast.c \
+			token_to_last.c \
+			new_redir.c \
+			create_cmd_node.c \
+			set_aggr_values.c
 
 BUILT_INS_DIR = builtins
 BUILT_INS_FILES = do_cd.c \
@@ -32,11 +37,17 @@ BUILT_INS_FILES = do_cd.c \
 				do_env.c \
 				do_exit.c \
 				do_setenv.c \
-				do_unsetenv.c \
+				do_unsetenv.c
 
 EXECUTION_DIR = execution
-EXECUTION_FILES = check_command.c \
-				check_exec.c \
+EXECUTION_FILES = check_builtins.c \
+				check_command.c \
+				exec_tree.c \
+				exec_single_command.c \
+				expand_and_remove_quotes.c \
+				get_path.c \
+				redirections.c
+				
 
 EXPANSIONS_DIR = expansions
 EXPANSIONS_FILES = dollar_expansion.c \
@@ -47,7 +58,8 @@ EXPANSIONS_FILES = dollar_expansion.c \
 				user_expansion.c \
 
 PARSING_DIR = parsing
-PARSING_FILES = parse_input.c
+PARSING_FILES = parse_input.c \
+			new_token.c
 
 UTILS_DIR = utils
 UTILS_FILES = check_quotes.c \
@@ -64,53 +76,31 @@ SRC_FILES = main.c \
 			$(patsubst %, $(EXPANSIONS_DIR)/%, $(EXPANSIONS_FILES)) \
 			$(patsubst %, $(PARSING_DIR)/%, $(PARSING_FILES)) \
 			$(patsubst %, $(UTILS_DIR)/%, $(UTILS_FILES))
-# 			do_echo.c \
-# 			check_quotes.c \
-# 			handle_expansions.c \
-# 			parse_input.c \
-# 			do_unsetenv.c \
-# 			do_setenv.c \
-# 			do_env.c \
-# 			do_cd.c \
-# 			utils.c \
-# 			check_exec.c \
-# 			error_print.c \
-# 			dollar_expansion.c \
-# 			check_command.c \
-# 			tilde_expansion.c \
-# 			utils2.c \
-# 			user_expansion.c \
-# 			update_env.c \
-# 			is_expansion.c \
-# 			get_env.c \
-# 			passwd_user.c \
-# 			lexer.c \
-# 			do_exit.c \
-#			check_command_tree.c
 
 DIR_O = ./objs
-
-
+DIR_S = ./srcs
 
 SRCS := $(patsubst %, $(DIR_S)/%, $(SRC_FILES))
-
 OBJS := $(patsubst %, $(DIR_O)/%, $(SRC_FILES:.c=.o))
-
-FLAGS = -Wall -Wextra -Werror -g -pedantic
 
 
 
 ##COLOURS##
+ifeq ($(UNAME), Linux)
+RED = \033[91m
+GREEN = \033[92m
+YELLOW = \033[33m
+RESET = \033[0m
+else 
 RED = \x1b[31;01m
 GREEN = \x1b[32;01m
 YELLOW = \x1b[33;01m
 RESET = \x1b[32;00m
-
-
+endif
 
 $(NAME): $(OBJS)
 	@make -C $(LIBFT_DIR)
-	@gcc $(FLAGS) $(OBJS) -o $(NAME) $(LIBFT)
+	$(CC) $(FLAGS) $(OBJS) -o $(NAME) $(LIBFT)
 	@echo "$(GREEN)$(NAME) compiled$(RESET)"
 
 $(DIR_O)/%.o: $(DIR_S)/%.c include/ft_21sh.h
@@ -129,8 +119,3 @@ fclean: clean
 	@make fclean -C $(LIBFT_DIR)
 
 re: fclean all
-
-so:
-	clang-11 -nostartfiles -fPIC $(FLAGS) $(SRCS)
-	gcc -nostartfiles -shared -o libft.so $(OBJS)
-

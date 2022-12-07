@@ -6,31 +6,11 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 09:14:23 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/06 14:03:33 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/07 16:40:46 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
-
-static t_tlist	*newlst(char *content, t_word *word_attrs)
-{
-	t_tlist	*fresh;
-
-	fresh = (t_tlist *)ft_memalloc(sizeof(t_tlist));
-	if (content == NULL)
-	{
-		fresh->str = NULL;
-		fresh->type = 0;
-		fresh->next = NULL;
-		return (fresh);
-	}
-	fresh->str = ft_strdup(content);
-	fresh->type = word_attrs->type;
-	fresh->redir_type = word_attrs->redir;
-	fresh->file = word_attrs->file;
-	fresh->next = NULL;
-	return (fresh);
-}
 
 void	initialise_structs(t_quotes *quotes, t_word *ints, char *input)
 {
@@ -117,12 +97,9 @@ static t_tlist	*get_token(t_pars *pars, t_env *env, int i, int *total)
 	while (i < ints.len)
 	{
 		see_quote(&quots, pars->trimmed, i);
-		if (is_end_of_word(pars->trimmed[i], &quots, k))
-			break ;
 		
 		if (is_redirect(pars->trimmed[i], &quots) || (is_redirect(pars->trimmed[i], &quots) && pars->trimmed[i - 1] == '&'))
 		{
-			(*total)++;
 			ints.type = TOKEN_REDIRECT;
 			if (pars->trimmed[i + 1] == '&' && pars->trimmed[i] == '>')
 			{
@@ -140,9 +117,10 @@ static t_tlist	*get_token(t_pars *pars, t_env *env, int i, int *total)
 			}
 			else if (pars->trimmed[i] == '>')		// Check for append redirection
 			{
+				(*total)++;
 				ints.redir = REDIR_TRUNC;
-				word[k++] = pars->trimmed[i];
-				while (pars->trimmed[++i] == '>')
+				word[k++] = pars->trimmed[i++];
+				while (pars->trimmed[i] == '>')
 				{
 					word[k] = pars->trimmed[i];
 					ints.redir  = REDIR_APPEND;
@@ -155,6 +133,7 @@ static t_tlist	*get_token(t_pars *pars, t_env *env, int i, int *total)
 			}
 			break;
 		}
+		
 		if (can_be_added(pars->trimmed[i], &quots))
 		{
 			add_letter(word, pars->trimmed[i++], total, &ints.k);
@@ -171,34 +150,18 @@ static t_tlist	*get_token(t_pars *pars, t_env *env, int i, int *total)
 			break;
 			i++;
 		}
+		if (is_end_of_word(pars->trimmed[i], &quots, k) || is_redirect(pars->trimmed[i], &quots))
+		{
+			//(*total)++;
+			break ;
+		}
 	}
-	token = newlst(word, &ints);
+	token = new_token(word, &ints);
+	ft_strdel(&pars->last_token_str);
+	pars->last_token_str = ft_strdup(token->str);
 	ft_strdel(&word);
 	return (token);
 }
-
-static void	lstaddlast(t_tlist **alst, t_tlist *new)
-{
-	t_tlist	*temp;
-
-	temp = *alst;
-	if (*alst == NULL)
-	{
-		*alst = new;
-		return ;
-	}
-	while (temp != NULL)
-	{
-		if (temp->next == NULL)
-		{
-			temp->next = new;
-			break ;
-		}
-		temp = temp->next;
-	}
-}
-
-
 
 void init_tree(t_ast ***tree, size_t size)
 {
@@ -217,6 +180,21 @@ void init_tree(t_ast ***tree, size_t size)
 		i++;
 	}
 }
+int check_syntax(t_pars *pars)
+{
+	int i;
+	i = ft_strlen(pars->last_token_str) - 1;
+	if (pars->last_token_str[i] == '&' 
+		|| pars->last_token_str[i] == '|' 
+		|| pars->last_token_str[i] == ';'
+		|| pars->last_token_str[i] == '>'
+		|| pars->last_token_str[i] == '<')
+	{
+		error_print(NULL, NULL, E_SYNERR);
+		return (1);
+	}
+	return 0;
+}
 // Parsing and lexing input, *get_token()* will make token list as a linked list
 // *make_ast()* will make abstract syntax tree from tokens
 t_ast	**parse_input(t_env *env, t_pars *pars)
@@ -233,27 +211,31 @@ t_ast	**parse_input(t_env *env, t_pars *pars)
 	tree = (t_ast **)ft_memalloc(sizeof(t_ast *) * 100);
 	while (i < pars->len)
 	{
-		lstaddlast(&tokens, get_token(pars,env ,i, &total));
+		token_to_last(&tokens, get_token(pars,env ,i, &total));
 		i = total;
 	}
-	i = 0;
 	temp = tokens;
-	while(tokens)
+	if (!check_syntax(pars))
 	{
-		tree[i] = make_ast(&tokens);
-		if (tree[i] == NULL)
+		i = 0;
+		while(tokens)
 		{
-			tokens_del(&temp);
-			delete_node(tree[i]);
-			ft_strdel(&pars->trimmed);
-			free(tree);
-			return (NULL);
+			tree[i] = build_ast(&tokens);
+			if (tree[i] == NULL)
+			{
+				tokens_del(&temp);
+				delete_node(tree[i]);
+				ft_strdel(&pars->trimmed);
+				free(tree);
+				return (NULL);
+			}
+			else if (tokens && tokens->type == TOKEN_SEMICOLON)
+				tokens = tokens->next;
+			i++;
 		}
-		else if (tokens && tokens->type == TOKEN_SEMICOLON)
-			tokens = tokens->next;
-		i++;
 	}
 	tokens_del(&temp);
 	ft_strdel(&pars->trimmed);
+	ft_strdel(&pars->last_token_str);
 	return (tree);
 }

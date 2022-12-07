@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 19:07:23 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/06 14:01:01 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/07 16:38:32 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ void	set_pars_struct(t_pars *pars, char *input)
 	* (ft_wordcount_ws(input) + 1));
 	pars->trimmed = ft_strtrim(input);
 	pars->len = (int)ft_strlen(pars->trimmed);
+	pars->last_token_str = NULL;
 }
 
 int is_pipe_sequence(t_ast *tree)
@@ -73,7 +74,12 @@ static int	ft_21sh(t_env *env, char **builtins, char *terminal)
 		if (*parsed.trimmed)
 			tree = parse_input(env, &parsed);
 		else
+		{
+			free_parsed_input(parsed.parsed);
+			ft_strdel(&parsed.trimmed);
+			free(parsed.parsed);
 			return 1;
+		}
 		while(tree && tree[i])
 		{
 			if (is_pipe_sequence(tree[i]))

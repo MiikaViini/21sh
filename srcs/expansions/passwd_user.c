@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 13:11:04 by mviinika          #+#    #+#             */
-/*   Updated: 2022/11/15 13:55:42 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/07 12:31:55 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ static char *get_uid(char *input)
 	return (uid);
 }
 
-static char *get_path(char **users, char *uid)
+static char *get_user_path(char **users, char *uid)
 {
 	char **info;
 	char *path;
@@ -91,7 +91,7 @@ char *passwd_user(char *input)
 	}
 	while (users[i][0] == '#')
 		i++;
-	path = get_path(&users[i], uid);
+	path = get_user_path(&users[i], uid);
 	free(uid);
 	free_strarr(users);
 	return (path);

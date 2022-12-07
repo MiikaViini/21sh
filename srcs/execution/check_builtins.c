@@ -1,36 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ast.h                                              :+:      :+:    :+:   */
+/*   check_builtins.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/03 12:11:30 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/07 15:15:57 by mviinika         ###   ########.fr       */
+/*   Created: 2022/12/07 12:11:50 by mviinika          #+#    #+#             */
+/*   Updated: 2022/12/07 15:56:41 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef AST_H
-# define AST_H
+#include "ft_21sh.h"
 
-# include "ft_21sh.h"
-
-typedef struct s_ast
+int	check_builtins(char **input, char **builtins, t_env *env, int fd)
 {
-	int				type;			
-	char			**cmd;
-	char			*file;
-	int				redir_type;
-	int				to_fd;
-	int				from_fd;
-	int				err_fd;
-	int				fd_close;
-	struct s_tlist	*redirs;
-	struct s_ast	*left;
-	struct s_ast	*right;
-}				t_ast;
+	int k;
 
-t_ast	*create_pipe_node(int type);
-//t_ast *simple_command(t_ast *node, t_tlist ***tokens);
-
-#endif
+	k = -1;
+	fd = 1;
+	if (*input == NULL)
+		return (-1);
+	while (builtins[++k])
+	{
+		if (ft_strequ(builtins[k], input[0]))
+		{
+			g_builtins[k](input, env, fd);
+			return (1);
+		}
+	}
+	return (0);
+}

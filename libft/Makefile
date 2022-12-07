@@ -6,11 +6,13 @@
 #    By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/30 09:25:07 by mviinika          #+#    #+#              #
-#    Updated: 2022/10/18 13:19:08 by mviinika         ###   ########.fr        #
+#    Updated: 2022/12/07 09:25:09 by mviinika         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = libft.a
+
+UNAME :=$(shell uname)
 
 SRC_FILES = ft_atoi.c ft_bzero.c ft_isalnum.c ft_isalpha.c \
 	ft_isascii.c ft_isdigit.c \
@@ -53,10 +55,18 @@ FT_PRINTF = ft_printf/libftprintf.a
 FT_PRINTF_DIR = ./ft_printf
 
 ##COLOURS##
+ifeq ($(UNAME), Linux)
+RED = \033[91m
+GREEN = \033[92m
+YELLOW = \033[33m
+RESET = \033[0m
+else 
 RED = \x1b[31;01m
 GREEN = \x1b[32;01m
 YELLOW = \x1b[33;01m
 RESET = \x1b[32;00m
+endif
+
 
 FLAGS = -Wall -Wextra -Werror
 

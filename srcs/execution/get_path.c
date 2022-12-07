@@ -1,36 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ast.h                                              :+:      :+:    :+:   */
+/*   get_path.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/03 12:11:30 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/07 15:15:57 by mviinika         ###   ########.fr       */
+/*   Created: 2022/12/07 12:15:48 by mviinika          #+#    #+#             */
+/*   Updated: 2022/12/07 12:16:01 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef AST_H
-# define AST_H
+#include "ft_21sh.h"
 
-# include "ft_21sh.h"
-
-typedef struct s_ast
+char	**get_path(char **env)
 {
-	int				type;			
-	char			**cmd;
-	char			*file;
-	int				redir_type;
-	int				to_fd;
-	int				from_fd;
-	int				err_fd;
-	int				fd_close;
-	struct s_tlist	*redirs;
-	struct s_ast	*left;
-	struct s_ast	*right;
-}				t_ast;
+	int		i;
+	char	**path;
 
-t_ast	*create_pipe_node(int type);
-//t_ast *simple_command(t_ast *node, t_tlist ***tokens);
-
-#endif
+	i = -1;
+	path = (char **)ft_memalloc(sizeof(char *));
+	while (env[++i])
+	{
+		if (ft_strncmp(env[i], "PATH=", 5) == 0 && env[i][5])
+		{
+			free(path);
+			path = ft_strsplit(env[i] + 5, ':');
+		}
+	}
+	return (path);
+}

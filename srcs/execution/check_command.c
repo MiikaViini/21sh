@@ -6,22 +6,29 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 20:41:14 by mviinika          #+#    #+#             */
-/*   Updated: 2022/11/24 12:37:09 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/07 12:34:10 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
 
-static int	execute_command(char **input, char *exec, char **env)
+static int	execute_command(char **input, char *exec, char **env, int tree)
 {
 	struct stat	stat_;
 	int pid;
 
 	if (stat(exec, &stat_) != -1 && !S_ISREG(stat_.st_mode))
 		return (1);
+	if (tree)
+	{
+		execve(exec, input, env);
+		error_print(exec, NULL, E_EXE);
+		exit(EXIT_FAILURE);
+	}
 	pid = fork();
 	if (pid < 0)
 		return (1);
+	
 	else if (pid == 0)
 	{
 		execve(exec, input, env);;
@@ -32,14 +39,6 @@ static int	execute_command(char **input, char *exec, char **env)
 	return (0);
 }
 
-static int	execute_command_tree(char **input, char *exec, char **env)
-{
-	execve(exec, input, env);;
-	error_print(exec, NULL, E_EXE);
-	exit(EXIT_FAILURE);
-	return (0);
-}
-
 static int	execute_path_bin(char **input, char *path, char **env, DIR *dir)
 {
 	char	*exec;
@@ -47,7 +46,7 @@ static int	execute_path_bin(char **input, char *path, char **env, DIR *dir)
 
 	exec = ft_strjoin("/", input[0]);
 	path_ = ft_strjoin(path, exec);
-	if (!path_ || execute_command(input, path_, env))
+	if (!path_ || execute_command(input, path_, env, 0))
 	{
 		ft_strdel(&exec);
 		ft_strdel(&path_);
@@ -108,16 +107,9 @@ int	check_command(char **input, char **path, char **env, int tree)
 			error_print(input[0], NULL, E_ISDIR);
 			return (1);
 		}
-		else if (tree)
-		{
-			if (!execute_command(input, input[0], env))
-				return (1);
-		}
 		else
-		{
-			if (!execute_command_tree(input, input[0], env))
+			if (!execute_command(input, input[0], env, tree))
 				return (1);
-		}
 	}
 	else if (!check_path_bin(input, path, env))
 		return (1);

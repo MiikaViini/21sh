@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/24 09:46:16 by mviinika          #+#    #+#             */
-/*   Updated: 2022/10/18 12:53:38 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/07 09:41:22 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,9 +45,7 @@ char	*ft_strtrim(char const *s)
 	j = 0;
 	while (ft_iswhitespace(s[k - 1]) == 1 && k - i != 0)
 		k--;
-	trimmed = (char *)malloc(sizeof(char) * (k - i + 1));
-	if (!trimmed)
-		exit(1);
+	trimmed = (char *)ft_memalloc(sizeof(char) * (k - i + 1));
 	while (i < k)
 		trimmed[j++] = s[i++];
 	trimmed[j] = '\0';

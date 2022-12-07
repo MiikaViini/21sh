@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 11:08:24 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/06 10:20:13 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/07 09:53:38 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,6 @@ int	do_exit(char **input, t_env *env, int fd)
 		}
 	}
 	free_strarr(input);
-	// free(input);
 	free_strarr(env->env);
 	free_strarr(env->path);
 	exit(exit_status);
