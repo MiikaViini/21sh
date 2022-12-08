@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 08:59:36 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/07 15:31:12 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/08 21:02:43 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,6 +150,7 @@ t_ast 	*simple_command(t_ast *node, t_tlist ***tokens);
 void	token_to_last(t_tlist **alst, t_tlist *new);
 t_tlist	*new_redir(char *content, char *file, int from, int redir_type);
 int 	set_aggr_values(int *from, int *to, t_tlist **tokens);
+int redir_token(char *trimmed, char *word, t_word *ints, int *total);
 
 typedef int					(*t_builtins)(char **input, t_env *env, int fd);
 

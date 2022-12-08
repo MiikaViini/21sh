@@ -6,19 +6,52 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 15:00:27 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/07 15:00:59 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/08 21:47:37 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
 
+static void create_redirs(t_ast *node, t_tlist ***tokens)
+{
+	node->redir_type = (**tokens)->redir_type;
+	node->type = NODE_REDIR;
+	node->redirs = new_redir((**tokens)->str, NULL, 0, (**tokens)->redir_type);
+	if (node->redir_type == REDIR_TRUNC || node->redir_type == REDIR_IN || node->redir_type == REDIR_APPEND )
+	{
+		(**tokens) = (**tokens)->next;
+		node->redirs->file = ft_strdup((**tokens)->str);
+	}
+	else if (node->redir_type == REDIR_AGGR_IN || node->redir_type == REDIR_AGGR_OUT)
+	{
+		if(set_aggr_values(&node->redirs->from_fd, &node->redirs->to_fd, *tokens) == 0)
+			node->redirs->redir_type = (**tokens)->redir_type;
+		if ((**tokens)->fd_close == 0 && (**tokens)->str != NULL)
+			node->redirs->file = ft_strdup((**tokens)->str);
+		node->redirs->fd_close = (**tokens)->fd_close;
+	}
+}
+
+static void create_words(t_ast *node, t_tlist ***tokens, int *i)
+{
+	node->cmd[(*i)] = ft_strdup((**tokens)->str);
+	(*i)++;
+	if (node->type != NODE_REDIR)
+		node->type = NODE_CMD;
+	node->left = NULL;
+	node->right = NULL;
+	(**tokens) = (**tokens)->next;
+}
+
+/* Creates simple command node, which can include redirections and aggregations.
+** Redirections and aggregations are linked list inside simple command node.
+** Those are executed in order they appear in input
+*/
 t_ast *simple_command(t_ast *node, t_tlist ***tokens)
 {
 	int i;
 	t_tlist *redirs;
-	// int aggrs;
 
-	// aggrs = 0;
 	i = 0;
 	node = (t_ast *)ft_memalloc(sizeof(t_ast));
 	node->cmd = (char **)ft_memalloc(sizeof(char *) * 100);
@@ -27,37 +60,10 @@ t_ast *simple_command(t_ast *node, t_tlist ***tokens)
 	while(**tokens)
 	{
 		if ((**tokens)->type == TOKEN_WORD)
-		{
-			node->cmd[i++] = ft_strdup((**tokens)->str);
-			if (node->type != NODE_REDIR)
-				node->type = NODE_CMD;
-			node->left = NULL;
-			node->right = NULL;
-			(**tokens) = (**tokens)->next;
-		}
+			create_words(node, tokens, &i);
 		else if ((**tokens)->type == TOKEN_REDIRECT)
 		{
-			node->redir_type = (**tokens)->redir_type;
-			node->type = NODE_REDIR;
-			node->redirs = new_redir((**tokens)->str, NULL, 0, (**tokens)->redir_type);
-			if (node->redir_type == REDIR_TRUNC || node->redir_type == REDIR_IN || node->redir_type == REDIR_APPEND )
-			{
-				(**tokens) = (**tokens)->next;
-				if (node->redir_type == REDIR_APPEND)
-					(**tokens) = (**tokens)->next;
-				node->redirs->file = ft_strdup((**tokens)->str);
-			}
-			else if (node->redir_type == REDIR_AGGR_IN || node->redir_type == REDIR_AGGR_OUT)
-			{
-				
-				if(set_aggr_values(&node->redirs->from_fd, &node->redirs->to_fd, *tokens) == 0)
-				{
-					printf("%d\n", (**tokens)->redir_type);
-					node->redirs->redir_type = (**tokens)->redir_type;
-				}
-				node->redirs->file = ft_strdup((**tokens)->file);
-				node->redirs->fd_close = (**tokens)->fd_close;
-			}
+			create_redirs(node, tokens);
 			token_to_last(&redirs, node->redirs);
 			(**tokens) = (**tokens)->next;
 		}

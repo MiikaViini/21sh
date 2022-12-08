@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 09:14:23 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/07 16:40:46 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/08 21:40:39 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,26 +29,7 @@ void	initialise_structs(t_quotes *quotes, t_word *ints, char *input)
 	}
 }
 
-void	see_quote(t_quotes *quots, char *input, int i)
-{
-	if (is_quote(input[i]))
-	{
-		while (is_double_quote(input[i]) && quots->s_quote == 0)
-		{
-			quots->d_quote += 1;
-			i += 1;
-		}
-		while (is_single_quote(input[i]) && !quots->d_quote)
-		{
-			quots->s_quote += 1;
-			i += 1;
-		}
-		if (quots->s_quote >= 2 || quots->d_quote >= 2)
-			quots->closed = 1;
-	}
-}
-
-int	is_redirect(char c, t_quotes *quots)
+static int	is_redirect(char c, t_quotes *quots)
 {
 	int	ret;
 
@@ -60,24 +41,6 @@ int	is_redirect(char c, t_quotes *quots)
 		&& (c == '<' && !quots->s_quote))
 		ret = 1;
 	return (ret);
-}
-
-int is_aggregation(char *input, int *i, t_quotes *quots)
-{
-	(void)quots;
-	if ((ft_isdigit(input[*i]) && input[*i + 1] == '>' )
-		|| (ft_isdigit(input[*i]) && input[*i + 1] == '<'))
-	{
-		if (input[*i + 1] == '&' && ft_isdigit(input[*i + 2]))
-		{
-			return (1);
-		}
-		else
-		{
-			return (-1);
-		}
-	}
-	return (0);
 }
 
 static t_tlist	*get_token(t_pars *pars, t_env *env, int i, int *total)
@@ -97,43 +60,16 @@ static t_tlist	*get_token(t_pars *pars, t_env *env, int i, int *total)
 	while (i < ints.len)
 	{
 		see_quote(&quots, pars->trimmed, i);
-		
+		while (ft_isdigit(pars->trimmed[i]))
+		{
+			word[k++] = pars->trimmed[i++];
+			(*total)++;
+		}
 		if (is_redirect(pars->trimmed[i], &quots) || (is_redirect(pars->trimmed[i], &quots) && pars->trimmed[i - 1] == '&'))
 		{
-			ints.type = TOKEN_REDIRECT;
-			if (pars->trimmed[i + 1] == '&' && pars->trimmed[i] == '>')
-			{
-				word[k++] = pars->trimmed[i++];
-				word[k] = pars->trimmed[i];
-				(*total)++;
-				ints.redir = REDIR_AGGR_OUT;
-			}
-			else if (pars->trimmed[i + 1] == '&' && pars->trimmed[i] == '<')
-			{
-				word[k++] = pars->trimmed[i++];
-				word[k] = pars->trimmed[i];
-				(*total)++;
-				ints.redir = REDIR_AGGR_IN;
-			}
-			else if (pars->trimmed[i] == '>')		// Check for append redirection
-			{
-				(*total)++;
-				ints.redir = REDIR_TRUNC;
-				word[k++] = pars->trimmed[i++];
-				while (pars->trimmed[i] == '>')
-				{
-					word[k] = pars->trimmed[i];
-					ints.redir  = REDIR_APPEND;
-				}
-			}
-			else if (pars->trimmed[i] == '<')		// Check for STD_IN redirect
-			{
-				word[k] = pars->trimmed[i++];
-				ints.redir = REDIR_IN;
-			}
+			i = redir_token(&pars->trimmed[i], &word[k], &ints, total);
 			break;
 		}
-		
 		if (can_be_added(pars->trimmed[i], &quots))
 		{
 			add_letter(word, pars->trimmed[i++], total, &ints.k);
@@ -148,13 +84,9 @@ static t_tlist	*get_token(t_pars *pars, t_env *env, int i, int *total)
 			else
 				ints.type = TOKEN_ELSE;
 			break;
-			i++;
 		}
 		if (is_end_of_word(pars->trimmed[i], &quots, k) || is_redirect(pars->trimmed[i], &quots))
-		{
-			//(*total)++;
 			break ;
-		}
 	}
 	token = new_token(word, &ints);
 	ft_strdel(&pars->last_token_str);
@@ -180,20 +112,39 @@ void init_tree(t_ast ***tree, size_t size)
 		i++;
 	}
 }
-int check_syntax(t_pars *pars)
+
+int check_cons_redirs(t_tlist *tokens)
 {
+	
+	while(tokens->next)
+	{
+		//printf("%s, %d",tokens->str, tokens->type);
+		if (tokens->type == TOKEN_REDIRECT && tokens->next->type == TOKEN_REDIRECT)
+			return (1);
+		tokens = tokens->next;
+	}
+	return (0);
+}
+
+int check_syntax(t_pars *pars, t_tlist *tokens)
+{
+	t_tlist *temp;
+
+	temp = tokens;
 	int i;
+	int err;
+	
+	err = check_cons_redirs(temp);
 	i = ft_strlen(pars->last_token_str) - 1;
 	if (pars->last_token_str[i] == '&' 
 		|| pars->last_token_str[i] == '|' 
 		|| pars->last_token_str[i] == ';'
 		|| pars->last_token_str[i] == '>'
 		|| pars->last_token_str[i] == '<')
-	{
+		err = 1;
+	if (err)
 		error_print(NULL, NULL, E_SYNERR);
-		return (1);
-	}
-	return 0;
+	return err;
 }
 // Parsing and lexing input, *get_token()* will make token list as a linked list
 // *make_ast()* will make abstract syntax tree from tokens
@@ -215,21 +166,21 @@ t_ast	**parse_input(t_env *env, t_pars *pars)
 		i = total;
 	}
 	temp = tokens;
-	if (!check_syntax(pars))
+	if (!check_syntax(pars, tokens))
 	{
 		i = 0;
 		while(tokens)
 		{
 			tree[i] = build_ast(&tokens);
-			if (tree[i] == NULL)
-			{
-				tokens_del(&temp);
-				delete_node(tree[i]);
-				ft_strdel(&pars->trimmed);
-				free(tree);
-				return (NULL);
-			}
-			else if (tokens && tokens->type == TOKEN_SEMICOLON)
+			// if (tree[i] == NULL)
+			// {
+			// 	tokens_del(&temp);
+			// 	delete_node(tree[i]);
+			// 	ft_strdel(&pars->trimmed);
+			// 	free(tree);
+			// 	return (NULL);
+			// }
+			if (tokens && tokens->type == TOKEN_SEMICOLON)
 				tokens = tokens->next;
 			i++;
 		}

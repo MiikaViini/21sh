@@ -6,7 +6,7 @@
 #    By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/07/09 19:07:08 by mviinika          #+#    #+#              #
-#    Updated: 2022/12/07 15:11:04 by mviinika         ###   ########.fr        #
+#    Updated: 2022/12/08 21:20:08 by mviinika         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -59,7 +59,8 @@ EXPANSIONS_FILES = dollar_expansion.c \
 
 PARSING_DIR = parsing
 PARSING_FILES = parse_input.c \
-			new_token.c
+			new_token.c \
+			redir_token.c
 
 UTILS_DIR = utils
 UTILS_FILES = check_quotes.c \
@@ -68,6 +69,7 @@ UTILS_FILES = check_quotes.c \
 			update_env.c \
 			utils.c \
 			utils2.c \
+			see_quote.c 
 
 SRC_FILES = main.c \
 			$(patsubst %, $(AST_DIR)/%, $(AST_FILES)) \
@@ -100,10 +102,10 @@ endif
 
 $(NAME): $(OBJS)
 	@make -C $(LIBFT_DIR)
-	$(CC) $(FLAGS) $(OBJS) -o $(NAME) $(LIBFT)
+	@$(CC) $(FLAGS) $(OBJS) -o $(NAME) $(LIBFT)
 	@echo "$(GREEN)$(NAME) compiled$(RESET)"
 
-$(DIR_O)/%.o: $(DIR_S)/%.c include/ft_21sh.h
+$(OBJS): $(DIR_O)/%.o: $(DIR_S)/%.c include/ft_21sh.h
 	@mkdir -p $(@D)
 	$(CC) $(FLAGS) -I $(INCLUDE_DIR) -c $< -o $@
 all: $(NAME)
