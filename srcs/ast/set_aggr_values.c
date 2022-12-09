@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 15:04:44 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/08 14:26:16 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/09 10:10:19 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,16 +58,16 @@ int set_aggr_values(int *from, int *to, t_tlist **tokens)
 				(*tokens)->file = ft_strdup((*tokens)->str);
 				return (-1);
 			}
-			else if (is_going_in(temp))
-			{
-				*to = -3;
-				return (-1);
-			}
 			else if ((*tokens)->str[0] == '-')
 			{
 				//ft_printf("tama");
 				(*tokens)->fd_close = 1;
 				return 1;
+			}
+			else if (is_going_in(temp))
+			{
+				*to = -3;
+				return (-1);
 			}
 			else
 			{
@@ -79,11 +79,10 @@ int set_aggr_values(int *from, int *to, t_tlist **tokens)
 		num = ft_strdup((*tokens)->str);
 		*to = ft_atoi(num);
 		ft_strdel(&num);
-		
 	}
 	if (fstat(*from, &buf) == -1 || fstat(*to, &buf))
 	{
-		(*tokens)->file =ft_itoa(*to);
+		(*tokens)->file = ft_itoa(*to);
 		*to = -2;
 		return -1;
 	}

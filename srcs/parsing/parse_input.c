@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 09:14:23 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/08 21:40:39 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/09 09:49:18 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ static t_tlist	*get_token(t_pars *pars, t_env *env, int i, int *total)
 		if (is_redirect(pars->trimmed[i], &quots) || (is_redirect(pars->trimmed[i], &quots) && pars->trimmed[i - 1] == '&'))
 		{
 			i = redir_token(&pars->trimmed[i], &word[k], &ints, total);
-			break;
+			break ;
 		}
 		if (can_be_added(pars->trimmed[i], &quots))
 		{
@@ -90,6 +90,7 @@ static t_tlist	*get_token(t_pars *pars, t_env *env, int i, int *total)
 	}
 	token = new_token(word, &ints);
 	ft_strdel(&pars->last_token_str);
+	ft_printf("[%s] type [%d]\n", word, ints.type);
 	pars->last_token_str = ft_strdup(token->str);
 	ft_strdel(&word);
 	return (token);
@@ -190,3 +191,4 @@ t_ast	**parse_input(t_env *env, t_pars *pars)
 	ft_strdel(&pars->last_token_str);
 	return (tree);
 }
+

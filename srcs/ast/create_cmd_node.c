@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 15:00:27 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/08 21:47:37 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/09 09:48:04 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ static void create_redirs(t_ast *node, t_tlist ***tokens)
 	}
 	else if (node->redir_type == REDIR_AGGR_IN || node->redir_type == REDIR_AGGR_OUT)
 	{
+		ft_printf("jee\n");
 		if(set_aggr_values(&node->redirs->from_fd, &node->redirs->to_fd, *tokens) == 0)
 			node->redirs->redir_type = (**tokens)->redir_type;
 		if ((**tokens)->fd_close == 0 && (**tokens)->str != NULL)

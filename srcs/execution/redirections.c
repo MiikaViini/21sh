@@ -6,17 +6,17 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 12:12:58 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/07 14:27:05 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/09 10:07:34 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
 
-int redirection(t_tlist *redirs)
+int	redirection(t_tlist *redirs)
 {
-	int fd;
-	static int ret_val;
-	
+	int			fd;
+	static int	ret_val;
+
 	fd = 0;
 	if (!redirs)
 		return ret_val;
@@ -28,8 +28,8 @@ int redirection(t_tlist *redirs)
 	else if (redirs->redir_type == REDIR_APPEND)
 	{
 		close(1);
-		redirs->file_fd = open(redirs->file, O_CREAT | O_WRONLY | O_APPEND, 0664);
-
+		redirs->file_fd = \
+		open(redirs->file, O_CREAT | O_WRONLY | O_APPEND, 0664);
 	}
 	else if (redirs->redir_type == REDIR_IN)
 	{
@@ -43,6 +43,7 @@ int redirection(t_tlist *redirs)
 	}
 	else if (redirs->redir_type == REDIR_AGGR_IN || redirs->redir_type == REDIR_AGGR_OUT)
 	{
+		ft_printf("to %d from %d\n", redirs->to_fd, redirs->from_fd);
 		if (redirs->fd_close)
 			close(redirs->from_fd);
 		else
@@ -70,8 +71,7 @@ int redirection(t_tlist *redirs)
 			else
 				dup2(redirs->to_fd, redirs->from_fd);
 		}
-			
 	}
 	redirection(redirs->next);
-	return ret_val;
+	return (ret_val);
 }

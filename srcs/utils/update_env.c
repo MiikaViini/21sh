@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/12 14:35:58 by mviinika          #+#    #+#             */
-/*   Updated: 2022/10/20 09:04:55 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/09 09:33:39 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,11 @@ void update_env(char **env, char *input, char *var)
 			ft_strdel(&env[i]);
 			env[i] = ft_strjoin(temp, input);
 			ft_strdel(&temp);
-			return;
+			return ;
 		}
 	}
 	temp = ft_strjoin(var, "=");
 	env[i] = ft_strjoin(temp, input);
 	ft_strdel(&temp);
 }
+

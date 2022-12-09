@@ -6,11 +6,9 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 08:59:36 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/08 21:02:43 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/09 09:42:43 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-
 
 #ifndef FT_21SH_H
 # define FT_21SH_H
@@ -22,15 +20,15 @@
 # include <stdio.h>
 # include <error.h>
 
-#ifdef __linux__
-#define LIN 1
-# include <sys/wait.h>
-#endif
+# ifdef __linux__
+#  define LIN 1
+#  include <sys/wait.h>
+# endif
 
-#ifdef	__APPLE__
-#define LIN 0
-# include <sys/wait.h>
-#endif
+# ifdef	__APPLE__
+#  define LIN 0
+#  include <sys/wait.h>
+# endif
 
 # include "../libft/include/libft.h"
 # include "ast.h"
@@ -40,7 +38,8 @@
 # define MAX_VAR 1024
 # define MAX_PATH 1024
 # define MAX_LINE 4096
-
+# define FILE "redirs->file_fd"
+# define OPENFA "= open(redirs->file, O_CREAT | O_WRONLY | O_APPEND, 0664);"
 # define SHELL "21sh"
 
 # define DB ft_putendl("tassa\n");
@@ -78,7 +77,6 @@ typedef struct s_word
 	int		redir;
 	int		redir_way;
 	char	*file;
-	
 }			t_word;
 
 // typedef struct s_word_attr
@@ -101,9 +99,9 @@ int		do_setenv(char **input, t_env *env, int fd);
 int		do_unsetenv(char **input, t_env *env, int fd);
 char	*dollar_expansion(char *expanded, char *word, char **env, int len);
 void	error_print(char *word, char *command, char *e_msg);
-int 	exec_single_command(t_ast *tree, int rb, char **builtins, t_env *env);
+int		exec_single_command(t_ast *tree, int rb, char **builtins, t_env *env);
 int		exec_tree(t_ast *tree, int rb, char **builtins, t_env *env);
-void 	expand_and_remove_quotes(t_ast **tree, t_env *env);
+void	expand_and_remove_quotes(t_ast **tree, t_env *env);
 void	get_env(t_env *dest, char **environ, int argc, char **argv);
 char	**get_path(char **env);
 char	*handle_expansions(char *input, char **env);
@@ -137,16 +135,15 @@ int		is_valid_char(char c);
 void	add_letter(char *word, char c, int *total, int *k);
 int		can_be_added(char c, t_quotes *quots);
 int		is_end_of_word(char c, t_quotes *quots, int index);
-int 	is_operator (char c, t_quotes *quots);
-void 	tokens_del(t_tlist **tokens);
-
+int		is_operator (char c, t_quotes *quots);
+void	tokens_del(t_tlist **tokens);
 
 void 	ast_travers(t_ast *tree, t_env *env);
 void 	delete_node(t_ast *node);
 int		fork1(void);
 t_ast	*build_ast(t_tlist **tokens);
 t_tlist	*new_token(char *content, t_word *word_attrs);
-t_ast 	*simple_command(t_ast *node, t_tlist ***tokens);
+t_ast	*simple_command(t_ast *node, t_tlist ***tokens);
 void	token_to_last(t_tlist **alst, t_tlist *new);
 t_tlist	*new_redir(char *content, char *file, int from, int redir_type);
 int 	set_aggr_values(int *from, int *to, t_tlist **tokens);

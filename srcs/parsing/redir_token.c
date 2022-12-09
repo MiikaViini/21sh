@@ -6,13 +6,13 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/08 20:51:44 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/08 21:55:00 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/09 10:02:46 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
 
-int add_aggr_out(char *trimmed, char *word, t_word *ints, int *total)
+int	add_aggr_out(char *trimmed, char *word, t_word *ints, int *total)
 {
 	*word = *trimmed;
 	word++;
@@ -24,7 +24,7 @@ int add_aggr_out(char *trimmed, char *word, t_word *ints, int *total)
 	return (2);
 }
 
-int add_aggr_in(char *trimmed, char *word, t_word *ints, int *total)
+int	add_aggr_in(char *trimmed, char *word, t_word *ints, int *total)
 {
 	*word = *trimmed;
 	word++;
@@ -36,7 +36,7 @@ int add_aggr_in(char *trimmed, char *word, t_word *ints, int *total)
 	return (2);
 }
 
-int add_redir_out(char *trimmed, char *word, t_word *ints, int *total)
+int	add_redir_out(char *trimmed, char *word, t_word *ints, int *total)
 {
 	(*total)++;
 	ints->redir = REDIR_TRUNC;
@@ -53,7 +53,7 @@ int add_redir_out(char *trimmed, char *word, t_word *ints, int *total)
 	return (1);
 }
 
-int add_redir_in(char *trimmed, char *word, t_word *ints, int *total)
+int	add_redir_in(char *trimmed, char *word, t_word *ints, int *total)
 {
 	(*total)++;
 	*word = *trimmed;
@@ -68,13 +68,14 @@ int redir_token(char *trimmed, char *word, t_word *ints, int *total)
 
 	i = 0;
 	ints->type = TOKEN_REDIRECT;
-	if ((*trimmed) + 1 == '&' && *trimmed == '>')
+	if ((trimmed[1])  == '&' && *trimmed == '>')
 		i = add_aggr_out(trimmed, word, ints, total);
-	else if ((*trimmed) + 1 == '&' && *trimmed == '<')
+	else if ((trimmed[1]) == '&' && trimmed[0] == '<')
 		i = add_aggr_in(trimmed, word, ints, total);
 	else if (*trimmed == '>')		// Check for append redirection
 		i = add_redir_out(trimmed, word, ints, total);
 	else if (*trimmed == '<')		// Check for STD_IN redirect
 		i = add_redir_in(trimmed, word, ints, total);
+	ft_printf("%c char\n", *trimmed);
 	return (i);
 }

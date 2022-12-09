@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 09:16:07 by mviinika          #+#    #+#             */
-/*   Updated: 2022/10/20 09:04:56 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/09 09:33:21 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,3 +35,4 @@ int check_quotes(char *input)
 	}
 	return (s_quote + d_quote);
 }
+
