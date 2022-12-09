@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 12:12:58 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/09 10:07:34 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/09 15:01:08 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ int	redirection(t_tlist *redirs)
 			}
 			else if (redirs->from_fd == -1)
 			{
+				DB
 				error_print(NULL, redirs->file, E_AMB);
 				ret_val = -1;
 			}

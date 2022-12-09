@@ -6,18 +6,18 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/08 20:51:44 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/09 10:02:46 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/09 15:48:42 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
 
-int	add_aggr_out(char *trimmed, char *word, t_word *ints, int *total)
+int	add_aggr_out(char **trimmed, char **word, t_word *ints, int *total)
 {
-	*word = *trimmed;
-	word++;
-	trimmed++;
-	*word = *trimmed;
+	**word = **trimmed;
+	(*word)++;
+	(*trimmed)++;
+	**word = **trimmed;
 	(*total)++;
 	(*total)++;
 	ints->redir = REDIR_AGGR_OUT;
@@ -68,8 +68,8 @@ int redir_token(char *trimmed, char *word, t_word *ints, int *total)
 
 	i = 0;
 	ints->type = TOKEN_REDIRECT;
-	if ((trimmed[1])  == '&' && *trimmed == '>')
-		i = add_aggr_out(trimmed, word, ints, total);
+	if ((trimmed[1])  == '&' && trimmed[0] == '>')
+		i = add_aggr_out(&trimmed, &word, ints, total);
 	else if ((trimmed[1]) == '&' && trimmed[0] == '<')
 		i = add_aggr_in(trimmed, word, ints, total);
 	else if (*trimmed == '>')		// Check for append redirection

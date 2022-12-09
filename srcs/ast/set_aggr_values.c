@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 15:04:44 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/09 10:10:19 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/09 14:59:26 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ int set_aggr_values(int *from, int *to, t_tlist **tokens)
 		}
 		num = ft_strdup((*tokens)->str);
 		*to = ft_atoi(num);
+		ft_printf("%d %s\n", *to, num);
 		ft_strdel(&num);
 	}
 	if (fstat(*from, &buf) == -1 || fstat(*to, &buf))

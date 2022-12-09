@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 08:59:36 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/09 09:42:43 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/09 16:13:15 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,6 @@
 # define MAX_VAR 1024
 # define MAX_PATH 1024
 # define MAX_LINE 4096
-# define FILE "redirs->file_fd"
-# define OPENFA "= open(redirs->file, O_CREAT | O_WRONLY | O_APPEND, 0664);"
 # define SHELL "21sh"
 
 # define DB ft_putendl("tassa\n");
