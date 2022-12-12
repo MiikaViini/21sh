@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 19:07:23 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/12 11:22:58 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/12 20:24:29 by spuustin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,23 +51,25 @@ void reset_fds_to_default(char *terminal)
 
 
 
-static int	ft_21sh(t_env *env, char **builtins, char *terminal)
+static int	ft_21sh(t_env *env, char **builtins, char *input)
 {
 	int		rb;
-	char	buf[MAX_LINE + 1];
+	//char	buf[MAX_LINE + 1];
 	t_ast	**tree;
 	t_pars	parsed;
 	int		i;
+	char *terminal = ttyname(1);
 
-	rb = 1;
+	rb = ft_strlen(input);
 	i = 0;
-	ft_memset(buf, '\0', MAX_LINE + 1);
+	//ft_memset(buf, '\0', MAX_LINE + 1);
 	tree = NULL;
-	rb = read(0, &buf, MAX_LINE);
-	if (rb == -1)
-		exit(1);
-	set_pars_struct(&parsed, buf);
-	if (check_quotes(buf))
+	write(1, "\n", 1); //should be removed at some point, right?
+	//rb = read(0, &buf, MAX_LINE);
+	// if (rb == -1)
+	// 	exit(1);
+	set_pars_struct(&parsed, input);
+	if (check_quotes(input)) //this condition should never happen, right?
 		error_print(NULL, NULL, E_QUOT);
 	else
 	{
@@ -91,10 +93,11 @@ static int	ft_21sh(t_env *env, char **builtins, char *terminal)
 			else
 				exec_single_command(tree[i]->left, rb, builtins, env);
 			delete_node(tree[i]);
-			reset_fds_to_default(terminal);
+			//reset_fds_to_default(terminal); //input?
+			reset_fds_to_default(terminal); //input?
 			i++;
 		}
-		ft_memset(buf, '\0', 4096);
+		//ft_memset(buf, '\0', 4096);
 		free(tree);
 		free_parsed_input(parsed.parsed);
 		free(parsed.parsed);
@@ -109,23 +112,37 @@ static char	**initialize_and_set_builtins(void)
 	return (builtins);
 }
 
+static void	prompt(t_term *t, t_env *env, char **builtins)
+{
+	int		rb;
+
+	rb = 1;
+	while (rb != 0)
+	{
+		write(1, SHELL_PROMPT, 7);
+		if (!input_cycle(t))
+			break;
+		rb = ft_21sh(env, builtins, t->inp);
+		ft_restart_cycle(t);
+	}
+}
+
 int	main(int argc, char **argv, char **environ)
 {
 	t_env	env;
+	t_term	t;
 	char	**builtins;
 	int		rb;
-	char *terminal;
+	//char *terminal;
 
-	terminal = ttyname(1);
+	ft_getent();
+	init_tcaps(&t);
+	//terminal = ttyname(1);
 	rb = 1;
 	builtins = initialize_and_set_builtins();
 	get_env(&env, environ, argc, argv);
 	ft_putstr("\033[2J\033[H");
-	while (rb != 0)
-	{
-		ft_putstr("21sh$ ");
-		rb = ft_21sh(&env, builtins, terminal);
-	}
+	prompt(&t, &env, builtins);
 	free_strarr(env.env);
 	free_strarr(env.path);
 	return (0);

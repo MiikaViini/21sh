@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_21sh.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 08:59:36 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/12 13:36:11 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/12 20:14:14 by spuustin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,11 +34,15 @@
 # include "ast.h"
 # include "tokens.h"
 # include "error.h"
+# include "tcaps.h"
 
 # define MAX_VAR 1024
 # define MAX_PATH 1024
 # define MAX_LINE 4096
+
 # define SHELL "21sh"
+# define SHELL_PROMPT "21sh> "
+# define OPEN_QUOTE ">"
 
 # define DB ft_putendl("tassa\n");
 # define DB1 ft_putendl("there\n");
@@ -148,6 +152,8 @@ int 	set_aggr_values(t_tlist **redirs, t_tlist **tokens);
 int redir_token(char *trimmed, char *word, t_word *ints, int *total);
 
 typedef int					(*t_builtins)(char **input, t_env *env, int fd);
+
+void	ft_quote_handling(t_term *t, char ch);
 
 static const t_builtins		g_builtins[7] = {
 	do_echo,

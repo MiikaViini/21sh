@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+         #
+#    By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/07/09 19:07:08 by mviinika          #+#    #+#              #
-#    Updated: 2022/12/08 21:20:08 by mviinika         ###   ########.fr        #
+#    Updated: 2022/12/12 20:17:10 by spuustin         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -57,6 +57,28 @@ EXPANSIONS_FILES = dollar_expansion.c \
 				tilde_expansion.c \
 				user_expansion.c \
 
+KEYBOARD_DIR = keyboard
+KEYBOARD_FILES = tcaps.c \
+				inits.c \
+				window.c \
+				history.c \
+				input_circle.c \
+				new_line.c \
+				signals.c \
+				restart_cycle.c \
+				esc_parse.c \
+				move_word.c \
+				line_up.c \
+				line_down.c \
+				get_input.c \
+				insertion.c \
+				space.c \
+				backspace.c \
+				cb_cut.c \
+				cb_copy.c \
+				cb_paste.c \
+				trigger_nl.c
+
 PARSING_DIR = parsing
 PARSING_FILES = parse_input.c \
 			new_token.c \
@@ -77,7 +99,8 @@ SRC_FILES = main.c \
 			$(patsubst %, $(EXECUTION_DIR)/%, $(EXECUTION_FILES)) \
 			$(patsubst %, $(EXPANSIONS_DIR)/%, $(EXPANSIONS_FILES)) \
 			$(patsubst %, $(PARSING_DIR)/%, $(PARSING_FILES)) \
-			$(patsubst %, $(UTILS_DIR)/%, $(UTILS_FILES))
+			$(patsubst %, $(UTILS_DIR)/%, $(UTILS_FILES)) \
+			$(patsubst %, $(KEYBOARD_DIR)/%, $(KEYBOARD_FILES))
 
 DIR_O = ./objs
 DIR_S = ./srcs
@@ -102,7 +125,7 @@ endif
 
 $(NAME): $(OBJS)
 	@make -C $(LIBFT_DIR)
-	@$(CC) $(FLAGS) $(OBJS) -o $(NAME) $(LIBFT)
+	@$(CC) $(FLAGS) $(OBJS) -o $(NAME) -ltermcap $(LIBFT)
 	@echo "$(GREEN)$(NAME) compiled$(RESET)"
 
 $(OBJS): $(DIR_O)/%.o: $(DIR_S)/%.c include/ft_21sh.h
