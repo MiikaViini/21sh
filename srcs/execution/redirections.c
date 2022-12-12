@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 12:12:58 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/12 11:28:41 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/12 13:47:58 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,16 @@ int	redirection(t_tlist *redirs , int *ret)
 		return *ret;
 	if (redirs->redir_type == REDIR_TRUNC)
 	{
-		close(1);
-		open(redirs->file, O_CREAT | O_WRONLY | O_TRUNC, 0664);
+		if (redirs->from_fd == -1)
+		{
+			error_print(NULL, ft_itoa(redirs->from_fd), E_BFD);
+			*ret = -1;
+		}
+		else
+		{
+			close(redirs->from_fd);
+			open(redirs->file, O_CREAT | O_WRONLY | O_TRUNC, 0664);
+		}	
 	}
 	else if (redirs->redir_type == REDIR_APPEND)
 	{
@@ -46,7 +54,6 @@ int	redirection(t_tlist *redirs , int *ret)
 			close(redirs->from_fd);
 		else
 		{
-			DB
 			if (redirs->to_fd == -1)
 			{
 				error_print("no token", redirs->file, E_SYNERR);
@@ -72,6 +79,7 @@ int	redirection(t_tlist *redirs , int *ret)
 				dup2(redirs->to_fd, redirs->from_fd);
 		}
 	}
-	redirection(redirs->next, ret);
+	if (*ret >= 0)
+		redirection(redirs->next, ret);
 	return (*ret);
 }

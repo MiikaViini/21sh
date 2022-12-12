@@ -6,11 +6,27 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 15:00:27 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/09 09:48:04 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/12 13:39:13 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
+
+static void apply_redir_attrs(t_ast *node, t_tlist ***tokens)
+{
+	struct stat buf;
+
+	if (ft_isdigit((**tokens)->str[0]))
+	{
+		node->redirs->from_fd = ft_atoi((**tokens)->str);
+		if (fstat(node->redirs->from_fd, &buf) == -1)
+			node->redirs->from_fd = -1;
+	}
+	else
+		node->redirs->from_fd = 1;
+	(**tokens) = (**tokens)->next;
+	node->redirs->file = ft_strdup((**tokens)->str);
+}
 
 static void create_redirs(t_ast *node, t_tlist ***tokens)
 {
@@ -18,14 +34,10 @@ static void create_redirs(t_ast *node, t_tlist ***tokens)
 	node->type = NODE_REDIR;
 	node->redirs = new_redir((**tokens)->str, NULL, 0, (**tokens)->redir_type);
 	if (node->redir_type == REDIR_TRUNC || node->redir_type == REDIR_IN || node->redir_type == REDIR_APPEND )
-	{
-		(**tokens) = (**tokens)->next;
-		node->redirs->file = ft_strdup((**tokens)->str);
-	}
+		apply_redir_attrs(node, tokens);
 	else if (node->redir_type == REDIR_AGGR_IN || node->redir_type == REDIR_AGGR_OUT)
 	{
-		ft_printf("jee\n");
-		if(set_aggr_values(&node->redirs->from_fd, &node->redirs->to_fd, *tokens) == 0)
+		if(set_aggr_values(&node->redirs, *tokens) == 0)
 			node->redirs->redir_type = (**tokens)->redir_type;
 		if ((**tokens)->fd_close == 0 && (**tokens)->str != NULL)
 			node->redirs->file = ft_strdup((**tokens)->str);
