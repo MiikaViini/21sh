@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 08:59:36 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/09 16:13:15 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/12 11:27:16 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ char	*tilde_expansion(char *word, char **env, char *expanded);
 void	update_env(char **env, char *input, char *var);
 char	*user_expansion(char *input);
 void	free_parsed_input(char **p_input);
-int 	redirection(t_tlist *redirs);
+int 	redirection(t_tlist *redirs, int *ret);
 int		check_command_tree(char **input, char **path, char **env);
 
 void	initialise_structs(t_quotes *quotes, t_word *ints, char *input);

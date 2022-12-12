@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 12:09:30 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/09 09:31:49 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/12 11:27:47 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,9 @@ static void	exec_cmd(t_ast *tree, char **builtins, t_env *env)
 
 int	exec_tree(t_ast *tree, int rb, char **builtins, t_env *env)
 {
+	int ret;
+
+	ret = 0;
 	if ((!tree) || (!rb && !tree))
 		return (1);
 	expand_and_remove_quotes(&tree, env);
@@ -72,7 +75,7 @@ int	exec_tree(t_ast *tree, int rb, char **builtins, t_env *env)
 		exec_cmd(tree, builtins, env);
 	else if (tree->type == NODE_REDIR)
 	{
-		if (redirection(tree->redirs) == -1)
+		if (redirection(tree->redirs, &ret) == -1)
 		{
 			free_strarr(env->path);
 			return (1);
