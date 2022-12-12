@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/08 20:51:44 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/09 15:48:42 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/12 22:55:51 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,19 @@ int	add_redir_in(char *trimmed, char *word, t_word *ints, int *total)
 	return (1);
 }
 
+int add_shortcut(char *trimmed, char *word, t_word *ints, int *total)
+{
+	DB
+	*word = *trimmed;
+	word++;
+	trimmed++;
+	*word = *trimmed;
+	(*total)++;
+	(*total)++;
+	ints->redir = REDIR_AGGR_STERR_STOUT;
+	return (2);
+}
+
 int redir_token(char *trimmed, char *word, t_word *ints, int *total)
 {
 	int i;
@@ -70,12 +83,13 @@ int redir_token(char *trimmed, char *word, t_word *ints, int *total)
 	ints->type = TOKEN_REDIRECT;
 	if ((trimmed[1])  == '&' && trimmed[0] == '>')
 		i = add_aggr_out(&trimmed, &word, ints, total);
+	else if ((trimmed[0])  == '&' && trimmed[1] == '>')
+		i = add_shortcut(trimmed, word, ints, total);
 	else if ((trimmed[1]) == '&' && trimmed[0] == '<')
 		i = add_aggr_in(trimmed, word, ints, total);
 	else if (*trimmed == '>')		// Check for append redirection
 		i = add_redir_out(trimmed, word, ints, total);
 	else if (*trimmed == '<')		// Check for STD_IN redirect
 		i = add_redir_in(trimmed, word, ints, total);
-	ft_printf("%c char\n", *trimmed);
 	return (i);
 }

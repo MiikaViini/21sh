@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/03 11:22:36 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/05 13:12:36 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/12 22:39:15 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,9 +53,9 @@ typedef enum e_redirs
 	REDIR_APPEND,
 	REDIR_IN,
 	REDIR_HERED,
-	REDIR_AGGR_IO,
 	REDIR_AGGR_IN,
-	REDIR_AGGR_OUT
+	REDIR_AGGR_OUT,
+	REDIR_AGGR_STERR_STOUT
 }			t_redirs;
 
 #endif

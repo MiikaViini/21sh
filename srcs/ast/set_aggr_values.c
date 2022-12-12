@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 15:04:44 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/12 13:47:04 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/12 20:39:37 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static int is_going_in(t_tlist *tokens)
 		|| (tokens->redir_type == REDIR_AGGR_IN));
 }
 
-static int set_fds(t_tlist **redirs, t_tlist **tokens, t_tlist *temp, char *num)
+static int has_only_digits(t_tlist **tokens)
 {
 	int i;
 
@@ -32,6 +32,13 @@ static int set_fds(t_tlist **redirs, t_tlist **tokens, t_tlist *temp, char *num)
 	while (ft_isdigit((*tokens)->str[i]))
 		i++;
 	if ((*tokens)->str[i] != '\0')
+		return (0);
+	return (1);
+}
+
+static int set_fds(t_tlist **redirs, t_tlist **tokens, t_tlist *temp, char *num)
+{
+	if (!has_only_digits(tokens))
 	{
 		if (is_going_out(temp) && (*redirs)->from_fd > 1 && (*tokens)->str[0] != '-')
 		{

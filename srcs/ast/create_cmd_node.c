@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 15:00:27 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/12 13:39:13 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/12 23:21:49 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,13 @@ static void create_redirs(t_ast *node, t_tlist ***tokens)
 		if ((**tokens)->fd_close == 0 && (**tokens)->str != NULL)
 			node->redirs->file = ft_strdup((**tokens)->str);
 		node->redirs->fd_close = (**tokens)->fd_close;
+	}
+	else if (node->redir_type == REDIR_AGGR_STERR_STOUT)
+	{
+		node->redirs->from_fd = 2;
+		node->redirs->to_fd = 1;
+		(**tokens) = (**tokens)->next;
+		node->redirs->file = ft_strdup((**tokens)->str);
 	}
 }
 

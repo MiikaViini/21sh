@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 09:14:23 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/12 12:39:32 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/12 23:35:54 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,23 @@ static int	is_redirect(char c, t_quotes *quots)
 	return (ret);
 }
 
+static int has_only_digits(char *redir)
+{
+	int i;
+
+	i = 0;
+	while (ft_isdigit(redir[i]))
+		i++;
+	if (redir[i] != '\0')
+		return (0);
+	return (1);
+}
+
+static int is_aggr_err_out(t_quotes *quots, char redir, char operator)
+{
+	return (is_redirect(redir, quots) && operator == '&');
+}
+
 static t_tlist	*get_token(t_pars *pars, t_env *env, int i, int *total)
 {
 	char		*word;
@@ -60,10 +77,27 @@ static t_tlist	*get_token(t_pars *pars, t_env *env, int i, int *total)
 	while (i < ints.len)
 	{
 		see_quote(&quots, pars->trimmed, i);
-		if (is_redirect(pars->trimmed[i], &quots) || (is_redirect(pars->trimmed[i], &quots) && pars->trimmed[i - 1] == '&'))
+		
+		if ((is_redirect(pars->trimmed[i], &quots) && has_only_digits(word)))														// || (is_redirect(pars->trimmed[i], &quots) && ft_isalpha(word[0])) 
 		{
 			i = redir_token(&pars->trimmed[i], &word[k], &ints, total);
 			break ;
+		}
+		else if (is_aggr_err_out(&quots, pars->trimmed[i], word[0]))
+		{
+			ints.type = TOKEN_REDIRECT;
+			ints.redir = REDIR_AGGR_STERR_STOUT;
+			word[0] = '&';
+			word[1] = '>';
+			(*total)++;
+			break ;
+		}												
+		if (is_end_of_word(pars->trimmed[i], &quots, k) || is_redirect(pars->trimmed[i], &quots))
+			break ;
+		if (can_be_added(pars->trimmed[i], &quots))
+		{
+			add_letter(word, pars->trimmed[i++], total, &ints.k);
+			k++;
 		}
 		if (is_operator(word[0], &quots) && !is_redirect(pars->trimmed[i], &quots))
 		{
@@ -75,14 +109,7 @@ static t_tlist	*get_token(t_pars *pars, t_env *env, int i, int *total)
 				ints.type = TOKEN_ELSE;
 			break;
 		}
-		if (is_end_of_word(pars->trimmed[i], &quots, k) || is_redirect(pars->trimmed[i], &quots))
-			break ;
-		if (can_be_added(pars->trimmed[i], &quots))
-		{
-			add_letter(word, pars->trimmed[i++], total, &ints.k);
-			k++;
-		}
-			
+		
 	}
 	token = new_token(word, &ints);
 	ft_strdel(&pars->last_token_str);

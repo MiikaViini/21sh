@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 12:12:58 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/12 13:47:58 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/12 23:34:12 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,6 @@
 
 int	redirection(t_tlist *redirs , int *ret)
 {
-	int			fd;
-
-	fd = 0;
 	if (!redirs)
 		return *ret;
 	if (redirs->redir_type == REDIR_TRUNC)
@@ -42,7 +39,7 @@ int	redirection(t_tlist *redirs , int *ret)
 	{
 		close(0);
 		redirs->file_fd = open(redirs->file, O_RDONLY);
-		if(fd == -1)
+		if(redirs->file_fd == -1)
 		{
 			error_print(redirs->file, NULL, E_NOEX);
 			 *ret = -1;
@@ -78,6 +75,12 @@ int	redirection(t_tlist *redirs , int *ret)
 			else
 				dup2(redirs->to_fd, redirs->from_fd);
 		}
+	}
+	else if (redirs->redir_type == REDIR_AGGR_STERR_STOUT)
+	{
+		close(redirs->to_fd);
+		open(redirs->file, O_CREAT | O_WRONLY | O_TRUNC, 0664);
+		dup2(redirs->to_fd, redirs->from_fd);
 	}
 	if (*ret >= 0)
 		redirection(redirs->next, ret);
