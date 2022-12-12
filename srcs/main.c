@@ -6,7 +6,7 @@
 /*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 19:07:23 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/12 20:24:29 by spuustin         ###   ########.fr       */
+/*   Updated: 2022/12/12 21:11:02 by spuustin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,8 +93,7 @@ static int	ft_21sh(t_env *env, char **builtins, char *input)
 			else
 				exec_single_command(tree[i]->left, rb, builtins, env);
 			delete_node(tree[i]);
-			//reset_fds_to_default(terminal); //input?
-			reset_fds_to_default(terminal); //input?
+			reset_fds_to_default(terminal);
 			i++;
 		}
 		//ft_memset(buf, '\0', 4096);

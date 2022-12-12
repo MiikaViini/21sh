@@ -60,6 +60,8 @@ typedef struct s_term
 	t_clipboard		clipboard;
 	char			**nl_addr;
 	char			**history;
+	char			*history_file;
+	int				history_size;
 	char			*input_cpy;
 	char			*delim;
 	int				ch;
