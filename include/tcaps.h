@@ -138,4 +138,7 @@ ssize_t	ft_len_lowest_line(t_term *t, ssize_t row); //maybe refactor with lowest
 void	ft_add_nl_last_row(t_term *t, ssize_t pos);
 void	ft_add_nl_mid_row(t_term *t, ssize_t row, ssize_t pos);
 
+// history
+void	ft_history_trigger(t_term *t, ssize_t pos);
+
 #endif

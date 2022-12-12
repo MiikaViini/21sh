@@ -6,7 +6,7 @@
 #    By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/07/09 19:07:08 by mviinika          #+#    #+#              #
-#    Updated: 2022/12/12 20:17:10 by spuustin         ###   ########.fr        #
+#    Updated: 2022/12/12 22:59:33 by spuustin         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -61,7 +61,6 @@ KEYBOARD_DIR = keyboard
 KEYBOARD_FILES = tcaps.c \
 				inits.c \
 				window.c \
-				history.c \
 				input_circle.c \
 				new_line.c \
 				signals.c \
@@ -77,7 +76,9 @@ KEYBOARD_FILES = tcaps.c \
 				cb_cut.c \
 				cb_copy.c \
 				cb_paste.c \
-				trigger_nl.c
+				trigger_nl.c \
+				history.c \
+				get_history.c
 
 PARSING_DIR = parsing
 PARSING_FILES = parse_input.c \

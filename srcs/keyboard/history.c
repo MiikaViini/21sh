@@ -6,14 +6,11 @@
 /*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 22:45:45 by spuustin          #+#    #+#             */
-/*   Updated: 2022/12/12 22:08:39 by spuustin         ###   ########.fr       */
+/*   Updated: 2022/12/12 22:29:23 by spuustin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
-
-// reads history from a file, and stores it into t->history array
-// our history supports up to 100 lines of command-line calls
 
 void	ft_history_write_to_file(t_term *t)
 {
@@ -24,8 +21,8 @@ void	ft_history_write_to_file(t_term *t)
 	if (fd)
 	{
 		cpy = 0;
-		if (t->history_size > 1024)
-			cpy = t->history_size % 1024;
+		if (t->history_size > MAX_HISTORY)
+			cpy = t->history_size % MAX_HISTORY;
 		while (cpy < t->history_size)
 		{
 			ft_putendl_fd((char *)t->history[cpy], fd);
@@ -39,7 +36,7 @@ void	ft_history_write_to_file(t_term *t)
 
 static char	*get_file(void)
 {
-	char	cwd[1024];
+	char	cwd[MAX_PATH];
 	char	*home;
 	char	*file;
 
@@ -50,15 +47,15 @@ static char	*get_file(void)
 	return (ft_strjoin(file, "/.42sh_history"));
 }
 
-void	get_history(t_term *t)
+void	history_to_array(t_term *t)
 {
 	char	*file;
 	char	*line;
 	int		fd;
 	int		i;
 
-	t->history = (char **)malloc(sizeof(char *) * 101);
-	ft_bzero(t->history, 101);
+	t->history = (char **)malloc(sizeof(char *) * (MAX_HISTORY + 1)); //change
+	ft_bzero(t->history, MAX_HISTORY + 1);
 	t->history_file = get_file();
 	i = 0;
 	fd = open(file, O_RDONLY | O_CREAT, 420);

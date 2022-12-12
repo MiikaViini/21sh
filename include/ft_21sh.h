@@ -6,7 +6,7 @@
 /*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 08:59:36 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/12 20:14:14 by spuustin         ###   ########.fr       */
+/*   Updated: 2022/12/12 22:24:49 by spuustin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@
 
 # define MAX_VAR 1024
 # define MAX_PATH 1024
+# define MAX_HISTORY 1024
 # define MAX_LINE 4096
 
 # define SHELL "21sh"
