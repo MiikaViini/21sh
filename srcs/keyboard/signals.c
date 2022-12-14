@@ -6,7 +6,7 @@
 /*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 21:19:44 by spuustin          #+#    #+#             */
-/*   Updated: 2022/12/01 21:37:20 by spuustin         ###   ########.fr       */
+/*   Updated: 2022/12/14 18:46:39 by spuustin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static void	sig_handler(int num)
 /*
  * It initializes the signal handlers for the program
  */
-void	init_signals()
+void	init_signals(void)
 {
 	signal(SIGWINCH, sig_handler);
 	signal(SIGINT, sig_handler);

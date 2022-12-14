@@ -89,6 +89,7 @@ int		ft_getent(void);
 void	run_capability(char *cap);
 void	get_window_size(t_term *t);
 void	get_history(t_term *t);
+void	print_prompt(ssize_t row);
 
 // input cycle
 t_term	*input_cycle(t_term *t);
@@ -96,7 +97,14 @@ int		get_input(void);
 void	insertion(t_term *t);
 void	add_new_line(t_term *t, int pos);
 char	*ft_is_prompt_line(t_term *t, int row);
+
+// cursor
 void	set_cursor(ssize_t col, ssize_t row);
+void	ft_cursor_beginning(t_term *t);
+void	ft_cursor_end(t_term *t);
+void	ft_left(t_term *t);
+void	ft_right(t_term *t);
+
 int		get_linenbr(void);
 void	ft_reset_nl_addr(t_term *t);
 ssize_t	ft_row_lowest_line(t_term *t);
@@ -104,7 +112,10 @@ ssize_t	ft_row_lowest_line(t_term *t);
 void	ft_restart_cycle(t_term *t);
 
 //signals
-void	init_signals();
+void	init_signals(void);
+
+//prompt/line-management
+void	ft_delete(t_term *t);
 
 //dunno
 void	ft_esc_parse(t_term *t);
@@ -115,6 +126,7 @@ void	ft_line_down(t_term *t);
 void	ft_scroll_down(void);
 
 //clipboard
+void	ft_ctrl(t_term *t);
 void	ft_cut(t_term *t);
 void	ft_copy(t_term *t);
 void	ft_paste(t_term *t);
@@ -137,8 +149,13 @@ ssize_t	ft_row_lowest_line(t_term *t);
 ssize_t	ft_len_lowest_line(t_term *t, ssize_t row); //maybe refactor with lowest
 void	ft_add_nl_last_row(t_term *t, ssize_t pos);
 void	ft_add_nl_mid_row(t_term *t, ssize_t row, ssize_t pos);
+void	update_nl_addr_del(t_term *t);
 
 // history
 void	ft_history_trigger(t_term *t, ssize_t pos);
+
+//prompt
+void	ft_create_prompt_line(t_term *t);
+ssize_t	ft_get_prompt_len(t_term *t, ssize_t row);
 
 #endif

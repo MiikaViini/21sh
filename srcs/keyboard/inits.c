@@ -6,7 +6,7 @@
 /*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/18 22:41:19 by spuustin          #+#    #+#             */
-/*   Updated: 2022/12/12 20:07:47 by spuustin         ###   ########.fr       */
+/*   Updated: 2022/12/14 19:03:49 by spuustin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,19 +36,16 @@ void	init_term(t_term *t)
 	t->nl_addr = NULL;
 	t->delim = NULL;
 	get_window_size(t); //why is it done here again?
-	t->prompt_len = (ssize_t)ft_strlen(SHELL_PROMPT); // can be removed imo
-	t->m_prompt_len = (ssize_t)ft_strlen(OPEN_QUOTE); //changed //same
 	t->c_col = t->prompt_len;
 	t->input_cpy = NULL;
 	t->total_row_cpy = 0;
 }
 
-
-static struct termios init_termios()
+static struct termios	init_termios(void)
 {
-	struct termios ret;
-	struct termios raw;
-	
+	struct termios	ret;
+	struct termios	raw;
+
 	if (tcgetattr(STDIN_FILENO, &ret) == -1)
 		exit(1);
 	raw = ret;
@@ -61,7 +58,7 @@ static struct termios init_termios()
 		write(2, "error tcsetattr\n", 16);
 		exit(1);
 	}
-	// run_capability("ti"); 
+	run_capability("ti");
 	run_capability("cl");
 	return (ret);
 }

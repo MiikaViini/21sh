@@ -6,7 +6,7 @@
 /*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/02 15:40:13 by spuustin          #+#    #+#             */
-/*   Updated: 2022/12/09 23:23:12 by spuustin         ###   ########.fr       */
+/*   Updated: 2022/12/14 19:36:26 by spuustin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,48 +32,48 @@ static void	ft_delim_fetch(t_term *t)
 	}
 }
 
-static void	ft_add_nl_last_rowss(t_term *t, ssize_t pos)
-{
-	int		index;
-	char	**n_arr;
+// static void	ft_add_nl_last_rowss(t_term *t, ssize_t pos)
+// {
+// 	int		index;
+// 	char	**n_arr;
 
-	index = -1;
-	n_arr = NULL;
-	if (!t->nl_addr)
-	{
-		t->nl_addr = (char **)ft_memalloc(sizeof(char *) * 2);
-		t->nl_addr[++index] = &t->inp[pos];
-		t->nl_addr[++index] = NULL;
-	}
-	else
-	{
-		n_arr = (char **)ft_memalloc(sizeof(char *) \
-			* (size_t)(t->total_row + 2));
-		while (t->nl_addr[++index])
-			n_arr[index] = t->nl_addr[index];
-		n_arr[index++] = &t->inp[pos];
-		n_arr[index] = NULL;
-		ft_memdel((void **)&t->nl_addr);
-		t->nl_addr = n_arr;
-	}
-}
+// 	index = -1;
+// 	n_arr = NULL;
+// 	if (!t->nl_addr)
+// 	{
+// 		t->nl_addr = (char **)ft_memalloc(sizeof(char *) * 2);
+// 		t->nl_addr[++index] = &t->inp[pos];
+// 		t->nl_addr[++index] = NULL;
+// 	}
+// 	else
+// 	{
+// 		n_arr = (char **)ft_memalloc(sizeof(char *) \
+// 			* (size_t)(t->total_row + 2));
+// 		while (t->nl_addr[++index])
+// 			n_arr[index] = t->nl_addr[index];
+// 		n_arr[index++] = &t->inp[pos];
+// 		n_arr[index] = NULL;
+// 		ft_memdel((void **)&t->nl_addr);
+// 		t->nl_addr = n_arr;
+// 	}
+// }
 
-void	ft_create_prompt_linee(t_term *t, ssize_t loc)
-{
-	int		row;
+// void	ft_create_prompt_linee(t_term *t, ssize_t loc)
+// {
+// 	int		row;
 
-	row = get_linenbr();
-	t->c_row++;
-	t->total_row++;
-	if (t->start_row + t->total_row >= t->ws_row)
-		run_capability("sf");
-	else
-		row++;
-	t->c_col = t->m_prompt_len;
-	set_cursor(0, row);
-	write(1, OPEN_QUOTE, 2);
-	ft_add_nl_last_rowss(t, loc);
-}
+// 	row = get_linenbr();
+// 	t->c_row++;
+// 	t->total_row++;
+// 	if (t->start_row + t->total_row >= t->ws_row)
+// 		run_capability("sf");
+// 	else
+// 		row++;
+// 	t->c_col = t->m_prompt_len;
+// 	set_cursor(0, row);
+// 	write(1, OPEN_QUOTE, 2);
+// 	ft_add_nl_last_rowss(t, loc);
+// }
 
 static void	ft_insertion_enter(t_term *t)
 {
@@ -83,7 +83,7 @@ static void	ft_insertion_enter(t_term *t)
 			&& ft_strcmp(t->nl_addr[t->c_row], t->delim)))
 		{
 			t->inp[t->bytes++] = (char)t->ch;
-			ft_create_prompt_linee(t, t->bytes);
+			ft_create_prompt_line(t); //edited this and commented unwanted ones out
 			t->index = t->bytes;
 		}
 	}
@@ -165,15 +165,6 @@ static void	ft_insertion_char(t_term *t)
 	t->bytes++;
 }
 
-//refactor
-static void	print_prompte(ssize_t row)
-{
-	if (!row)
-		ft_putstr(SHELL_PROMPT);
-	else
-		ft_putstr(OPEN_QUOTE);
-}
-
 static void	ft_print_line(t_term *t, ssize_t row)
 {
 	if (row == t->c_row)
@@ -188,7 +179,7 @@ static void	ft_print_line(t_term *t, ssize_t row)
 	else
 	{
 		if (ft_is_prompt_line(t, row))
-			print_prompte(row);
+			print_prompt(row);
 		if (t->nl_addr[row + 1])
 			write(1, t->nl_addr[row], \
 				(size_t)(t->nl_addr[row + 1] - t->nl_addr[row]));

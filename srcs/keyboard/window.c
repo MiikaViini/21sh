@@ -6,7 +6,7 @@
 /*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/18 22:53:41 by spuustin          #+#    #+#             */
-/*   Updated: 2022/12/12 20:11:14 by spuustin         ###   ########.fr       */
+/*   Updated: 2022/12/14 18:41:30 by spuustin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,14 +28,6 @@ static void	set_new_cur_pos(t_term *t)
 	}
 	t->c_col += &t->inp[t->index] - t->nl_addr[t->c_row];
 	set_cursor(t->c_col, t->c_row + t->start_row);
-}
-
- void	print_prompt(ssize_t row)
-{
-	if (!row)
-		ft_putstr(SHELL_PROMPT);
-	else
-		ft_putstr(OPEN_QUOTE);
 }
 
 static void	ft_print_line(t_term *t, ssize_t row)
