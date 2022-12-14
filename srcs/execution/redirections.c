@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 12:12:58 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/12 23:34:12 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/14 19:59:47 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,18 +56,12 @@ int	redirection(t_tlist *redirs , int *ret)
 				error_print("no token", redirs->file, E_SYNERR);
 				 *ret = -1;
 			}
-			else if (redirs->from_fd == -1)
-			{
-				
-				error_print(NULL, redirs->file, E_AMB);
-				 *ret = -1;
-			}
-			else if (redirs->to_fd == -2)
+			else if (redirs->to_fd == -2 || redirs->to_fd >= SHELL_MAX_FD || redirs->from_fd >= SHELL_MAX_FD)
 			{
 				error_print(NULL, redirs->file, E_BFD);
 				 *ret = -1;
 			}
-			else if (redirs->to_fd == -3)
+			else if (redirs->to_fd == -3 || redirs->from_fd == -1)
 			{
 				error_print(NULL, redirs->file, E_AMB);
 				 *ret = -1;

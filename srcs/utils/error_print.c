@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 08:28:50 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/09 09:33:25 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/14 20:47:33 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,4 +28,3 @@ void error_print(char *word, char *command, char *e_msg)
 	}
 	ft_putendl_fd(e_msg, 2);
 }
-

@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/08 14:13:57 by mviinika          #+#    #+#             */
-/*   Updated: 2022/10/18 12:49:03 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/14 20:30:56 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,5 +109,6 @@ char	**ft_strarrndup(char **dest, char **strarr, size_t size);
 char	**ft_strarrcpy(char **dest, char **strarr);
 size_t	ft_linecount(char **arr);
 size_t	ft_wordcount_ws(const char *s);
+int 	ft_only_digits(char *str);
 
 #endif

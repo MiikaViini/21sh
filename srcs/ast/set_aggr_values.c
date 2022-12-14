@@ -6,75 +6,72 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 15:04:44 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/12 20:39:37 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/14 20:54:40 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
 
-static int is_going_out(t_tlist *tokens)
+static int aggr_way(t_tlist *tokens)
 {
-	return ((tokens->redir_type == REDIR_TRUNC)
+	if ((tokens->redir_type == REDIR_TRUNC)
 		||(tokens->redir_type == REDIR_APPEND)  
-		|| (tokens->redir_type == REDIR_AGGR_OUT));
-}
-static int is_going_in(t_tlist *tokens)
-{
-	return ((tokens->redir_type == REDIR_IN)
-		|| (tokens->redir_type == REDIR_AGGR_IN));
+		|| (tokens->redir_type == REDIR_AGGR_OUT))
+		return 1;
+	else if ((tokens->redir_type == REDIR_IN)
+		|| (tokens->redir_type == REDIR_AGGR_IN))
+		return 0;
+	return (-1);
 }
 
-static int has_only_digits(t_tlist **tokens)
+static void set_error(t_tlist **redirs, t_tlist **tokens, t_tlist *temp, int *ret)
 {
-	int i;
-
-	i = 0;
-	while (ft_isdigit((*tokens)->str[i]))
-		i++;
-	if ((*tokens)->str[i] != '\0')
-		return (0);
-	return (1);
+	if (aggr_way(temp) == 1 && (*redirs)->from_fd > 1 && (*tokens)->str[0] != '-')
+	{
+		(*redirs)->from_fd = -1;
+		(*tokens)->file = ft_strdup((*tokens)->str);
+		*ret = -1;
+	}
+	else if ((*tokens)->str[0] == '-')
+	{
+		(*tokens)->fd_close = 1;
+		*ret = 1;
+	}
+	else if (aggr_way(temp) == 0)
+	{
+		(*redirs)->to_fd = -3;
+		*ret = -1;
+	}
+	else
+	{
+		(*tokens)->file = ft_strdup((*tokens)->str);
+		(*tokens)->redir_type = REDIR_TRUNC;
+	}
 }
 
 static int set_fds(t_tlist **redirs, t_tlist **tokens, t_tlist *temp, char *num)
 {
-	if (!has_only_digits(tokens))
+	int ret;
+
+	ret = 1;
+	if (!ft_only_digits((*tokens)->str))
 	{
-		if (is_going_out(temp) && (*redirs)->from_fd > 1 && (*tokens)->str[0] != '-')
-		{
-			(*redirs)->from_fd = -1;
-			(*tokens)->file = ft_strdup((*tokens)->str);
-			return (-1);
-		}
-		else if ((*tokens)->str[0] == '-')
-		{
-			(*tokens)->fd_close = 1;
-			return 1;
-		}
-		else if (is_going_in(temp))
-		{
-			(*redirs)->to_fd = -3;
-			return (-1);
-		}
-		else
-		{
-			(*tokens)->file = ft_strdup((*tokens)->str);
-			(*tokens)->redir_type = REDIR_TRUNC;
-		}
-		return 0;
+		set_error(redirs, tokens, temp, &ret);
+		return ret;
 	}
 	num = ft_strdup((*tokens)->str);
 	(*redirs)->to_fd = ft_atoi(num);
 	ft_strdel(&num);
-	return 1;
+	return (ret);
 }
 
 static int check_fd_validity(t_tlist **redirs, t_tlist **tokens, int *ret)
 {
 	struct stat buf;
 
-	if (fstat((*redirs)->from_fd, &buf) == -1 || fstat((*redirs)->to_fd, &buf))
+	if ((*redirs)->to_fd >= 0 && fstat((*redirs)->to_fd, &buf) == -1)
 	{
+		ft_printf("%d\n",(*redirs)->to_fd);
 		(*tokens)->file = ft_itoa((*redirs)->to_fd);
 		(*redirs)->to_fd = -2;
 		*ret = -1;
@@ -94,7 +91,7 @@ int set_aggr_values(t_tlist **redirs, t_tlist **tokens)
 	num = ft_strdup((*tokens)->str);
 	(*redirs)->from_fd = ft_atoi(num);
 	ft_strdel(&num);
-	if (is_going_out(temp) && (*redirs)->from_fd == 0)
+	if (aggr_way(temp) == 1 && (*redirs)->from_fd == 0)
 		(*redirs)->from_fd = 1;
 	(*tokens) = (*tokens)->next;
 	if ((*tokens) == NULL)

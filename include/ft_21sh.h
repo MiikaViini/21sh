@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 08:59:36 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/12 13:36:11 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/14 20:00:20 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@
 # define MAX_VAR 1024
 # define MAX_PATH 1024
 # define MAX_LINE 4096
+# define SHELL_MAX_FD 1024
 # define SHELL "21sh"
 
 # define DB ft_putendl("tassa\n");
