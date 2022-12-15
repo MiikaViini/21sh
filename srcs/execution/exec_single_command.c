@@ -6,27 +6,13 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 12:03:33 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/14 21:06:43 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/15 11:36:08 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
 
-static int check_redirs(t_ast *tree, t_env *env)
-{
-	int ret;
-	
-	ret = 0;
-	if (tree->type == NODE_REDIR)
-	{
-		if (redirection(tree->redirs, &ret) == -1)
-		{
-			free_strarr(env->path);
-			return 1;
-		}	
-	}
-	return 0;
-}
+
 
 int exec_single_command(t_ast *tree, int rb, char **builtins, t_env *env)
 {
@@ -43,7 +29,7 @@ int exec_single_command(t_ast *tree, int rb, char **builtins, t_env *env)
 	}
 	if (check_redirs(tree, env) == 1)
 		return 1;
-	if (check_builtins(tree->cmd, builtins, env, 1))
+	if (check_builtins(tree->cmd, builtins, env))
 		;
 	else
 		check_command(tree->cmd, env->path, env->env, 0);

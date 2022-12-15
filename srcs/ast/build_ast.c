@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/03 12:54:32 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/07 15:11:27 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/15 11:10:07 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,10 @@ static int	peek_for_last_pipe(t_tlist *tokens)
 			break;
 		temp = temp->next;
 	}
-	return 1;
+	return (1);
 }
 
-t_ast	*create_pipe_node(int type)
+static t_ast	*create_pipe_node(int type)
 {
 	t_ast	*root;
 
@@ -44,7 +44,7 @@ t_ast	*create_pipe_node(int type)
 
 t_ast	*build_ast(t_tlist **tokens)
 {
-	t_ast *tree;
+	t_ast	*tree;
 
 	tree = create_pipe_node(NODE_PIPE);
 	tree->left = simple_command(tree, &(tokens));

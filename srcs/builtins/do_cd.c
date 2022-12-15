@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/03 09:14:35 by mviinika          #+#    #+#             */
-/*   Updated: 2022/11/18 09:40:01 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/15 11:21:43 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,31 +14,22 @@
 
 // Checks if directory exists, can be executed or is a directory.
 // param input is directory to be entered
-static int	check_access(char *input)
+static int	is_accessable(char *input)
 {
-	int			ret;
 	struct stat	buf;
 
 	stat(input, &buf);
-	ret = 0;
 	if (chdir(input) == -1)
 	{
-
 		if (access(input, F_OK) && !S_ISDIR(buf.st_mode))
-		{
 			error_print(input, "cd", E_NOEX);
-			ret = 1;
-		}
 		else if (S_ISDIR(buf.st_mode) && access(input, X_OK))
-		{
 			error_print(input, "cd", E_NOPERM);
-			ret = 1;
-		}
 		else
 			error_print(input, "cd", E_NODIR);
-		ret = 1;
+		return (0);
 	}
-	return (ret);
+	return (1);
 }
 
 //Prints error messages if HOME or OLDPWD doesnt exist in env list
@@ -88,17 +79,16 @@ static int env_dir(char *input, char **env)
 
 // Execute cd builtin. Tries to access given directory. Does proper checking
 // before trying to set it to current working directory.
-int	do_cd(char **input, t_env *env, int fd)
+int	do_cd(char **input, t_env *env)
 {
 	char	old_cwd[MAX_PATH + 1];
 	char	cwd[MAX_PATH + 1];
 
-	(void)fd;
 	ft_memset(old_cwd, '\0', 1025);
 	ft_memset(cwd, '\0', 1025);
 	getcwd(old_cwd, MAX_PATH);
 	if (input[1] && !(ft_strncmp(input[1], "-", 1) == 0)
-		&& check_access(input[1]))
+		&& !is_accessable(input[1]))
 		return (1);
 	else if (!input[1] || ft_strncmp(input[1], "-", 1) == 0)
 	{

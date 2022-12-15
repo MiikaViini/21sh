@@ -6,7 +6,7 @@
 #    By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/07/09 19:07:08 by mviinika          #+#    #+#              #
-#    Updated: 2022/12/08 21:20:08 by mviinika         ###   ########.fr        #
+#    Updated: 2022/12/15 11:37:51 by mviinika         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,6 +42,7 @@ BUILT_INS_FILES = do_cd.c \
 EXECUTION_DIR = execution
 EXECUTION_FILES = check_builtins.c \
 				check_command.c \
+				check_redirs.c \
 				exec_tree.c \
 				exec_single_command.c \
 				expand_and_remove_quotes.c \

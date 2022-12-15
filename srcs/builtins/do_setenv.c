@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/29 08:48:51 by mviinika          #+#    #+#             */
-/*   Updated: 2022/11/18 09:45:55 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/15 11:22:42 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ static int sweep_input(char **input, int equ_sign)
 	int k;
 
 	i = 0;
+	
 	while (input[++i])
 	{
 		k = -1;
@@ -27,8 +28,9 @@ static int sweep_input(char **input, int equ_sign)
 			error_print(NULL, "setenv", E_ARGNOTVAL);
 			return (1);
 		}
-		while (input[i][++k])
+		while (input[i][++k] && input[i][k] != '=')
 		{
+			ft_printf("%c\n", input[i][k]);
 			if (!is_valid_char(input[i][k]))
 			{
 				error_print(NULL, "setenv", E_NOTALNUM);
@@ -95,7 +97,7 @@ static int find_env(char *input, t_env *env, int *added, int *k)
 	return (*added);
 }
 
-int do_setenv(char **input, t_env *env, int fd)
+int do_setenv(char **input, t_env *env)
 {
 	int i;
 	int k;
@@ -103,7 +105,6 @@ int do_setenv(char **input, t_env *env, int fd)
 
 	k = 0;
 	i = 0;
-	(void)fd;
 	if (check_validity(input))
 		return (1);
 	while (input[++i])

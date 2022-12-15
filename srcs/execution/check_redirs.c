@@ -1,35 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   do_echo.c                                          :+:      :+:    :+:   */
+/*   check_redirs.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/09/09 15:00:43 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/15 11:15:41 by mviinika         ###   ########.fr       */
+/*   Created: 2022/12/15 11:36:25 by mviinika          #+#    #+#             */
+/*   Updated: 2022/12/15 11:37:58 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
 
-int do_echo(char **input, t_env *env)
+int check_redirs(t_ast *tree, t_env *env)
 {
-	int i;
-	struct stat buf;
-
-	i = 1;
-	(void)env;
-	if (fstat(STDOUT_FILENO, &buf) == -1)
+	int ret;
+	
+	ret = 0;
+	if (tree->type == NODE_REDIR)
 	{
-		error_print("write error", input[0], E_BFD);
-		return (-1);
+		if (redirection(tree->redirs, &ret) == -1)
+		{
+			free_strarr(env->path);
+			return 1;
+		}	
 	}
-	while (input[i])
-	{
-		ft_putstr(input[i++]);
-		if (input[i])
-			write(STDOUT_FILENO, " ", 1);
-	}
-	write(STDOUT_FILENO, "\n", 1);
-	return (0);
+	return 0;
 }

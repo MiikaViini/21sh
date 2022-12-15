@@ -6,12 +6,15 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/03 11:22:36 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/12 22:39:15 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/15 11:29:29 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef TOKENS_H
 # define TOKENS_H
+
+# include "ft_21sh.h"
+
 
 typedef struct s_tlist
 {

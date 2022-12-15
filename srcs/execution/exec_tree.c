@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 12:09:30 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/12 11:27:47 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/15 12:25:26 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,18 +43,18 @@ static void	pipe_executor(t_ast *tree, int rb, char **builtins, t_env *env)
 static void	exec_cmd(t_ast *tree, char **builtins, t_env *env)
 {
 	env->path = get_path(env->env);
-	if (check_builtins(tree->cmd, builtins, env, 1))
+	if (check_builtins(tree->cmd, builtins, env))
 		;
 	else
 		check_command(tree->cmd, env->path, env->env, 1);
 	free_strarr(env->path);
 }
+
 // Executes syntax tree node by node from left to right
 // trees root is always PIPE. Depending of TOKEN, it executes necessary
 // actions with that node. When PIPE is found, recursively executes tree.
 // Does proper piping in child processes and waits them to finish. in the
 // end closes pipes and exits child process.
-
 int	exec_tree(t_ast *tree, int rb, char **builtins, t_env *env)
 {
 	int ret;
@@ -71,15 +71,10 @@ int	exec_tree(t_ast *tree, int rb, char **builtins, t_env *env)
 		ft_putstr("exit\n");
 		return (0);
 	}
-	if (tree->type == NODE_CMD)
-		exec_cmd(tree, builtins, env);
-	else if (tree->type == NODE_REDIR)
+	if (tree->type == NODE_REDIR || tree->type == NODE_CMD)
 	{
-		if (redirection(tree->redirs, &ret) == -1)
-		{
-			free_strarr(env->path);
-			return (1);
-		}
+		if (tree->type == NODE_REDIR && check_redirs(tree, env) == 1)
+			return 1;
 		exec_cmd(tree, builtins, env);
 	}
 	else if (tree->type == NODE_PIPE)

@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 15:04:44 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/14 20:54:40 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/15 10:30:37 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,6 @@ static int check_fd_validity(t_tlist **redirs, t_tlist **tokens, int *ret)
 
 	if ((*redirs)->to_fd >= 0 && fstat((*redirs)->to_fd, &buf) == -1)
 	{
-		ft_printf("%d\n",(*redirs)->to_fd);
 		(*tokens)->file = ft_itoa((*redirs)->to_fd);
 		(*redirs)->to_fd = -2;
 		*ret = -1;
