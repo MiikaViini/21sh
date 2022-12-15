@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 12:09:30 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/15 13:36:53 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/15 20:52:41 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static void	pipe_executor(t_ast *tree, int rb, char **builtins, t_env *env)
 {
-	int fd[2];
+	int	fd[2];
 
 	if (pipe(fd) < 0)
 		error_print(NULL, NULL, E_PIPEFAIL);

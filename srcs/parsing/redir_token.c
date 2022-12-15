@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/08 20:51:44 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/12 22:55:51 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/15 21:06:48 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,6 @@ int	add_redir_in(char *trimmed, char *word, t_word *ints, int *total)
 
 int add_shortcut(char *trimmed, char *word, t_word *ints, int *total)
 {
-	DB
 	*word = *trimmed;
 	word++;
 	trimmed++;
@@ -75,21 +74,21 @@ int add_shortcut(char *trimmed, char *word, t_word *ints, int *total)
 	return (2);
 }
 
-int redir_token(char *trimmed, char *word, t_word *ints, int *total)
+int redir_token(char *trimmed, char *word, t_word *ints) // Maybe jumptable here
 {
 	int i;
 
 	i = 0;
 	ints->type = TOKEN_REDIRECT;
 	if ((trimmed[1])  == '&' && trimmed[0] == '>')
-		i = add_aggr_out(&trimmed, &word, ints, total);
+		i = add_aggr_out(&trimmed, &word, ints, &ints->total);
 	else if ((trimmed[0])  == '&' && trimmed[1] == '>')
-		i = add_shortcut(trimmed, word, ints, total);
+		i = add_shortcut(trimmed, word, ints, &ints->total);
 	else if ((trimmed[1]) == '&' && trimmed[0] == '<')
-		i = add_aggr_in(trimmed, word, ints, total);
-	else if (*trimmed == '>')		// Check for append redirection
-		i = add_redir_out(trimmed, word, ints, total);
-	else if (*trimmed == '<')		// Check for STD_IN redirect
-		i = add_redir_in(trimmed, word, ints, total);
+		i = add_aggr_in(trimmed, word, ints, &ints->total);
+	else if (*trimmed == '>')
+		i = add_redir_out(trimmed, word, ints, &ints->total);
+	else if (*trimmed == '<')
+		i = add_redir_in(trimmed, word, ints, &ints->total);
 	return (i);
 }

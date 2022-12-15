@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/03 12:54:32 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/15 11:10:07 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/15 21:32:05 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static t_ast	*create_pipe_node(int type)
 	return (root);
 }
 
-t_ast	*build_ast(t_tlist **tokens)
+static t_ast	*build_ast(t_tlist **tokens)
 {
 	t_ast	*tree;
 
@@ -61,4 +61,18 @@ t_ast	*build_ast(t_tlist **tokens)
 		tree->right = build_ast(tokens);
 	}
 	return (tree);
+}
+
+void build_all_asts(t_ast **tree, t_tlist *tokens)
+{
+	int	i;
+
+	i = 0;
+	while(tokens)
+	{
+		tree[i] = build_ast(&tokens);
+		if (tokens && tokens->type == TOKEN_SEMICOLON)
+			tokens = tokens->next;
+		i++;
+	}
 }

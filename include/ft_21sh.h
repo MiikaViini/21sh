@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 08:59:36 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/15 15:26:16 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/15 21:39:03 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,7 @@ void	get_env(t_env *dest, char **environ, int argc, char **argv);
 char	**get_path(char **env);
 char	*handle_expansions(char *input, char **env);
 int		is_expansion(char *str, int i);
+void 	init_tree(t_ast ***tree, size_t size);
 t_ast	**parse_input(t_pars *pars);
 char	*passwd_user(char *input);
 char	*tilde_expansion(char *word, char **env, char *expanded);
@@ -124,7 +125,7 @@ int		is_quote(char c);
 \***********/
 int		check_equalsign(char *input);
 int		is_valid_char(char c);
-void	add_letter(char *word, char c, int *total, int *k);
+void	add_letter(char *word, char c, t_word *ints);
 int		can_be_added(char c, t_quotes *quots);
 int		is_end_of_word(char c, t_quotes *quots, int index);
 int		is_operator (char c, t_quotes *quots);
@@ -137,9 +138,12 @@ t_tlist	*new_token(char *content, t_word *word_attrs);
 //void	token_to_last(t_tlist **alst, t_tlist *new);
 //t_tlist	*new_redir(char *content, char *file, int from, int redir_type);
 //int 	set_aggr_values(t_tlist **redirs, t_tlist **tokens);
-int redir_token(char *trimmed, char *word, t_word *ints, int *total);
+int redir_token(char *trimmed, char *word, t_word *ints);
+int	is_redirect(char c, t_quotes *quots);
 void redir_aggr(t_tlist *redirs , int *ret);
 int check_syntax(t_pars *pars, t_tlist *tokens);
+void set_values_aggr_io(t_word *ints, char **word, int *total);
+int	set_redirections(t_pars *pars, t_word *ints, char *word, t_quotes *quots);
 
 typedef int					(*t_builtins)(char **input, t_env *env);
 

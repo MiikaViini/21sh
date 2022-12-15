@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/12 09:56:41 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/15 14:54:32 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/15 21:17:46 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,11 @@ int is_valid_char(char c)
 	return (ft_isalnum(c) || c == '_' || c == '=');
 }
 
-void add_letter(char *word, char c, int *total, int *k)
+void add_letter(char *word, char c, t_word *ints)
 {
-	word[*k] = c;
-	*total += 1;
-	*k += 1;
+	word[ints->k] = c;
+	ints->total += 1;
+	ints->k += 1;
 	//*k += 1;
 }
 
@@ -78,7 +78,6 @@ void tokens_del(t_tlist **tokens)
 
 void delete_node(t_ast *node)
 {
-	//t_ast *temp;
 	if (node == NULL)
 		return ;
 	delete_node(node->left);

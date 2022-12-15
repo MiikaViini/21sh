@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 19:07:23 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/15 14:33:17 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/15 21:40:31 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,6 @@ void reset_fds_to_default(char *terminal)
 	close(STDERR_FILENO);
 	open(terminal, O_RDWR);
 }
-
-
 
 static int	ft_21sh(t_env *env, char **builtins, char *terminal)
 {

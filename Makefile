@@ -6,7 +6,7 @@
 #    By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/07/09 19:07:08 by mviinika          #+#    #+#              #
-#    Updated: 2022/12/15 14:30:52 by mviinika         ###   ########.fr        #
+#    Updated: 2022/12/15 21:39:11 by mviinika         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,7 @@ FLAGS = -Wall -Wextra -Werror -g -pedantic
 UNAME :=$(shell uname)
 
 AST_DIR = ast
-AST_FILES = build_ast.c \
+AST_FILES = build_all_asts.c \
 			new_redir.c \
 			create_cmd_node.c \
 			set_aggr_values.c
@@ -63,7 +63,11 @@ PARSING_FILES = parse_input.c \
 			new_token.c \
 			redir_token.c \
 			token_to_last.c \
-			check_syntax.c
+			check_syntax.c \
+			init_tree.c \
+			set_values_aggr_io.c \
+			set_redirections.c \
+			is_redirect.c
 
 UTILS_DIR = utils
 UTILS_FILES = check_quotes.c \
