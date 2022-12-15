@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 09:14:23 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/15 15:15:34 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/15 15:29:26 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,22 +78,22 @@ t_tlist *create_token(char **word, t_pars *pars, t_word *ints)
 	return (token);
 }
 
-static t_tlist	*get_token(t_pars *pars, int i, int *total)
+static t_tlist	*get_token(t_pars *pars, t_word *ints, int i, int *total)
 {
 	char		*word;
 	t_quotes	quots;
-	t_word		ints;
+	// t_word		ints;
 
-	initialise_structs(&quots, &ints, pars->trimmed);
+	initialise_structs(&quots, ints, pars->trimmed);
 	word = ft_strnew(ft_strlen(pars->trimmed));
 	while (ft_isspace(pars->trimmed[i]) && (*total)++)
 		i++;
-	while (i < ints.len)
+	while (i < ints->len)
 	{
 		see_quote(&quots, pars->trimmed, i);
 		if ((is_redirect(pars->trimmed[i], &quots) && ft_only_digits(word)))
 		{
-			i = redir_token(&pars->trimmed[i], &word[ints.k], &ints, total);
+			i = redir_token(&pars->trimmed[i], &word[ints->k], &ints, total);
 			break ;
 		}
 		else if (is_aggr_err_out(&quots, pars->trimmed[i], word[0]))
@@ -101,17 +101,17 @@ static t_tlist	*get_token(t_pars *pars, int i, int *total)
 			set_values_aggr_io(&ints, &word, total);
 			break ;
 		}
-		if (is_end_of_word(pars->trimmed[i], &quots, ints.k) || is_redirect(pars->trimmed[i], &quots))
+		if (is_end_of_word(pars->trimmed[i], &quots, ints->k) || is_redirect(pars->trimmed[i], &quots))
 			break ;
 		if (can_be_added(pars->trimmed[i], &quots))
-			add_letter(word, pars->trimmed[i++], total, &ints.k);
+			add_letter(word, pars->trimmed[i++], total, ints->k);
 		if (is_operator(word[0], &quots) && !is_redirect(pars->trimmed[i], &quots))
 		{
 			set_operator_sign(&ints, &word);
 			break;
 		}
 	}
-	return (create_token(&word, pars, &ints));
+	return (create_token(&word, pars, ints));
 }
 
 void init_tree(t_ast ***tree, size_t size)
@@ -145,24 +145,39 @@ void build_all_asts(t_ast **tree, t_tlist *tokens)
 		i++;
 	}
 }
+
+void init_word_ints(char *input, t_word *ints)
+{
+	ints->i = 0;
+	ints->total = 0;
+	ints->expan = 0;
+	ints->k = 0;
+	ints->type = TOKEN_WORD;
+	ints->redir = -1;
+	ints->redir_way = 0;
+	ints->file = NULL;
+	ints->len = (int)ft_strlen(input);
+}
 // Parsing and lexing input, *get_token()* will make token list as a linked list
 // *make_ast()* will make abstract syntax tree from tokens
 t_ast	**parse_input(t_pars *pars)
 {
-	int			i;
-	static int	total;
+	// int			i;
+	// static int	total;
 	t_ast		**tree;
 	t_tlist		*tokens;
 	t_tlist		*temp;
+	t_word		ints;
 
-	i = 0;
-	total = 0;
+	// i = 0;
+	// total = 0;
+	init_word_ints(pars->trimmed, &ints);
 	tokens = NULL;
 	tree = (t_ast **)ft_memalloc(sizeof(t_ast *) * 100);
-	while (i < pars->len)
+	while (ints.i < pars->len)
 	{
-		token_to_last(&tokens, get_token(pars, i, &total));
-		i = total;
+		token_to_last(&tokens, get_token(pars, &ints.i, &ints.total));
+		ints.i = ints.total;
 	}
 	temp = tokens;
 	if (!check_syntax(pars, tokens))

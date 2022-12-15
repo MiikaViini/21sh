@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 08:59:36 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/15 14:32:00 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/15 15:26:16 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,8 @@ typedef struct s_word
 	int		len;
 	int		expan;
 	int		k;
+	int		i;
+	int		total;
 	int		type;
 	int		redir;
 	int		redir_way;
