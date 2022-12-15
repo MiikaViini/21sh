@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/12 09:56:41 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/15 10:46:32 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/15 14:54:32 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ void add_letter(char *word, char c, int *total, int *k)
 	word[*k] = c;
 	*total += 1;
 	*k += 1;
+	//*k += 1;
 }
 
 int can_be_added(char c, t_quotes *quots)

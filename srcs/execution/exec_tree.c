@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 12:09:30 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/15 12:25:26 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/15 13:36:53 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,12 +57,10 @@ static void	exec_cmd(t_ast *tree, char **builtins, t_env *env)
 // end closes pipes and exits child process.
 int	exec_tree(t_ast *tree, int rb, char **builtins, t_env *env)
 {
-	int ret;
-
-	ret = 0;
 	if ((!tree) || (!rb && !tree))
 		return (1);
-	expand_and_remove_quotes(&tree, env);
+	if (expand_and_remove_quotes(&tree, env))
+		return (1);
 	if (rb && tree->type == NODE_CMD)
 		update_env(env->env, tree->cmd[ft_linecount(tree->cmd) - 1], "_");
 	if (rb == 0)

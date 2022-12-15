@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 09:14:23 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/12 23:35:54 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/15 15:15:34 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,33 +43,47 @@ static int	is_redirect(char c, t_quotes *quots)
 	return (ret);
 }
 
-static int has_only_digits(char *redir)
-{
-	int i;
-
-	i = 0;
-	while (ft_isdigit(redir[i]))
-		i++;
-	if (redir[i] != '\0')
-		return (0);
-	return (1);
-}
-
-static int is_aggr_err_out(t_quotes *quots, char redir, char operator)
+static int	is_aggr_err_out(t_quotes *quots, char redir, char operator)
 {
 	return (is_redirect(redir, quots) && operator == '&');
 }
 
-static t_tlist	*get_token(t_pars *pars, t_env *env, int i, int *total)
+void set_values_aggr_io(t_word *ints, char **word, int *total)
+{
+	ints->type = TOKEN_REDIRECT;
+	ints->redir = REDIR_AGGR_STERR_STOUT;
+	ft_strdel(word);
+	*word = ft_strdup("&>");
+	(*total)++;
+}
+
+void set_operator_sign(t_word *ints, char **word)
+{
+	if (*word[0] == '|')
+		ints->type = TOKEN_PIPE;
+	else if (*word[0] == ';')
+		ints->type = TOKEN_SEMICOLON;
+	else
+		ints->type = TOKEN_ELSE;
+}
+
+t_tlist *create_token(char **word, t_pars *pars, t_word *ints)
+{
+	t_tlist *token;
+
+	token = new_token(*word, ints);
+	ft_strdel(&pars->last_token_str);
+	pars->last_token_str = ft_strdup(token->str);
+	ft_strdel(word);
+	return (token);
+}
+
+static t_tlist	*get_token(t_pars *pars, int i, int *total)
 {
 	char		*word;
 	t_quotes	quots;
 	t_word		ints;
-	t_tlist		*token;
-	int			k;
 
-	(void)env;
-	k = 0;
 	initialise_structs(&quots, &ints, pars->trimmed);
 	word = ft_strnew(ft_strlen(pars->trimmed));
 	while (ft_isspace(pars->trimmed[i]) && (*total)++)
@@ -77,45 +91,27 @@ static t_tlist	*get_token(t_pars *pars, t_env *env, int i, int *total)
 	while (i < ints.len)
 	{
 		see_quote(&quots, pars->trimmed, i);
-		
-		if ((is_redirect(pars->trimmed[i], &quots) && has_only_digits(word)))														// || (is_redirect(pars->trimmed[i], &quots) && ft_isalpha(word[0])) 
+		if ((is_redirect(pars->trimmed[i], &quots) && ft_only_digits(word)))
 		{
-			i = redir_token(&pars->trimmed[i], &word[k], &ints, total);
+			i = redir_token(&pars->trimmed[i], &word[ints.k], &ints, total);
 			break ;
 		}
 		else if (is_aggr_err_out(&quots, pars->trimmed[i], word[0]))
 		{
-			ints.type = TOKEN_REDIRECT;
-			ints.redir = REDIR_AGGR_STERR_STOUT;
-			word[0] = '&';
-			word[1] = '>';
-			(*total)++;
+			set_values_aggr_io(&ints, &word, total);
 			break ;
-		}												
-		if (is_end_of_word(pars->trimmed[i], &quots, k) || is_redirect(pars->trimmed[i], &quots))
+		}
+		if (is_end_of_word(pars->trimmed[i], &quots, ints.k) || is_redirect(pars->trimmed[i], &quots))
 			break ;
 		if (can_be_added(pars->trimmed[i], &quots))
-		{
 			add_letter(word, pars->trimmed[i++], total, &ints.k);
-			k++;
-		}
 		if (is_operator(word[0], &quots) && !is_redirect(pars->trimmed[i], &quots))
 		{
-			if (word[0] == '|')
-				ints.type = TOKEN_PIPE;
-			else if (word[0] == ';')
-				ints.type = TOKEN_SEMICOLON;
-			else
-				ints.type = TOKEN_ELSE;
+			set_operator_sign(&ints, &word);
 			break;
 		}
-		
 	}
-	token = new_token(word, &ints);
-	ft_strdel(&pars->last_token_str);
-	pars->last_token_str = ft_strdup(token->str);
-	ft_strdel(&word);
-	return (token);
+	return (create_token(&word, pars, &ints));
 }
 
 void init_tree(t_ast ***tree, size_t size)
@@ -136,48 +132,28 @@ void init_tree(t_ast ***tree, size_t size)
 	}
 }
 
-int check_cons_redirs(t_tlist *tokens)
+void build_all_asts(t_ast **tree, t_tlist *tokens)
 {
-	
-	while(tokens->next)
+	int	i;
+
+	i = 0;
+	while(tokens)
 	{
-		//printf("%s, %d",tokens->str, tokens->type);
-		if (tokens->type == TOKEN_REDIRECT && tokens->next->type == TOKEN_REDIRECT)
-			return (1);
-		tokens = tokens->next;
+		tree[i] = build_ast(&tokens);
+		if (tokens && tokens->type == TOKEN_SEMICOLON)
+			tokens = tokens->next;
+		i++;
 	}
-	return (0);
-}
-
-int check_syntax(t_pars *pars, t_tlist *tokens)
-{
-	t_tlist *temp;
-
-	temp = tokens;
-	int i;
-	int err;
-	
-	err = check_cons_redirs(temp);
-	i = ft_strlen(pars->last_token_str) - 1;
-	if (pars->last_token_str[i] == '&' 
-		|| pars->last_token_str[i] == '|' 
-		|| pars->last_token_str[i] == ';'
-		|| pars->last_token_str[i] == '>'
-		|| pars->last_token_str[i] == '<')
-		err = 1;
-	if (err)
-		error_print(NULL, NULL, E_SYNERR);
-	return err;
 }
 // Parsing and lexing input, *get_token()* will make token list as a linked list
 // *make_ast()* will make abstract syntax tree from tokens
-t_ast	**parse_input(t_env *env, t_pars *pars)
+t_ast	**parse_input(t_pars *pars)
 {
 	int			i;
 	static int	total;
 	t_ast		**tree;
 	t_tlist		*tokens;
-	t_tlist	*temp;
+	t_tlist		*temp;
 
 	i = 0;
 	total = 0;
@@ -185,21 +161,12 @@ t_ast	**parse_input(t_env *env, t_pars *pars)
 	tree = (t_ast **)ft_memalloc(sizeof(t_ast *) * 100);
 	while (i < pars->len)
 	{
-		token_to_last(&tokens, get_token(pars,env ,i, &total));
+		token_to_last(&tokens, get_token(pars, i, &total));
 		i = total;
 	}
 	temp = tokens;
 	if (!check_syntax(pars, tokens))
-	{
-		i = 0;
-		while(tokens)
-		{
-			tree[i] = build_ast(&tokens);
-			if (tokens && tokens->type == TOKEN_SEMICOLON)
-				tokens = tokens->next;
-			i++;
-		}
-	}
+		build_all_asts(tree, tokens);
 	tokens_del(&temp);
 	ft_strdel(&pars->trimmed);
 	ft_strdel(&pars->last_token_str);

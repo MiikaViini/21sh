@@ -6,7 +6,7 @@
 #    By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/07/09 19:07:08 by mviinika          #+#    #+#              #
-#    Updated: 2022/12/15 11:37:51 by mviinika         ###   ########.fr        #
+#    Updated: 2022/12/15 14:30:52 by mviinika         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,7 +26,6 @@ UNAME :=$(shell uname)
 
 AST_DIR = ast
 AST_FILES = build_ast.c \
-			token_to_last.c \
 			new_redir.c \
 			create_cmd_node.c \
 			set_aggr_values.c
@@ -47,7 +46,8 @@ EXECUTION_FILES = check_builtins.c \
 				exec_single_command.c \
 				expand_and_remove_quotes.c \
 				get_path.c \
-				redirections.c
+				redirections.c \
+				redir_aggr.c
 				
 
 EXPANSIONS_DIR = expansions
@@ -61,7 +61,9 @@ EXPANSIONS_FILES = dollar_expansion.c \
 PARSING_DIR = parsing
 PARSING_FILES = parse_input.c \
 			new_token.c \
-			redir_token.c
+			redir_token.c \
+			token_to_last.c \
+			check_syntax.c
 
 UTILS_DIR = utils
 UTILS_FILES = check_quotes.c \

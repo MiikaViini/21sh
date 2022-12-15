@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 12:17:07 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/09 09:32:42 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/15 13:38:00 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static char *remove_quotes(char *input)
 }
 
 // Expands variables from environment and removes quotes
-void expand_and_remove_quotes(t_ast **tree, t_env *env)
+int expand_and_remove_quotes(t_ast **tree, t_env *env)
 {
 	int i;
 	int k;
@@ -54,11 +54,15 @@ void expand_and_remove_quotes(t_ast **tree, t_env *env)
 		while ((*tree)->cmd[i][k])
 		{	
 			if (is_expansion((*tree)->cmd[i], k) && !quotes.s_quote)
+			{
 				(*tree)->cmd[i] = handle_expansions((*tree)->cmd[i], env->env);
+				// return (-1);
+			}
 			k++;
 		}
 		(*tree)->cmd[i] = remove_quotes((*tree)->cmd[i]);
 		k = 0;
 	 	i++;
 	}
+	return (0);
 }

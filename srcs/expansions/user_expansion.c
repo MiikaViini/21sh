@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/12 10:45:58 by mviinika          #+#    #+#             */
-/*   Updated: 2022/11/15 14:09:58 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/15 13:42:47 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,19 +19,26 @@ static int	is_valid_user(char *input, char *name)
 	return (0);
 }
 
+int linux_users(char **path, char *input)
+{
+	if (LIN)
+	{
+		*path = passwd_user(input);
+		if (path == NULL)
+			error_print(input + 1, NULL, E_NOUSER);
+		return (-1);
+	}
+	return (0);
+}
+
 char	*user_expansion(char *input)
 {
 	DIR				*dir;
 	struct dirent	*entity;
 	char			*path;
 
-	if (LIN)
-	{
-		path = passwd_user(input);
-		// if (path == NULL)
-		// 	error_print(input + 1, NULL, E_NOUSER);
+	if (linux_users(&path, input) == -1)
 		return (path);
-	}
 	dir = opendir("/Users");
 	path = NULL;
 	if (dir == NULL)
@@ -49,7 +56,5 @@ char	*user_expansion(char *input)
 	}
 	closedir(dir);
 	path = passwd_user(input);
-	if (path == NULL)
-		error_print(input + 1, NULL, E_NOUSER);
 	return (path);
 }

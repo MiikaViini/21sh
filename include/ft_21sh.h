@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 08:59:36 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/15 11:37:28 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/15 14:32:00 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,12 +92,12 @@ char	*dollar_expansion(char *expanded, char *word, char **env, int len);
 void	error_print(char *word, char *command, char *e_msg);
 int		exec_single_command(t_ast *tree, int rb, char **builtins, t_env *env);
 int		exec_tree(t_ast *tree, int rb, char **builtins, t_env *env);
-void	expand_and_remove_quotes(t_ast **tree, t_env *env);
+int		expand_and_remove_quotes(t_ast **tree, t_env *env);
 void	get_env(t_env *dest, char **environ, int argc, char **argv);
 char	**get_path(char **env);
 char	*handle_expansions(char *input, char **env);
 int		is_expansion(char *str, int i);
-t_ast	**parse_input(t_env *env, t_pars *pars);
+t_ast	**parse_input(t_pars *pars);
 char	*passwd_user(char *input);
 char	*tilde_expansion(char *word, char **env, char *expanded);
 void	update_env(char **env, char *input, char *var);
@@ -127,8 +127,6 @@ int		can_be_added(char c, t_quotes *quots);
 int		is_end_of_word(char c, t_quotes *quots, int index);
 int		is_operator (char c, t_quotes *quots);
 void	tokens_del(t_tlist **tokens);
-
-void 	ast_travers(t_ast *tree, t_env *env);
 void 	delete_node(t_ast *node);
 int		fork1(void);
 //t_ast	*build_ast(t_tlist **tokens);
@@ -138,6 +136,8 @@ t_tlist	*new_token(char *content, t_word *word_attrs);
 //t_tlist	*new_redir(char *content, char *file, int from, int redir_type);
 //int 	set_aggr_values(t_tlist **redirs, t_tlist **tokens);
 int redir_token(char *trimmed, char *word, t_word *ints, int *total);
+void redir_aggr(t_tlist *redirs , int *ret);
+int check_syntax(t_pars *pars, t_tlist *tokens);
 
 typedef int					(*t_builtins)(char **input, t_env *env);
 
