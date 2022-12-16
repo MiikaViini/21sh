@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 09:14:23 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/15 21:39:22 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/16 10:23:45 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ t_ast	**parse_input(t_pars *pars)
 	ints.i = 0;
 	ints.total = 0;
 	tokens = NULL;
-	tree = (t_ast **)ft_memalloc(sizeof(t_ast *) * ft_wordcount_ws(pars->trimmed));
+	tree = (t_ast **)ft_memalloc(sizeof(t_ast *) * ft_wordcount_ws(pars->trimmed) + 1);
 	while (ints.i < pars->len)
 	{
 		token_to_last(&tokens, get_token(pars, &ints));

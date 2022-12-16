@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 21:36:13 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/15 21:36:36 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/16 09:38:08 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ int	set_redirections(t_pars *pars, t_word *ints, char *word, t_quotes *quots)
 	}
 	else if (is_aggr_err_out(quots, pars->trimmed[ints->i], word[0]))
 	{
+		//ft_strdel(*word);
 		set_values_aggr_io(ints, &word, &ints->total);
 		return (1);
 	}

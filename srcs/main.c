@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 19:07:23 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/15 21:40:31 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/16 10:14:46 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,16 +49,47 @@ void reset_fds_to_default(char *terminal)
 	open(terminal, O_RDWR);
 }
 
-static int	ft_21sh(t_env *env, char **builtins, char *terminal)
+void execute_all(t_env *env, char **builtins, t_ast **tree, int *rb)
+{
+	int	i;
+
+	i = 0;
+	if (tree == NULL)
+		return ;
+	while (tree[i])
+	{
+		if (is_pipe_sequence(tree[i]))
+		{
+			if (fork() == 0)
+				exec_tree(tree[i], *rb, builtins, env);
+			wait(0);
+		}
+		else
+			exec_single_command(tree[i]->left, *rb, builtins, env);
+		delete_node(tree[i]);
+		reset_fds_to_default(env->terminal);
+		i++;
+	}
+}
+
+void free_all(t_pars *pars, t_ast **tree, char *buf)
+{
+	if (tree)
+		free(tree);
+	free_parsed_input(pars->parsed);
+	ft_strdel(&pars->trimmed);
+	free(pars->parsed);
+	ft_memset(buf, '\0', 4096);
+}
+
+static int	ft_21sh(t_env *env, char **builtins)
 {
 	int		rb;
 	char	buf[MAX_LINE + 1];
 	t_ast	**tree;
 	t_pars	parsed;
-	int		i;
-
+	
 	rb = 1;
-	i = 0;
 	ft_memset(buf, '\0', MAX_LINE + 1);
 	tree = NULL;
 	rb = read(0, &buf, MAX_LINE);
@@ -73,25 +104,27 @@ static int	ft_21sh(t_env *env, char **builtins, char *terminal)
 			tree = parse_input(&parsed);
 		else
 		{
-			free_parsed_input(parsed.parsed);
-			ft_strdel(&parsed.trimmed);
-			free(parsed.parsed);
+			free_all(&parsed, tree, buf);
+			// free_parsed_input(parsed.parsed);
+			// ft_strdel(&parsed.trimmed);
+			// free(parsed.parsed);
 			return 1;
 		}
-		while(tree && tree[i])
-		{
-			if (is_pipe_sequence(tree[i]))
-			{
-				if (fork() == 0)
-					exec_tree(tree[i], rb, builtins, env);
-				wait(0);
-			}
-			else
-				exec_single_command(tree[i]->left, rb, builtins, env);
-			delete_node(tree[i]);
-			reset_fds_to_default(terminal);
-			i++;
-		}
+		execute_all(env, builtins, tree, &rb);
+		// while(tree[i])
+		// {
+		// 	if (is_pipe_sequence(tree[i]))
+		// 	{
+		// 		if (fork() == 0)
+		// 			exec_tree(tree[i], rb, builtins, env);
+		// 		wait(0);
+		// 	}
+		// 	else
+		// 		exec_single_command(tree[i]->left, rb, builtins, env);
+		// 	delete_node(tree[i]);
+		// 	reset_fds_to_default();
+		// 	i++;
+		// }
 		ft_memset(buf, '\0', 4096);
 		free(tree);
 		free_parsed_input(parsed.parsed);
@@ -112,9 +145,7 @@ int	main(int argc, char **argv, char **environ)
 	t_env	env;
 	char	**builtins;
 	int		rb;
-	char *terminal;
 
-	terminal = ttyname(1);
 	rb = 1;
 	builtins = initialize_and_set_builtins();
 	get_env(&env, environ, argc, argv);
@@ -122,7 +153,7 @@ int	main(int argc, char **argv, char **environ)
 	while (rb != 0)
 	{
 		ft_putstr("21sh$ ");
-		rb = ft_21sh(&env, builtins, terminal);
+		rb = ft_21sh(&env, builtins);
 	}
 	free_strarr(env.env);
 	free_strarr(env.path);

@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/12 17:39:14 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/09 09:33:31 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/16 09:05:09 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ void get_env(t_env *dest, char **environ, int argc, char **argv)
 		dest->env[i++] = ft_strdup(environ[k]);
 	}
 	dest->env[i] = NULL;
+	dest->terminal = ttyname(1);
 	set_shell_lvl(dest);
 }
 

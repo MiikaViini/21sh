@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 12:09:30 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/15 20:52:41 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/16 10:16:35 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,5 +77,5 @@ int	exec_tree(t_ast *tree, int rb, char **builtins, t_env *env)
 	}
 	else if (tree->type == NODE_PIPE)
 		pipe_executor(tree, rb, builtins, env);
-	exit (1);
+	exit(1);
 }

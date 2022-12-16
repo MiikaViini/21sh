@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 08:59:36 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/15 21:39:03 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/16 09:04:09 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ typedef struct s_env
 {
 	char	**env;
 	char	**path;
+	char	*terminal;
 }			t_env;
 
 typedef struct s_quotes
