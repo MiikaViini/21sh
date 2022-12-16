@@ -6,11 +6,26 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 19:07:23 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/16 11:56:59 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/16 19:44:13 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
+
+int g_signal;
+
+static void	set_signal_int(int signal)
+{
+	g_signal = signal;
+	ft_putchar('\n');
+	//ft_putstr("21sh$ ");
+}
+
+void	set_signal_handling(void)
+{
+	signal(SIGINT, set_signal_int);
+	signal(SIGWINCH, set_signal_int);
+}
 
 void	free_parsed_input(char **p_input)
 {
@@ -40,6 +55,7 @@ static int	ft_21sh(t_env *env, char **builtins)
 	t_ast	**tree;
 	t_pars	parsed;
 
+	set_signal_handling();
 	set_start_values(&tree, buf, &rb);
 	if (rb == -1)
 		exit(1);
@@ -60,6 +76,8 @@ static int	ft_21sh(t_env *env, char **builtins)
 	}
 	return (rb);
 }
+
+
 
 int	main(int argc, char **argv, char **environ)
 {
