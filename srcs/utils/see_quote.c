@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/08 20:49:00 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/09 09:33:34 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/16 14:43:12 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	see_quote(t_quotes *quots, char *input, int i)
 {
-	if (is_quote(input[i]))
+	if (*input && is_quote(input[i]))
 	{
 		while (is_double_quote(input[i]) && quots->s_quote == 0)
 		{

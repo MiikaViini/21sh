@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 15:04:44 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/16 12:16:43 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/16 14:46:26 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ static void	set_error(t_tlist **redirs,
 	else if ((*tokens)->str[0] == '-')
 	{
 		(*tokens)->fd_close = 1;
+		(*redirs)->file = ft_strdup((*tokens)->str);
 		*ret = 1;
 	}
 	else if (aggr_way(temp) == 0)
