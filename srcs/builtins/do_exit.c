@@ -6,24 +6,24 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 11:08:24 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/15 11:22:45 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/16 12:14:57 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
 
-static int check_exit_code(char *exit_status)
+static int	check_exit_code(char *exit_status)
 {
-	int i;
+	int	i;
 
 	i = 0;
-	while(exit_status[i])
+	while (exit_status[i])
 	{
 		if (!ft_isdigit(exit_status[i]))
 			return (0);
 		i++;
 	}
-	return 1;
+	return (1);
 }
 
 int	do_exit(char **input, t_env *env)

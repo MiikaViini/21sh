@@ -6,15 +6,15 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 20:50:39 by mviinika          #+#    #+#             */
-/*   Updated: 2022/11/15 14:08:05 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/16 12:04:49 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
 
-static char *expand_and_cat_tld(char *expanded, char **env, char *word, int len)
+static char	*expand_and_cat_tld(char *expanded, char **env, char *word, int len)
 {
-	char *temp;
+	char	*temp;
 
 	temp = ft_strdup(*env + len);
 	ft_strdel(&expanded);
@@ -23,9 +23,9 @@ static char *expand_and_cat_tld(char *expanded, char **env, char *word, int len)
 	return (expanded);
 }
 
-static char *handle_home(char *word, char **env, char *expanded)
+static char	*handle_home(char *word, char **env, char *expanded)
 {
-	int k;
+	int	k;
 
 	k = -1;
 	while (env[++k])
@@ -33,7 +33,7 @@ static char *handle_home(char *word, char **env, char *expanded)
 		if (ft_strncmp(env[k], "HOME=", 5) == 0)
 		{
 			expanded = expand_and_cat_tld(expanded, env + k, word, 5);
-			break;
+			break ;
 		}
 		else
 		{
@@ -44,9 +44,9 @@ static char *handle_home(char *word, char **env, char *expanded)
 	return (expanded);
 }
 
-static char *handle_oldpwd(char *word, char **env, char *expanded)
+static char	*handle_oldpwd(char *word, char **env, char *expanded)
 {
-	int k;
+	int	k;
 
 	k = -1;
 	while (env[++k])
@@ -54,7 +54,7 @@ static char *handle_oldpwd(char *word, char **env, char *expanded)
 		if (ft_strncmp(env[k], "OLDPWD=", 7) == 0)
 		{
 			expanded = expand_and_cat_tld(expanded, env + k, &word[1], 7);
-			break;
+			break ;
 		}
 		else
 		{
@@ -65,9 +65,9 @@ static char *handle_oldpwd(char *word, char **env, char *expanded)
 	return (expanded);
 }
 
-static char *handle_pwd(char *word, char **env, char *expanded)
+static char	*handle_pwd(char *word, char **env, char *expanded)
 {
-	int k;
+	int	k;
 
 	k = -1;
 	while (env[++k])
@@ -75,7 +75,7 @@ static char *handle_pwd(char *word, char **env, char *expanded)
 		if (ft_strncmp(env[k], "PWD=", 4) == 0)
 		{
 			expanded = expand_and_cat_tld(expanded, env + k, &word[1], 4);
-			break;
+			break ;
 		}
 		else
 		{
@@ -86,9 +86,9 @@ static char *handle_pwd(char *word, char **env, char *expanded)
 	return (expanded);
 }
 
-char *tilde_expansion(char *word, char **env, char *expanded)
+char	*tilde_expansion(char *word, char **env, char *expanded)
 {
-	char *temp;
+	char	*temp;
 
 	if (word[1] == '/' || word[1] == '\0')
 		expanded = handle_home(word, env, expanded);

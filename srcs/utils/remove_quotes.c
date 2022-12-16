@@ -1,31 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init_tree.c                                        :+:      :+:    :+:   */
+/*   remove_quotes.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/15 21:29:43 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/16 12:03:37 by mviinika         ###   ########.fr       */
+/*   Created: 2022/12/16 12:55:23 by mviinika          #+#    #+#             */
+/*   Updated: 2022/12/16 12:55:41 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
 
-void	init_tree(t_ast ***tree, size_t size)
+char	*remove_quotes(char *input)
 {
-	size_t	i;
+	int		i;
+	int		k;
+	char	quote;
+	char	*fresh;
 
 	i = 0;
-	while (i < size)
+	k = 0;
+	quote = 0;
+	fresh = ft_strnew(ft_strlen(input));
+	while (input[i])
 	{
-		(*tree)[i]->type = 0;
-		(*tree)[i]->cmd = NULL;
-		(*tree)[i]->file = NULL;
-		(*tree)[i]->redir_type = -1;
-		(*tree)[i]->to_fd = 0;
-		(*tree)[i]->err_fd = 0;
-		(*tree)[i]->fd_close = 0;
+		if ((input[i] == '\'' && quote == 0)
+			|| (input[i] == '\"' && quote == 0))
+			quote = input[i];
+		else if (input[i] == quote)
+			quote = 0;
+		else if (input[i] != quote)
+			fresh[k++] = input[i];
 		i++;
 	}
+	ft_strdel(&input);
+	return (fresh);
 }

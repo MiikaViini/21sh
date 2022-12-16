@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 12:11:50 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/15 12:10:42 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/16 12:10:20 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	check_builtins(char **input, char **builtins, t_env *env)
 {
-	int k;
+	int	k;
 
 	k = -1;
 	if (*input == NULL)
@@ -27,6 +27,5 @@ int	check_builtins(char **input, char **builtins, t_env *env)
 			return (1);
 		}
 	}
-	
 	return (0);
 }

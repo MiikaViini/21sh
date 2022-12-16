@@ -6,15 +6,15 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 15:00:27 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/12 23:21:49 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/16 13:20:14 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
 
-static void apply_redir_attrs(t_ast *node, t_tlist ***tokens)
+static void	apply_redir_attrs(t_ast *node, t_tlist ***tokens)
 {
-	struct stat buf;
+	struct stat	buf;
 
 	if (ft_isdigit((**tokens)->str[0]))
 	{
@@ -28,16 +28,18 @@ static void apply_redir_attrs(t_ast *node, t_tlist ***tokens)
 	node->redirs->file = ft_strdup((**tokens)->str);
 }
 
-static void create_redirs(t_ast *node, t_tlist ***tokens)
+static void	create_redirs(t_ast *node, t_tlist ***tokens)
 {
 	node->redir_type = (**tokens)->redir_type;
 	node->type = NODE_REDIR;
 	node->redirs = new_redir((**tokens)->str, NULL, 0, (**tokens)->redir_type);
-	if (node->redir_type == REDIR_TRUNC || node->redir_type == REDIR_IN || node->redir_type == REDIR_APPEND )
+	if (node->redir_type == REDIR_TRUNC
+		|| node->redir_type == REDIR_IN || node->redir_type == REDIR_APPEND)
 		apply_redir_attrs(node, tokens);
-	else if (node->redir_type == REDIR_AGGR_IN || node->redir_type == REDIR_AGGR_OUT)
+	else if (node->redir_type == REDIR_AGGR_IN
+		|| node->redir_type == REDIR_AGGR_OUT)
 	{
-		if(set_aggr_values(&node->redirs, *tokens) == 0)
+		if (set_aggr_values(&node->redirs, *tokens) == 0)
 			node->redirs->redir_type = (**tokens)->redir_type;
 		if ((**tokens)->fd_close == 0 && (**tokens)->str != NULL)
 			node->redirs->file = ft_strdup((**tokens)->str);
@@ -52,7 +54,7 @@ static void create_redirs(t_ast *node, t_tlist ***tokens)
 	}
 }
 
-static void create_words(t_ast *node, t_tlist ***tokens, int *i)
+static void	create_words(t_ast *node, t_tlist ***tokens, int *i)
 {
 	node->cmd[(*i)] = ft_strdup((**tokens)->str);
 	(*i)++;
@@ -67,17 +69,17 @@ static void create_words(t_ast *node, t_tlist ***tokens, int *i)
 ** Redirections and aggregations are linked list inside simple command node.
 ** Those are executed in order they appear in input
 */
-t_ast *simple_command(t_ast *node, t_tlist ***tokens)
+t_ast	*simple_command(t_ast *node, t_tlist ***tokens)
 {
-	int i;
-	t_tlist *redirs;
+	int		i;
+	t_tlist	*redirs;
 
 	i = 0;
 	node = (t_ast *)ft_memalloc(sizeof(t_ast));
 	node->cmd = (char **)ft_memalloc(sizeof(char *) * 100);
 	node->file = NULL;
 	redirs = NULL;
-	while(**tokens)
+	while (**tokens)
 	{
 		if ((**tokens)->type == TOKEN_WORD)
 			create_words(node, tokens, &i);
@@ -88,7 +90,7 @@ t_ast *simple_command(t_ast *node, t_tlist ***tokens)
 			(**tokens) = (**tokens)->next;
 		}
 		else
-			break;
+			break ;
 	}
 	node->redirs = redirs;
 	node->cmd[i] = NULL;

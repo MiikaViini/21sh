@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/03 12:11:30 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/15 21:32:36 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/16 12:29:17 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,10 @@ typedef struct s_ast
 	struct s_ast	*right;
 }				t_ast;
 
-void 	build_all_asts(t_ast **tree, t_tlist *tokens);
+void	build_all_asts(t_ast **tree, t_tlist *tokens);
 t_ast	*simple_command(t_ast *node, t_tlist ***tokens);
 t_tlist	*new_redir(char *content, char *file, int from, int redir_type);
-int 	set_aggr_values(t_tlist **redirs, t_tlist **tokens);
+int		set_aggr_values(t_tlist **redirs, t_tlist **tokens);
 void	token_to_last(t_tlist **alst, t_tlist *new);
 
 #endif

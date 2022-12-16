@@ -6,17 +6,17 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/12 17:39:14 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/16 09:05:09 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/16 12:01:36 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
 
-static void set_shell_lvl(t_env *env)
+static void	set_shell_lvl(t_env *env)
 {
-	int num;
-	char *temp;
-	int i;
+	int		num;
+	char	*temp;
+	int		i;
 
 	i = -1;
 	temp = NULL;
@@ -32,17 +32,17 @@ static void set_shell_lvl(t_env *env)
 			ft_strdel(&env->env[i]);
 			env->env[i] = ft_strjoin("SHLVL=", temp);
 			ft_strdel(&temp);
-			return;
+			return ;
 		}
 	}
 	update_env(env->env, "1", "SHLVL");
 }
 
-void get_env(t_env *dest, char **environ, int argc, char **argv)
+void	get_env(t_env *dest, char **environ, int argc, char **argv)
 {
-	int i;
-	int k;
-	int size;
+	int	i;
+	int	k;
+	int	size;
 
 	(void)argc;
 	(void)argv;
@@ -57,11 +57,10 @@ void get_env(t_env *dest, char **environ, int argc, char **argv)
 		if (ft_strncmp(environ[k], "OLDPWD=", 7) == 0)
 			k++;
 		if (!environ[k])
-			break;
+			break ;
 		dest->env[i++] = ft_strdup(environ[k]);
 	}
 	dest->env[i] = NULL;
 	dest->terminal = ttyname(1);
 	set_shell_lvl(dest);
 }
-

@@ -6,7 +6,7 @@
 #    By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/07/09 19:07:08 by mviinika          #+#    #+#              #
-#    Updated: 2022/12/15 21:39:11 by mviinika         ###   ########.fr        #
+#    Updated: 2022/12/16 12:56:26 by mviinika         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -47,9 +47,11 @@ EXECUTION_FILES = check_builtins.c \
 				expand_and_remove_quotes.c \
 				get_path.c \
 				redirections.c \
-				redir_aggr.c
+				redir_aggr.c \
+				execute_all.c \
+				expand_remove_quotes_redirs.c 
 				
-
+				
 EXPANSIONS_DIR = expansions
 EXPANSIONS_FILES = dollar_expansion.c \
 				handle_expansions.c \
@@ -57,6 +59,12 @@ EXPANSIONS_FILES = dollar_expansion.c \
 				passwd_user.c \
 				tilde_expansion.c \
 				user_expansion.c \
+
+INITIALISING_DIR = initialising
+INITIALISING_FILES = initialize_and_set_builtins.c \
+					set_pars_struct.c \
+					set_start_values.c \
+					
 
 PARSING_DIR = parsing
 PARSING_FILES = parse_input.c \
@@ -67,22 +75,27 @@ PARSING_FILES = parse_input.c \
 			init_tree.c \
 			set_values_aggr_io.c \
 			set_redirections.c \
-			is_redirect.c
+			is_redirect.c \
+			tokens_del.c \
 
 UTILS_DIR = utils
 UTILS_FILES = check_quotes.c \
 			error_print.c \
+			fork_wrapper.c \
+			is_operator.c \
 			get_env.c \
 			update_env.c \
 			utils.c \
 			utils2.c \
-			see_quote.c 
+			see_quote.c \
+			remove_quotes.c
 
 SRC_FILES = main.c \
 			$(patsubst %, $(AST_DIR)/%, $(AST_FILES)) \
 			$(patsubst %, $(BUILT_INS_DIR)/%, $(BUILT_INS_FILES)) \
 			$(patsubst %, $(EXECUTION_DIR)/%, $(EXECUTION_FILES)) \
 			$(patsubst %, $(EXPANSIONS_DIR)/%, $(EXPANSIONS_FILES)) \
+			$(patsubst %, $(INITIALISING_DIR)/%, $(INITIALISING_FILES)) \
 			$(patsubst %, $(PARSING_DIR)/%, $(PARSING_FILES)) \
 			$(patsubst %, $(UTILS_DIR)/%, $(UTILS_FILES))
 

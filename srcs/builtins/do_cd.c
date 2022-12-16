@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/03 09:14:35 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/15 11:21:43 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/16 12:15:13 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,9 +49,9 @@ static int	check_env_var(char *input, char **env)
 }
 
 //Check if HOME or OLDPWD variables are set or not.
-static int env_dir(char *input, char **env)
+static int	env_dir(char *input, char **env)
 {
-	int i;
+	int	i;
 
 	i = -1;
 	while (env[++i])

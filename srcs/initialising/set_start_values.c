@@ -1,31 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init_tree.c                                        :+:      :+:    :+:   */
+/*   set_start_values.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/15 21:29:43 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/16 12:03:37 by mviinika         ###   ########.fr       */
+/*   Created: 2022/12/16 11:46:48 by mviinika          #+#    #+#             */
+/*   Updated: 2022/12/16 12:03:45 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
 
-void	init_tree(t_ast ***tree, size_t size)
+void	set_start_values(t_ast ***tree, char *buf, int *rb)
 {
-	size_t	i;
-
-	i = 0;
-	while (i < size)
-	{
-		(*tree)[i]->type = 0;
-		(*tree)[i]->cmd = NULL;
-		(*tree)[i]->file = NULL;
-		(*tree)[i]->redir_type = -1;
-		(*tree)[i]->to_fd = 0;
-		(*tree)[i]->err_fd = 0;
-		(*tree)[i]->fd_close = 0;
-		i++;
-	}
+	*rb = 1;
+	ft_memset(buf, '\0', MAX_LINE + 1);
+	(*tree) = NULL;
+	*rb = read(0, buf, MAX_LINE);
 }

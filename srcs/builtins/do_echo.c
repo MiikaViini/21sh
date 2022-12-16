@@ -6,16 +6,16 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/09 15:00:43 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/15 11:15:41 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/16 12:15:07 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
 
-int do_echo(char **input, t_env *env)
+int	do_echo(char **input, t_env *env)
 {
-	int i;
-	struct stat buf;
+	int			i;
+	struct stat	buf;
 
 	i = 1;
 	(void)env;

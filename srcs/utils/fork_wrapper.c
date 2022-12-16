@@ -1,31 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init_tree.c                                        :+:      :+:    :+:   */
+/*   fork_wrapper.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/15 21:29:43 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/16 12:03:37 by mviinika         ###   ########.fr       */
+/*   Created: 2022/12/16 11:59:22 by mviinika          #+#    #+#             */
+/*   Updated: 2022/12/16 11:59:39 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
 
-void	init_tree(t_ast ***tree, size_t size)
+int	fork_wrapper(void)
 {
-	size_t	i;
+	int	pid;
 
-	i = 0;
-	while (i < size)
-	{
-		(*tree)[i]->type = 0;
-		(*tree)[i]->cmd = NULL;
-		(*tree)[i]->file = NULL;
-		(*tree)[i]->redir_type = -1;
-		(*tree)[i]->to_fd = 0;
-		(*tree)[i]->err_fd = 0;
-		(*tree)[i]->fd_close = 0;
-		i++;
-	}
+	pid = fork();
+	if (pid == -1)
+		error_print(NULL, NULL, E_NOFORK);
+	return (pid);
 }

@@ -6,33 +6,33 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 12:09:30 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/16 10:16:35 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/16 12:13:01 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
 
-static void	pipe_executor(t_ast *tree, int rb, char **builtins, t_env *env)
+static void	pipe_executor(t_ast *tree, char **builtins, t_env *env)
 {
 	int	fd[2];
 
 	if (pipe(fd) < 0)
 		error_print(NULL, NULL, E_PIPEFAIL);
-	if ((fork1()) == 0)
+	if ((fork_wrapper()) == 0)
 	{
 		close(1);
 		dup(fd[1]);
 		close(fd[0]);
 		close(fd[1]);
-		exec_tree(tree->left, rb, builtins, env);
+		exec_tree(tree->left, builtins, env);
 	}
-	if ((fork1()) == 0)
+	if ((fork_wrapper()) == 0)
 	{
 		close(0);
 		dup(fd[0]);
 		close(fd[0]);
 		close(fd[1]);
-		exec_tree(tree->right, rb, builtins, env);
+		exec_tree(tree->right, builtins, env);
 	}
 	close(fd[0]);
 	close(fd[1]);
@@ -55,27 +55,23 @@ static void	exec_cmd(t_ast *tree, char **builtins, t_env *env)
 // actions with that node. When PIPE is found, recursively executes tree.
 // Does proper piping in child processes and waits them to finish. in the
 // end closes pipes and exits child process.
-int	exec_tree(t_ast *tree, int rb, char **builtins, t_env *env)
+void	exec_tree(t_ast *tree, char **builtins, t_env *env)
 {
-	if ((!tree) || (!rb && !tree))
-		return (1);
-	if (expand_and_remove_quotes(&tree, env))
-		return (1);
-	if (rb && tree->type == NODE_CMD)
-		update_env(env->env, tree->cmd[ft_linecount(tree->cmd) - 1], "_");
-	if (rb == 0)
+	if (tree == NULL || !tree)
 	{
-		free_strarr(env->path);
-		ft_putstr("exit\n");
-		return (0);
+		return ;
 	}
+	if (expand_and_remove_quotes(&tree, env))
+		return ;
+	if (tree->type == NODE_CMD)
+		update_env(env->env, tree->cmd[ft_linecount(tree->cmd) - 1], "_");
 	if (tree->type == NODE_REDIR || tree->type == NODE_CMD)
 	{
 		if (tree->type == NODE_REDIR && check_redirs(tree, env) == 1)
-			return 1;
+			return ;
 		exec_cmd(tree, builtins, env);
 	}
 	else if (tree->type == NODE_PIPE)
-		pipe_executor(tree, rb, builtins, env);
+		pipe_executor(tree, builtins, env);
 	exit(1);
 }

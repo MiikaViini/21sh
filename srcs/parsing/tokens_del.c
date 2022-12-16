@@ -1,31 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init_tree.c                                        :+:      :+:    :+:   */
+/*   tokens_del.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/15 21:29:43 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/16 12:03:37 by mviinika         ###   ########.fr       */
+/*   Created: 2022/12/16 11:58:07 by mviinika          #+#    #+#             */
+/*   Updated: 2022/12/16 11:58:22 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
 
-void	init_tree(t_ast ***tree, size_t size)
+void	tokens_del(t_tlist **tokens)
 {
-	size_t	i;
+	t_tlist	*temp;
+	t_tlist	*list;
 
-	i = 0;
-	while (i < size)
+	list = *tokens;
+	while (list != NULL)
 	{
-		(*tree)[i]->type = 0;
-		(*tree)[i]->cmd = NULL;
-		(*tree)[i]->file = NULL;
-		(*tree)[i]->redir_type = -1;
-		(*tree)[i]->to_fd = 0;
-		(*tree)[i]->err_fd = 0;
-		(*tree)[i]->fd_close = 0;
-		i++;
+		temp = list->next;
+		if (list->str)
+			ft_strdel(&list->str);
+		if (list->file)
+			ft_strdel(&list->file);
+		free(list);
+		list = temp;
 	}
+	*tokens = NULL;
 }

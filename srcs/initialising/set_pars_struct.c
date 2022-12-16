@@ -1,31 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init_tree.c                                        :+:      :+:    :+:   */
+/*   set_pars_struct.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/15 21:29:43 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/16 12:03:37 by mviinika         ###   ########.fr       */
+/*   Created: 2022/12/16 11:47:36 by mviinika          #+#    #+#             */
+/*   Updated: 2022/12/16 11:47:43 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
 
-void	init_tree(t_ast ***tree, size_t size)
+void	set_pars_struct(t_pars *pars, char *input)
 {
-	size_t	i;
-
-	i = 0;
-	while (i < size)
-	{
-		(*tree)[i]->type = 0;
-		(*tree)[i]->cmd = NULL;
-		(*tree)[i]->file = NULL;
-		(*tree)[i]->redir_type = -1;
-		(*tree)[i]->to_fd = 0;
-		(*tree)[i]->err_fd = 0;
-		(*tree)[i]->fd_close = 0;
-		i++;
-	}
+	pars->parsed = (char **)ft_memalloc(sizeof(char *) \
+	* (ft_wordcount_ws(input) + 1));
+	pars->trimmed = ft_strtrim(input);
+	pars->len = (int)ft_strlen(pars->trimmed);
+	pars->last_token_str = NULL;
 }

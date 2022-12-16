@@ -6,19 +6,19 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 13:11:04 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/07 12:31:55 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/16 12:05:33 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
 
-static char **get_users(void)
+static char	**get_users(void)
 {
-	int fd;
-	char *buf;
-	int rb;
-	int i;
-	char **users;
+	int		fd;
+	char	*buf;
+	int		rb;
+	int		i;
+	char	**users;
 
 	fd = open("/etc/passwd", O_RDONLY);
 	rb = 1;
@@ -28,7 +28,7 @@ static char **get_users(void)
 	{
 		rb = get_next_line(fd, &buf);
 		if (rb == 0)
-			break;
+			break ;
 		users[i++] = ft_strdup(buf);
 		free(buf);
 	}
@@ -37,10 +37,10 @@ static char **get_users(void)
 	return (users);
 }
 
-static char *get_uid(char *input)
+static char	*get_uid(char *input)
 {
-	struct passwd *passwd;
-	char *uid;
+	struct passwd	*passwd;
+	char			*uid;
 
 	passwd = getpwnam(input + 1);
 	if (!passwd)
@@ -49,11 +49,11 @@ static char *get_uid(char *input)
 	return (uid);
 }
 
-static char *get_user_path(char **users, char *uid)
+static char	*get_user_path(char **users, char *uid)
 {
-	char **info;
-	char *path;
-	int i;
+	char	**info;
+	char	*path;
+	int		i;
 
 	i = -1;
 	info = NULL;
@@ -64,7 +64,7 @@ static char *get_user_path(char **users, char *uid)
 		if (ft_strcmp(info[2], uid) == 0)
 		{
 			path = ft_strdup(info[5]);
-			break;
+			break ;
 		}
 		free_strarr(info);
 	}
@@ -72,12 +72,12 @@ static char *get_user_path(char **users, char *uid)
 	return (path);
 }
 
-char *passwd_user(char *input)
+char	*passwd_user(char *input)
 {
-	char *uid;
-	char **users;
-	int i;
-	char *path;
+	char	*uid;
+	char	**users;
+	int		i;
+	char	*path;
 
 	i = 0;
 	path = NULL;

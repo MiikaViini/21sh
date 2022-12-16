@@ -6,24 +6,23 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/03 12:54:32 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/16 08:55:12 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/16 12:17:57 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
 
-
 static int	peek_for_last_pipe(t_tlist *tokens)
 {
 	t_tlist	*temp;
-	
+
 	temp = tokens;
 	while (temp)
 	{
 		if (temp->type == TOKEN_PIPE)
-			return 0;
+			return (0);
 		if (temp->type == TOKEN_SEMICOLON)
-			break;
+			break ;
 		temp = temp->next;
 	}
 	return (1);
@@ -49,7 +48,7 @@ static t_ast	*build_ast(t_tlist **tokens)
 	tree = create_pipe_node(NODE_PIPE);
 	tree->left = simple_command(tree, &(tokens));
 	if (!(*tokens) || (*tokens)->type == TOKEN_SEMICOLON)
-		return tree;
+		return (tree);
 	if (peek_for_last_pipe((*tokens)->next))
 	{
 		(*tokens) = (*tokens)->next;
@@ -63,12 +62,12 @@ static t_ast	*build_ast(t_tlist **tokens)
 	return (tree);
 }
 
-void build_all_asts(t_ast **tree, t_tlist *tokens)
+void	build_all_asts(t_ast **tree, t_tlist *tokens)
 {
 	int	i;
 
 	i = 0;
-	while(tokens)
+	while (tokens)
 	{
 		tree[i] = build_ast(&tokens);
 		if (tokens && tokens->type == TOKEN_SEMICOLON)

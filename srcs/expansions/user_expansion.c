@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/12 10:45:58 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/15 13:42:47 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/16 12:04:13 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static int	is_valid_user(char *input, char *name)
 	return (0);
 }
 
-int linux_users(char **path, char *input)
+int	linux_users(char **path, char *input)
 {
 	if (LIN)
 	{

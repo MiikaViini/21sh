@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 09:14:23 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/16 10:23:45 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/16 13:34:32 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	initialise_structs(t_quotes *quotes, t_word *ints, char *input)
 	}
 }
 
-void set_operator_sign(t_word *ints, char **word)
+void	set_operator_sign(t_word *ints, char **word)
 {
 	if (*word[0] == '|')
 		ints->type = TOKEN_PIPE;
@@ -39,9 +39,9 @@ void set_operator_sign(t_word *ints, char **word)
 		ints->type = TOKEN_ELSE;
 }
 
-t_tlist *create_token(char **word, t_pars *pars, t_word *ints)
+t_tlist	*create_token(char **word, t_pars *pars, t_word *ints)
 {
-	t_tlist *token;
+	t_tlist	*token;
 
 	token = new_token(*word, ints);
 	ft_strdel(&pars->last_token_str);
@@ -64,16 +64,16 @@ static t_tlist	*get_token(t_pars *pars, t_word *ints)
 		see_quote(&quots, pars->trimmed, ints->i);
 		if (set_redirections(pars, ints, word, &quots))
 			break ;
-		if (is_end_of_word(pars->trimmed[ints->i], &quots, ints->k) 
+		if (is_end_of_word(pars->trimmed[ints->i], &quots, ints->k)
 			|| is_redirect(pars->trimmed[ints->i], &quots))
 			break ;
 		if (can_be_added(pars->trimmed[ints->i], &quots))
 			add_letter(word, pars->trimmed[ints->i++], ints);
-		if (is_operator(word[0], &quots) 
+		if (is_operator(word[0], &quots)
 			&& !is_redirect(pars->trimmed[ints->i], &quots))
 		{
 			set_operator_sign(ints, &word);
-			break;
+			break ;
 		}
 	}
 	return (create_token(&word, pars, ints));
@@ -91,7 +91,8 @@ t_ast	**parse_input(t_pars *pars)
 	ints.i = 0;
 	ints.total = 0;
 	tokens = NULL;
-	tree = (t_ast **)ft_memalloc(sizeof(t_ast *) * ft_wordcount_ws(pars->trimmed) + 1);
+	tree = (t_ast **)ft_memalloc(sizeof(t_ast *) * \
+	ft_wordcount_ws(pars->trimmed) + 1);
 	while (ints.i < pars->len)
 	{
 		token_to_last(&tokens, get_token(pars, &ints));
@@ -105,4 +106,3 @@ t_ast	**parse_input(t_pars *pars)
 	ft_strdel(&pars->last_token_str);
 	return (tree);
 }
-

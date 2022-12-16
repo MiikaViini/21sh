@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 20:41:14 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/07 12:34:10 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/16 12:10:11 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 static int	execute_command(char **input, char *exec, char **env, int tree)
 {
 	struct stat	stat_;
-	int pid;
+	int			pid;
 
 	if (stat(exec, &stat_) != -1 && !S_ISREG(stat_.st_mode))
 		return (1);
@@ -28,10 +28,9 @@ static int	execute_command(char **input, char *exec, char **env, int tree)
 	pid = fork();
 	if (pid < 0)
 		return (1);
-	
 	else if (pid == 0)
 	{
-		execve(exec, input, env);;
+		execve(exec, input, env);
 		error_print(exec, NULL, E_EXE);
 		exit(EXIT_FAILURE);
 	}
@@ -59,7 +58,7 @@ static int	execute_path_bin(char **input, char *path, char **env, DIR *dir)
 	return (0);
 }
 
-static int open_and_read_dir(char *path, DIR **dir, struct dirent **ent)
+static int	open_and_read_dir(char *path, DIR **dir, struct dirent **ent)
 {
 	*dir = opendir(path);
 	if (*dir == NULL)
@@ -68,11 +67,11 @@ static int open_and_read_dir(char *path, DIR **dir, struct dirent **ent)
 	return (0);
 }
 
-static int check_path_bin(char **input, char **path, char **env)
+static int	check_path_bin(char **input, char **path, char **env)
 {
-	DIR *dir;
-	struct dirent *entity;
-	int i;
+	DIR				*dir;
+	struct dirent	*entity;
+	int				i;
 
 	i = -1;
 	dir = NULL;
