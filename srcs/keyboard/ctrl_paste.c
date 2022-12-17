@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cb_paste.c                                         :+:      :+:    :+:   */
+/*   ctrl_paste.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/09 23:14:23 by spuustin          #+#    #+#             */
-/*   Updated: 2022/12/09 23:16:19 by spuustin         ###   ########.fr       */
+/*   Updated: 2022/12/17 18:19:15 by spuustin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	ft_paste(t_term *t)
 				ft_shift_insert(t);
 			t->inp[t->index++] = t->clipboard.buff[i];
 			t->bytes++;
-			ft_trigger_nl(t);
+			trigger_nl(t);
 			if (t->c_col == t->ws_col)
 				t->c_row++;
 		}

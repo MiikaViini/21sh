@@ -6,13 +6,13 @@
 /*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/26 16:23:16 by spuustin          #+#    #+#             */
-/*   Updated: 2022/12/14 19:50:15 by spuustin         ###   ########.fr       */
+/*   Updated: 2022/12/17 18:11:15 by spuustin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
 
-void	ft_add_nl_last_row(t_term *t, ssize_t pos)
+void	ft_add_nl_last_row(t_term *t, char *array, ssize_t pos)
 {
 	int		index;
 	char	**n_arr;
@@ -22,7 +22,7 @@ void	ft_add_nl_last_row(t_term *t, ssize_t pos)
 	if (!t->nl_addr)
 	{
 		t->nl_addr = (char **)ft_memalloc(sizeof(char *) * 2);
-		t->nl_addr[++index] = &t->inp[pos];
+		t->nl_addr[++index] = array + pos;
 		t->nl_addr[++index] = NULL;
 	}
 	else
@@ -31,7 +31,7 @@ void	ft_add_nl_last_row(t_term *t, ssize_t pos)
 			* (size_t)(t->total_row + 2));
 		while (t->nl_addr[++index])
 			n_arr[index] = t->nl_addr[index];
-		n_arr[index++] = &t->inp[pos];
+		n_arr[index++] = array + pos;
 		n_arr[index] = NULL;
 		ft_memdel((void **)&t->nl_addr);
 		t->nl_addr = n_arr;
@@ -65,30 +65,4 @@ void	ft_scroll_down(void)
 	run_capability("sf");
 	run_capability("rc");
 	run_capability("up");
-}
-
-void	add_new_line(t_term *t, int pos)
-{
-	int		index;
-	char	**n_arr;
-
-	index = -1;
-	n_arr = NULL;
-	if (!t->nl_addr)
-	{
-		t->nl_addr = (char **)ft_memalloc(sizeof(char *) * 2);
-		t->nl_addr[++index] = &t->inp[pos];
-		t->nl_addr[++index] = NULL;
-	}
-	else
-	{
-		n_arr = (char **)ft_memalloc(sizeof(char *) \
-			* (size_t)(t->total_row + 2));
-		while (t->nl_addr[++index])
-			n_arr[index] = t->nl_addr[index];
-		n_arr[index++] = &t->inp[pos];
-		n_arr[index] = NULL;
-		ft_memdel((void **)&t->nl_addr); //free_array()
-		t->nl_addr = n_arr;
-	}
 }

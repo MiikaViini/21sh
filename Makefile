@@ -6,7 +6,7 @@
 #    By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/07/09 19:07:08 by mviinika          #+#    #+#              #
-#    Updated: 2022/12/14 19:50:30 by spuustin         ###   ########.fr        #
+#    Updated: 2022/12/17 20:19:36 by spuustin         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ LIBFT = ./libft/libft.a
 LIBFT_DIR = ./libft/
 LIB_INCLUDE_DIR = ./libft/include
 
-FLAGS = -Wall -Wextra -Werror -g -pedantic
+FLAGS = -Wall -Wextra -Werror -pedantic -g -fsanitize=address
 
 UNAME :=$(shell uname)
 
@@ -86,7 +86,9 @@ KEYBOARD_FILES = tcaps.c \
 				quote_management.c \
 				print_trail.c \
 				prompt_control.c \
-				get_line_len.c
+				get_line_len.c \
+				print_input.c \
+				nl_removal.c
 
 PARSING_DIR = parsing
 PARSING_FILES = parse_input.c \

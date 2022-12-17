@@ -6,56 +6,56 @@
 /*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/14 19:15:38 by spuustin          #+#    #+#             */
-/*   Updated: 2022/12/14 19:16:05 by spuustin         ###   ########.fr       */
+/*   Updated: 2022/12/17 18:50:12 by spuustin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
 
+static void	ft_print_line(t_term *t, ssize_t row)
+{
+	if (row == t->c_row)
+	{
+		if (t->nl_addr[row + 1])
+			write(1, &t->inp[t->index], \
+				(size_t)(t->nl_addr[row + 1] - &t->inp[t->index]));
+		else
+			write(1, &t->inp[t->index], \
+				(size_t)((&t->inp[t->bytes] - &t->inp[t->index]) + 1));
+	}
+	else
+	{
+		if (ft_is_prompt_line(t, row))
+			print_prompt(row);
+		if (t->nl_addr[row + 1])
+			write(1, t->nl_addr[row], \
+				(size_t)(t->nl_addr[row + 1] - t->nl_addr[row]));
+		else
+			write(1, t->nl_addr[row], \
+				(size_t)((&t->inp[t->bytes] - t->nl_addr[row]) + 1));
+	}
+}
+
 static void	ft_print_line_trail(t_term *t)
 {
 	ssize_t	row;
-	ssize_t dis_row;
+	ssize_t	dis_row;
 
-	dis_row = 0;
 	row = t->c_row;
 	dis_row = get_linenbr();
 	while (row <= t->total_row)
 	{
 		run_capability("ce");
-		if (row == t->c_row)
-		{
-			if (t->nl_addr[row + 1])
-				write(1, &t->inp[t->index], (size_t)(t->nl_addr[row + 1] - &t->inp[t->index]));
-			else
-				write(1, &t->inp[t->index], (size_t)((&t->inp[t->bytes] - &t->inp[t->index]) + 1));	
-		}
-		else
-		{
-			if (ft_is_prompt_line(t, row))
-				print_prompt(row);
-			if (t->nl_addr[row + 1])
-				write(1, t->nl_addr[row], (size_t)(t->nl_addr[row + 1] - t->nl_addr[row]));
-			else
-				write(1, t->nl_addr[row], (size_t)((&t->inp[t->bytes] - t->nl_addr[row]) + 1));
-		}
+		ft_print_line(t, row++);
 		set_cursor(0, ++dis_row);
-		row++;
 	}
 }
 
 void	ft_print_trail(t_term *t)
 {
-	ssize_t row;
-
 	run_capability("vi");
 	run_capability("sc");
-	run_capability("sf");
-	row = get_linenbr();
-	run_capability("vi");
 	ft_print_line_trail(t);
 	run_capability("rc");
-	run_capability("ve");
-	set_cursor(t->c_col, row);
 	run_capability("ve");
 }

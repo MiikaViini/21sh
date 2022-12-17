@@ -6,7 +6,7 @@
 /*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/02 15:40:13 by spuustin          #+#    #+#             */
-/*   Updated: 2022/12/14 19:36:26 by spuustin         ###   ########.fr       */
+/*   Updated: 2022/12/17 17:59:55 by spuustin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,30 +75,61 @@ static void	ft_delim_fetch(t_term *t)
 // 	ft_add_nl_last_rowss(t, loc);
 // }
 
+static int	ft_bslash_escape_check(t_term *t, ssize_t pos)
+{
+	ssize_t	start;
+	ssize_t	count;
+
+	start = pos - 1;
+	while (start && t->inp[start] == '\\')
+		start--;
+	if (start)
+		start++;
+	count = start;
+	while (count < t->bytes && t->inp[count] == '\\')
+		count++;
+	if ((count - start) % 2)
+		return (1);
+	return (0);
+}
+
 static void	ft_insertion_enter(t_term *t)
 {
 	if (!t->nl_addr[t->c_row + 1])
 	{
-		if (t->bslash || t->q_qty % 2 || (t->heredoc \
-			&& ft_strcmp(t->nl_addr[t->c_row], t->delim)))
+		ft_delim_fetch(t);
+		t->bslash = ft_bslash_escape_check(t, t->bytes);
+		if (t->q_qty % 2 \
+			|| (t->heredoc \
+			&& (t->delim && ft_strcmp(t->nl_addr[t->c_row], t->delim))) \
+			|| t->bslash)
 		{
+			t->history_row = -1;
+			ft_memcpy(t->history_buff, t->inp, t->bytes);
 			t->inp[t->bytes++] = (char)t->ch;
-			ft_create_prompt_line(t); //edited this and commented unwanted ones out
+			ft_create_prompt_line(t, t->bytes);
 			t->index = t->bytes;
 		}
 	}
-	ft_delim_fetch(t);
 }
 
-void	ft_heredoc_handling(t_term *t)
+void	ft_heredoc_handling(t_term *t, int index)
 {
-	if (t->index > 2 && t->ch == '<' && !(t->q_qty % 2))
-	{
-		if (t->inp[t->index - 1] == '<' && t->inp[t->index - 2] != '<')
-			t->heredoc = 1;
-		else
-			t->heredoc = 0;
-	}
+	ssize_t	start;
+	ssize_t	count;
+
+	start = index;
+	while (start > 1 && t->inp[start] == '<')
+		start--;
+	if (start)
+		start++;
+	count = start;
+	while (count < t->bytes && t->inp[count] == '<')
+		count++;
+	if ((count - start) == 2)
+		t->heredoc = 1;
+	else
+		t->heredoc = 0;
 }
 
 void	ft_bslash_handling(t_term *t)
@@ -145,24 +176,64 @@ void	ft_shift_insert(t_term *t)
 	}
 }
 
+void	ft_quote_flag_reset(t_term *t)
+{
+	ssize_t	i;
+
+	i = -1;
+	t->q_qty = 0;
+	t->quote = 0;
+	t->heredoc = 0;
+	while (t->inp[++i])
+	{
+		if ((t->inp[i] == D_QUO || t->inp[i] == S_QUO) && !t->heredoc)
+		{
+			if (!ft_bslash_escape_check(t, i))
+				ft_quote_handling(t, t->inp[i]);
+		}
+		if (t->inp[i] == '<')
+		{
+			ft_heredoc_handling(t, i);
+			if (!t->heredoc && t->delim)
+				ft_strdel(&t->delim);
+		}
+	}
+}
+
+void	ft_quote_flag_check(t_term *t, ssize_t index)
+{
+	ssize_t	i;
+
+	i = index;
+	while (t->inp[i] && t->inp[i] == '\\')
+		i++;
+	if (t->inp[i] == S_QUO || t->inp[i] == D_QUO)
+		ft_quote_flag_reset(t);
+}
+
 static void	ft_insertion_char(t_term *t)
 {
 	ft_putc(t->ch);
-	ft_heredoc_handling(t);
-	ft_bslash_handling(t);
-	if ((t->ch == D_QUO || t->ch == S_QUO) && !t->heredoc)
-	{
-		if (!t->bslash)
-			ft_quote_handling(t, (char)t->ch);
-		else
-			t->bslash = 0;
-	}
 	t->c_col++;
-	ft_shift_nl_addre(t, 1);
+	ft_shift_nl_addr(t, 1);
 	if (t->inp[t->index])
 		ft_shift_insert(t);
 	t->inp[t->index++] = (char)t->ch;
 	t->bytes++;
+	if ((t->inp[t->index - 1] == D_QUO || t->inp[t->index - 1] == S_QUO) \
+		&& !t->heredoc)
+	{
+		if (!ft_bslash_escape_check(t, t->index - 1))
+			ft_quote_handling(t, t->inp[t->index - 1]);
+	}
+	if (t->inp[t->index - 1] == '<')
+	{
+		ft_heredoc_handling(t, t->index - 1);
+		if (!t->heredoc && t->delim)
+			ft_strdel(&t->delim);
+	}
+	else if (t->inp[t->index - 1] == '\\')
+		ft_quote_flag_check(t, t->index - 1);
 }
 
 static void	ft_print_line(t_term *t, ssize_t row)

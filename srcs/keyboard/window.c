@@ -6,7 +6,7 @@
 /*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/18 22:53:41 by spuustin          #+#    #+#             */
-/*   Updated: 2022/12/14 18:41:30 by spuustin         ###   ########.fr       */
+/*   Updated: 2022/12/17 18:05:09 by spuustin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,17 +83,17 @@ void	get_window_size(t_term *t)
 {
 	struct winsize	window;
 
+	run_capability("vi");
 	if (ioctl(0, TIOCGWINSZ, (char *)&window) < 0)
-		exit(1);
+		perror("TIOCGWINSZ");
 	t->ws_col = window.ws_col;
 	t->ws_row = window.ws_row;
 	if (*t->inp)
 	{
-		t->quote = 0;
-		t->q_qty = 0;
+		run_capability("cl");
 		ft_reset_nl_addr(t);
-		t->c_row = 0;
+		ft_print_input(t, 0, 0);
 		set_new_cur_pos(t);
-		ft_print_trail_two(t);
 	}
+	run_capability("ve");
 }

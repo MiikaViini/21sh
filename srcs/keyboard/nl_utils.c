@@ -6,7 +6,7 @@
 /*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/14 19:12:47 by spuustin          #+#    #+#             */
-/*   Updated: 2022/12/14 19:49:27 by spuustin         ###   ########.fr       */
+/*   Updated: 2022/12/17 19:44:55 by spuustin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,13 +31,13 @@ void	ft_remove_nl_addr(t_term *t, ssize_t row)
 			new_array[++j] = t->nl_addr[i];
 	}
 	new_array[++j] = NULL;
-	ft_memdel((void **)&t->nl_addr); //free_array
+	ft_free_array(t->nl_addr);
 	t->nl_addr = new_array;
 }
 
 void	ft_shift_nl_addr(t_term *t, int num)
 {
-	int	row;
+	ssize_t	row;
 
 	row = t->c_row + 1;
 	while (t->nl_addr[row] && !ft_is_prompt_line(t, row))
@@ -64,25 +64,24 @@ void	ft_reset_nl_addr(t_term *t)
 	ssize_t	i;
 	ssize_t	len;
 
-	i = 0;
+	i = -1;
 	len = 0;
 	t->total_row = 0;
 	if (t->nl_addr)
 		ft_memdel((void **)&t->nl_addr);
-	ft_add_nl_last_row(t, i);
+	ft_add_nl_last_row(t, t->inp, 0);
 	while (t->inp[++i])
 	{
 		len++;
-		if (((len + ft_get_prompt_len(t, t->total_row)) + 1) == \
-			(t->ws_col) || t->inp[i] == '\n')
+		if (((len + ft_get_prompt_len(t, t->total_row))) == t->ws_col \
+			|| t->inp[i] == '\n')
 		{
-			ft_add_nl_last_row(t, i + 1);
 			t->total_row++;
-			len = -1;
+			ft_add_nl_last_row(t, t->inp, i + 1);
+			len = 0;
 		}
-		if (t->inp[i] == D_QUO || t->inp[i] == S_QUO)
-			ft_quote_handling(t, t->inp[i]);
 	}
+	ft_quote_flag_reset(t);
 }
 
 void	trigger_nl(t_term *t)
@@ -95,18 +94,20 @@ void	trigger_nl(t_term *t)
 	if (len == t->ws_col)
 	{
 		t->total_row++;
-		if (t->start_row + t->total_row >= t->ws_row)
+		if (get_linenbr() == (t->ws_row - 1))
 			ft_scroll_down();
-		ft_add_nl_last_row(t, t->bytes);
+		if (t->nl_addr[t->c_row + 1])
+		{
+			run_capability("cd");
+			ft_reset_nl_addr(t);
+		}
+		else
+			ft_add_nl_last_row(t, t->inp, t->bytes);
 	}
-	if (len == t->ws_col + 1)
-		if (t->nl_addr[row + 1])
-			ft_add_nl_mid_row(t, row + 1, (ssize_t)(&t->nl_addr[row + 1][-1] \
-			- t->nl_addr[0]));
 	if (t->c_col == t->ws_col)
 	{
-		t->c_row++;
 		t->c_col = 0;
 		set_cursor(t->c_col, get_linenbr() + 1);
+		t->c_row++;
 	}
 }

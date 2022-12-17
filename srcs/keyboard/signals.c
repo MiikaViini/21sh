@@ -6,14 +6,13 @@
 /*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 21:19:44 by spuustin          #+#    #+#             */
-/*   Updated: 2022/12/14 18:46:39 by spuustin         ###   ########.fr       */
+/*   Updated: 2022/12/17 20:15:51 by spuustin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
 
-extern t_term *g_t;
-
+extern t_term	*g_t;
 
 /*
  * It's a signal handler that
@@ -29,6 +28,7 @@ static void	sig_handler(int num)
 	{
 		write(1, "\n", 1);
 		ft_restart_cycle(g_t);
+		g_t->sigint = 1;
 	}
 }
 

@@ -6,7 +6,7 @@
 /*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 19:07:23 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/12 21:11:02 by spuustin         ###   ########.fr       */
+/*   Updated: 2022/12/17 18:34:16 by spuustin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,11 +116,8 @@ static void	prompt(t_term *t, t_env *env, char **builtins)
 	int		rb;
 
 	rb = 1;
-	while (rb != 0)
+	while (input_cycle(t))
 	{
-		write(1, SHELL_PROMPT, 7);
-		if (!input_cycle(t))
-			break;
 		rb = ft_21sh(env, builtins, t->inp);
 		ft_restart_cycle(t);
 	}
@@ -134,7 +131,6 @@ int	main(int argc, char **argv, char **environ)
 	int		rb;
 	//char *terminal;
 
-	ft_getent();
 	init_tcaps(&t);
 	//terminal = ttyname(1);
 	rb = 1;

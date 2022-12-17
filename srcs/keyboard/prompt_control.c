@@ -6,7 +6,7 @@
 /*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/14 19:19:15 by spuustin          #+#    #+#             */
-/*   Updated: 2022/12/14 19:42:09 by spuustin         ###   ########.fr       */
+/*   Updated: 2022/12/17 18:48:02 by spuustin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,20 +42,16 @@ void	ft_delete(t_term *t)
 	ssize_t	len;
 	ssize_t	row;
 
-	if (t->index && (t->inp[t->index] == D_QUO || \
-	t->inp[t->index] == S_QUO))
-		ft_quote_decrement(t, 0);
 	row = ft_row_lowest_line(t);
-	if (t->nl_addr[row + 1]
-		&& (&t->inp[t->index + 1] == t->nl_addr[t->c_row + 1]
-			&& ft_is_prompt_line(t, t->c_row + 1)))
+	if (t->nl_addr[row + 1] && (&t->inp[t->index + 1] \
+		== t->nl_addr[t->c_row + 1] && ft_is_prompt_line(t, t->c_row + 1)))
 		return ;
 	if (t->nl_addr[row + 1])
 		len = (t->nl_addr[row + 1] - t->nl_addr[row]) - 1;
 	else
 		len = &t->inp[t->bytes] - t->nl_addr[row];
 	update_nl_addr_del(t);
-	ft_deletion_shift(t, DEL);
+	ft_deletion_shift(t, t->index);
 	run_capability("ce");
 	if (!len)
 	{
@@ -66,21 +62,20 @@ void	ft_delete(t_term *t)
 		ft_print_trail(t);
 }
 
-void	ft_create_prompt_line(t_term *t)
+void	ft_create_prompt_line(t_term *t, ssize_t loc)
 {
 	int		row;
 
 	row = get_linenbr();
 	t->c_row++;
 	t->total_row++;
-	if (t->start_row + t->total_row >= t->ws_row)
+	if (row == (t->ws_row - 1))
 		run_capability("sf");
 	else
 		row++;
-	t->c_col = t->m_prompt_len;
 	set_cursor(0, row);
-	write(1, OPEN_QUOTE, 2);
-	add_new_line(t, t->bytes);
+	t->c_col = write(1, OPEN_QUOTE, ft_strlen(OPEN_QUOTE));
+	ft_add_nl_last_row(t, t->inp, loc);
 }
 
 ssize_t	ft_get_prompt_len(t_term *t, ssize_t row)
@@ -89,8 +84,8 @@ ssize_t	ft_get_prompt_len(t_term *t, ssize_t row)
 
 	prompt_len = 0;
 	if (!row)
-		prompt_len = t->prompt_len;
-	else if (ft_is_prompt_line(t, row))
-		prompt_len = t->m_prompt_len;
+		prompt_len = ft_strlen(SHELL_PROMPT);
+	if (t->nl_addr[row][-1] == '\n')
+		prompt_len = ft_strlen(OPEN_QUOTE);
 	return (prompt_len);
 }
