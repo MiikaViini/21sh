@@ -33,7 +33,7 @@
 # include "../libft/include/libft.h"
 # include "ast.h"
 # include "tokens.h"
-# include "error.h"
+# include "errno.h"
 
 # define MAX_VAR 1024
 # define MAX_PATH 1024
@@ -139,7 +139,7 @@ int		redir_token(char *trimmed, char *word, t_word *ints);
 int		is_redirect(char c, t_quotes *quots);
 void	redir_aggr(t_tlist *redirs , int *ret);
 int		check_syntax(t_pars *pars, t_tlist *tokens);
-void	set_values_aggr_io(t_word *ints, char **word, int *total);
+void	set_values_aggr_io(t_word *ints, char **word);
 int		set_redirections(t_pars *pars, t_word *ints, char *word, t_quotes *quots);
 char	*remove_quotes(char *input);
 

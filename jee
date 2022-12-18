@@ -1,19 +1,20 @@
-total 1688
-drwxrwxr-x  8 miika miika    4096 joulu  16 23:02 .
+total 1692
+drwxrwxr-x 10 miika miika    4096 joulu  18 21:21 .
 drwxrwxr-x 19 miika miika    4096 joulu   2 19:39 ..
--rwxrwxr-x  1 miika miika  362944 joulu  16 23:01 21sh
+-rwxrwxr-x  1 miika miika  362120 joulu  18 21:21 21sh
 -rw-rw-r--  1 miika miika 1300693 joulu  16 22:59 21sh.en.pdf
 -rw-rw-r--  1 miika miika      20 joulu  15 22:13 author
 drwxrwxr-x  2 miika miika    4096 joulu  16 12:29 eval_tests
-drwxrwxr-x  8 miika miika    4096 joulu  16 21:05 .git
+drwxrwxr-x  8 miika miika    4096 joulu  16 23:04 .git
 -rw-rw-r--  1 miika miika       7 joulu  16 23:01 .gitignore
 drwxrwxr-x  2 miika miika    4096 joulu  15 22:13 include
--rw-rw-r--  1 miika miika       0 joulu  16 23:02 jaa
--rw-rw-r--  1 miika miika       6 joulu  16 23:02 jee
-drwxrwxr-x  6 miika miika    4096 joulu  16 23:01 libft
+-rw-rw-r--  1 miika miika       0 joulu  18 21:21 jee
+drwxrwxr-x  6 miika miika    4096 joulu  18 21:04 libft
 -rw-rw-r--  1 miika miika    3631 joulu  16 12:56 Makefile
-drwxrwxr-x  9 miika miika    4096 joulu  16 23:01 objs
+drwxrwxr-x  9 miika miika    4096 joulu  17 21:08 objs
+drwxrwxr-x  2 miika miika    4096 joulu  18 20:50 prem
 -rw-rw-r--  1 miika miika     809 joulu  15 22:13 README.md
 -rw-rw-r--  1 miika miika     812 marras 24 09:04 redirection_cases
 drwxrwxr-x  9 miika miika    4096 joulu  16 11:56 srcs
+dr-xr-xr-x  2 miika miika    4096 joulu  17 21:18 test
 -rw-rw-r--  1 miika miika     144 joulu   6 13:17 todo.txt

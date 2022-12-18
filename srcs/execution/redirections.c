@@ -6,11 +6,40 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 12:12:58 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/16 20:40:41 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/17 18:18:26 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
+
+static int special_dirs(char *file, char *folder)
+{
+	if (ft_strcmp(folder, "/dev/fd/") == 0)
+	{
+		if (access(file, F_OK) == -1)
+			return 1;
+	}
+	return 0;
+}
+
+static int folder_check(t_tlist *redirs)
+{
+	char *folder;
+	int len;
+
+	if (ft_strchr(redirs->file, '/') == NULL)
+		return (1);
+	len = ft_strlen(redirs->file) - ft_strlen(ft_strrchr(redirs->file, '/'));
+	folder = ft_strndup(redirs->file, len + 1);
+	ft_printf("%s\n", folder);
+	if (!special_dirs(redirs->file, folder))
+	{
+		ft_strdel(&folder);
+		return(1);
+	}
+	ft_strdel(&folder);
+	return (0);
+}
 
 static void	redir_trunc(t_tlist *redirs, int *ret)
 {
@@ -36,8 +65,20 @@ static void	redir_trunc(t_tlist *redirs, int *ret)
 			*ret = -1;
 			return ;
 		}
-		close(redirs->from_fd);
-		open(redirs->file, O_CREAT | O_WRONLY | O_TRUNC, 0664);
+		if (!folder_check(redirs))
+		{
+			error_print(NULL, redirs->file, E_NOEX);
+			*ret = -1;
+			return ;
+		}
+		else
+		{
+			if (ft_strcmp(redirs->file, "/dev/fd/1") && ft_strcmp(redirs->file, "/dev/stdout"))
+			{
+				close(redirs->from_fd);
+				open(redirs->file, O_CREAT | O_WRONLY | O_TRUNC, 0664);
+			}
+		}
 	}
 }
 
@@ -73,6 +114,7 @@ static void	redir_aggr_io(t_tlist *redirs, int *ret)
 {
 	(void)ret;
 	close(redirs->to_fd);
+	printf("[%s]\n", redirs->file);
 	open(redirs->file, O_CREAT | O_WRONLY | O_TRUNC, 0664);
 	dup2(redirs->to_fd, redirs->from_fd);
 }
@@ -81,7 +123,6 @@ int	redirection(t_tlist *redirs, int *ret, t_env *env)
 {
 	if (!redirs)
 		return (*ret);
-	ft_printf("%s %d\n", redirs->file, redirs->redir_type);
 	expand_remove_quotes_redirs(&redirs, env);
 	if (redirs->redir_type == REDIR_TRUNC)
 		redir_trunc(redirs, ret);

@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/08 20:51:44 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/16 15:29:12 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/17 14:01:20 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,7 @@
 
 int	add_aggr_out(char **trimmed, char **word, t_word *ints)
 {
-	if (*(trimmed[0]) == '&' && *(trimmed[1]) == '>')
-		ints->redir = REDIR_AGGR_STERR_STOUT;
-	else
-		ints->redir = REDIR_AGGR_OUT;
+	ints->redir = REDIR_AGGR_OUT;
 	**word = **trimmed;
 	(*word)++;
 	(*trimmed)++;
@@ -69,8 +66,7 @@ int	redir_token(char *trimmed, char *word, t_word *ints)
 
 	i = 0;
 	ints->type = TOKEN_REDIRECT;
-	if ((trimmed[1] == '&' && trimmed[0] == '>' )
-		|| ((trimmed[0]) == '&' && trimmed[1] == '>'))
+	if (trimmed[1] == '&' && trimmed[0] == '>' )
 		i = add_aggr_out(&trimmed, &word, ints);
 	else if ((trimmed[1]) == '&' && trimmed[0] == '<')
 		i = add_aggr_in(trimmed, word, ints);

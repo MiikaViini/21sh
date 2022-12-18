@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 12:47:37 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/16 14:42:49 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/17 13:19:58 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	expand_remove_quotes_redirs(t_tlist **redirs, t_env *env)
 	k = 0;
 	initialise_structs(&quotes, NULL, NULL);
 	temp = (*redirs);
-	while ((*redirs))
+	while ((*redirs) && (*redirs)->file)
 	{
 		see_quote(&quotes, (*redirs)->file, k);
 		while ((*redirs)->file[k])

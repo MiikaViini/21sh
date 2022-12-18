@@ -109,6 +109,6 @@ char	**ft_strarrndup(char **dest, char **strarr, size_t size);
 char	**ft_strarrcpy(char **dest, char **strarr);
 size_t	ft_linecount(char **arr);
 size_t	ft_wordcount_ws(const char *s);
-int 	ft_only_digits(char *str);
+int		ft_only_digits(char *str);
 
 #endif
