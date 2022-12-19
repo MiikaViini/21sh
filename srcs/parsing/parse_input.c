@@ -76,6 +76,7 @@ static t_tlist	*get_token(t_pars *pars, t_word *ints)
 			break ;
 		}
 	}
+	DB(word, ints->type)
 	return (create_token(&word, pars, ints));
 }
 

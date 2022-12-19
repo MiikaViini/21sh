@@ -6,26 +6,13 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 19:07:23 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/16 19:44:13 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/19 16:30:27 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
 
-int g_signal;
-
-static void	set_signal_int(int signal)
-{
-	g_signal = signal;
-	ft_putchar('\n');
-	//ft_putstr("21sh$ ");
-}
-
-void	set_signal_handling(void)
-{
-	signal(SIGINT, set_signal_int);
-	signal(SIGWINCH, set_signal_int);
-}
+extern int g_signal;
 
 void	free_parsed_input(char **p_input)
 {
@@ -55,7 +42,7 @@ static int	ft_21sh(t_env *env, char **builtins)
 	t_ast	**tree;
 	t_pars	parsed;
 
-	set_signal_handling();
+	//set_signal_handling();
 	set_start_values(&tree, buf, &rb);
 	if (rb == -1)
 		exit(1);
@@ -89,10 +76,17 @@ int	main(int argc, char **argv, char **environ)
 	builtins = initialize_and_set_builtins();
 	get_env(&env, environ, argc, argv);
 	ft_putstr("\033[2J\033[H");
+	
 	while (rb != 0)
 	{
-		ft_putstr("21sh$ ");
+		set_signal_handling();
+		//ft_printf("%d\n", g_signal);
+		if (g_signal != 1)
+			ft_putstr("21sh$ ");
+		g_signal = 0;
 		rb = ft_21sh(&env, builtins);
+		
+		
 	}
 	free_strarr(env.env);
 	free_strarr(env.path);

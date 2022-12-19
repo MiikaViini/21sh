@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 12:09:30 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/16 12:13:01 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/19 16:19:01 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static void	pipe_executor(t_ast *tree, char **builtins, t_env *env)
 
 	if (pipe(fd) < 0)
 		error_print(NULL, NULL, E_PIPEFAIL);
-	if ((fork_wrapper()) == 0)
+	if (fork() == 0)
 	{
 		close(1);
 		dup(fd[1]);
@@ -26,7 +26,7 @@ static void	pipe_executor(t_ast *tree, char **builtins, t_env *env)
 		close(fd[1]);
 		exec_tree(tree->left, builtins, env);
 	}
-	if ((fork_wrapper()) == 0)
+	if (fork() == 0)
 	{
 		close(0);
 		dup(fd[0]);
@@ -57,12 +57,9 @@ static void	exec_cmd(t_ast *tree, char **builtins, t_env *env)
 // end closes pipes and exits child process.
 void	exec_tree(t_ast *tree, char **builtins, t_env *env)
 {
-	if (tree == NULL || !tree)
-	{
+	if (tree == NULL)
 		return ;
-	}
-	if (expand_and_remove_quotes(&tree, env))
-		return ;
+	expand_and_remove_quotes(&tree, env);
 	if (tree->type == NODE_CMD)
 		update_env(env->env, tree->cmd[ft_linecount(tree->cmd) - 1], "_");
 	if (tree->type == NODE_REDIR || tree->type == NODE_CMD)

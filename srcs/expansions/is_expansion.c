@@ -14,9 +14,10 @@
 
 int	is_expansion(char *str, int i)
 {
+	//ft_printf("str [%s] [%d]\n", str, str[i - 1]);
 	if ((str[i] == '$' && ft_isalnum(str[i + 1]))
 		|| (str[i] == '$' && str[i + 1] == '_')
-		|| (str[i] == '~' && str[i + 1] != '$'))
+		|| (str[0] == '~' && str[1] != '$'))
 		return (1);
 	return (0);
 }

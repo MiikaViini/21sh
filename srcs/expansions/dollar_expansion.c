@@ -24,6 +24,7 @@ static char	*expand_and_concat(char *expanded, char **env, int k, int len)
 {
 	char	*temp;
 
+
 	temp = ft_strjoin(expanded, env[k] + len + 1);
 	expanded = ft_strcpy(expanded, temp);
 	ft_strdel(&temp);
@@ -53,20 +54,24 @@ char	*dollar_expansion(char *expanded, char *word, char **env, int len)
 	j = 0;
 	while (word[i])
 	{
+		ft_printf("dollar %s\n", word);
 		if (!add_letter_exp(word, expanded, &i, &j))
 			;
 		else
 		{
 			k = -1;
 			len = var_name_len(word, len, ++i);
+			ft_printf("dollar [%d]\n", word[i]);
 			while (env[++k])
 				if (ft_strncmp(env[k], &word[i], len) == 0
 					&& env[k][len] == '=')
 					expanded = expand_and_concat(expanded, env, k, len);
 			i += len;
+			ft_printf("dollar [%d]\n", word[i]);
 			j = ft_strlen(expanded);
 			len = 0;
 		}
 	}
+	ft_printf("dollar %s\n", expanded);
 	return (expanded);
 }

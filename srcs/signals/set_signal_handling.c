@@ -1,31 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   check_builtins.c                                   :+:      :+:    :+:   */
+/*   set_signal_handling.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/07 12:11:50 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/19 16:11:37 by mviinika         ###   ########.fr       */
+/*   Created: 2022/12/19 16:28:37 by mviinika          #+#    #+#             */
+/*   Updated: 2022/12/19 16:33:40 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
 
-int	check_builtins(char **input, char **builtins, t_env *env)
-{
-	int	k;
+int g_signal;
 
-	k = -1;
-	if (*input == NULL)
-		return (-1);
-	while (builtins[++k])
+void	set_signal_int(int signal)
+{
+	if (signal == SIGINT)
 	{
-		if (ft_strequ(builtins[k], input[0]))
-		{
-			g_builtins[k](input, env);
-			return (1);
-		}
+		g_signal = 1;
+		ft_putchar('\n');
+		ft_putstr("21sh$ ");
 	}
-	return (0);
+	else if (signal == SIGWINCH)
+	{
+		;
+	}
+	
+}
+
+void	set_signal_handling(void)
+{
+	signal(SIGINT, set_signal_int);
+	signal(SIGWINCH, set_signal_int);
 }
