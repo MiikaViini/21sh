@@ -46,28 +46,6 @@ static int	mall_c(char *input, char **env)
 	return (longest_var(env) * (count + 1));
 }
 
-// static int is_valid_tilde(char *word)
-// {
-// 	int i;
-
-// 	i = 0;
-// 	while(word[i])
-// 	{
-// 		if (word[i] == '$')
-// 			return 0;
-// 		if (word[i] == '~')
-// 			break ;
-// 		i++;
-// 	}
-// 	if ((word[i] == '~' && word[i + 1] != '$'))
-// 	{
-// 		ft_printf("HERE");
-// 		return 1;
-// 	}
-// 	else 
-// 		return 0;
-// }
-
 static char	*replace_expansion(char *word, char **env, char *input)
 {
 	char	*expanded;
