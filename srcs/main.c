@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 19:07:23 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/16 19:44:13 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/19 09:58:27 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,17 @@ int g_signal;
 
 static void	set_signal_int(int signal)
 {
-	g_signal = signal;
-	ft_putchar('\n');
-	//ft_putstr("21sh$ ");
+	if (signal == SIGINT)
+	{
+		g_signal = 1;
+		ft_putchar('\n');
+		ft_putstr("21sh$ ");
+	}
+	else if (signal == SIGWINCH)
+	{
+		;
+	}
+	
 }
 
 void	set_signal_handling(void)
@@ -91,7 +99,9 @@ int	main(int argc, char **argv, char **environ)
 	ft_putstr("\033[2J\033[H");
 	while (rb != 0)
 	{
-		ft_putstr("21sh$ ");
+		if (g_signal != 1)
+			ft_putstr("21sh$ ");
+		g_signal = 0;
 		rb = ft_21sh(&env, builtins);
 	}
 	free_strarr(env.env);
