@@ -102,7 +102,7 @@ int		input_cycle(t_term *t);
 int		get_input(void);
 void	insertion(t_term *t);
 void	add_new_line(t_term *t, char *array, ssize_t pos);
-char	*ft_is_prompt_line(t_term *t, int row);
+char	*ft_is_prompt_line(t_term *t, ssize_t row);
 
 // cursor
 void	set_cursor(ssize_t col, ssize_t row);

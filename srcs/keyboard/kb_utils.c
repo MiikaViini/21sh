@@ -6,7 +6,7 @@
 /*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/14 18:41:18 by spuustin          #+#    #+#             */
-/*   Updated: 2022/12/17 20:22:58 by spuustin         ###   ########.fr       */
+/*   Updated: 2022/12/19 20:26:42 by spuustin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	print_prompt(ssize_t row)
 }
 
 //this could be int that includes printing of prompt, no pointer return needed
-char	*ft_is_prompt_line(t_term *t, int row)
+char	*ft_is_prompt_line(t_term *t, ssize_t row)
 {
 	if (!row || t->nl_addr[row][-1] == '\n')
 		return (t->nl_addr[row]);

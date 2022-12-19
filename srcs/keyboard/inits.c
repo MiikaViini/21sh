@@ -6,7 +6,7 @@
 /*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/18 22:41:19 by spuustin          #+#    #+#             */
-/*   Updated: 2022/12/17 20:14:14 by spuustin         ###   ########.fr       */
+/*   Updated: 2022/12/19 20:09:42 by spuustin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	init_term(t_term *t)
 	g_t = t;
 	init_signals();
 	ft_memset(t->inp, '\0', BUFFSIZE);
-	// ehka joku history buff memset?
+	ft_memset(t->history_buff, '\0', BUFFSIZE);
 	t->ch = 0;
 	t->quote = 0;
 	t->q_qty = 0;
@@ -40,6 +40,8 @@ void	init_term(t_term *t)
 	t->nl_addr = NULL;
 	t->delim = NULL;
 	get_window_size(t); //why is it done here again?
+	t->prompt_len = (ssize_t)ft_strlen(SHELL_PROMPT);
+	t->m_prompt_len = (ssize_t)ft_strlen(OPEN_QUOTE);
 	t->c_col = ft_strlen(SHELL_PROMPT);
 	t->input_cpy = NULL;
 	//t->total_row_cpy = 0; not needed?

@@ -6,7 +6,7 @@
 /*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/18 20:35:34 by spuustin          #+#    #+#             */
-/*   Updated: 2022/12/17 13:47:24 by spuustin         ###   ########.fr       */
+/*   Updated: 2022/12/19 20:18:47 by spuustin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,5 +55,5 @@ void	run_capability(char *cap)
 		ft_putstr_fd(" : cannot ft_run_capability()\n", 2);
 	}
 	else
-		tputs(p, 1, ft_puts);
+		tputs(p, 1, ft_putc);
 }

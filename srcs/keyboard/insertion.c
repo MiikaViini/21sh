@@ -6,30 +6,75 @@
 /*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/02 15:40:13 by spuustin          #+#    #+#             */
-/*   Updated: 2022/12/17 17:59:55 by spuustin         ###   ########.fr       */
+/*   Updated: 2022/12/19 20:37:01 by spuustin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
 
-static void	ft_delim_fetch(t_term *t)
+static int	ft_isseparator(char c)
+{
+	if (c == '|' || c == ';' || c == '&' || c == '<' || c == '>')
+		return (1);
+	return (0);
+}
+
+static void	delim_fetch_error(t_term *t, char *ptr)
+{
+	if (*ptr && ft_isseparator(*ptr))
+	{
+		ft_putstr_fd("\n21sh: syntax error near unexpected token `", 2);
+		write(2, ptr, 1);
+		ft_putstr_fd("'", 2);
+	}
+	else
+		ft_putstr_fd("\n21sh: syntax error near unexpected token `newline'", 2);
+	ft_strclr(t->inp);
+	t->heredoc = 0;
+}
+
+static char	*strdelim(t_term *t)
+{
+	char	*ptr;
+	int		delim_qty;
+
+	ptr = t->inp;
+	delim_qty = 0;
+	while (*ptr)
+	{
+		if (*ptr == '<')
+			delim_qty++;
+		if (delim_qty == 2)
+			return (ptr + 1);
+		ptr++;
+	}
+	return (ptr);
+}
+
+static int	ft_delim_fetch(t_term *t)
 {
 	char	*ptr;
 	char	*end_q;
 
 	if (t->heredoc && !t->delim)
 	{
-		ptr = ft_strchr(t->inp, '<') + 2;
+		ptr = strdelim(t);
 		while (*ptr && ft_sspace(ptr))
 			ptr++;
-		if (*ptr)
+		if (*ptr && !ft_isseparator(*ptr))
 		{
 			end_q = ptr;
 			while (*end_q && !ft_sspace(end_q))
 				end_q++;
 			t->delim = ft_strsub(ptr, 0, end_q - ptr);
 		}
+		else
+		{
+			delim_fetch_error(t, ptr);
+			return (1);
+		}
 	}
+	return(0);
 }
 
 // static void	ft_add_nl_last_rowss(t_term *t, ssize_t pos)
@@ -80,6 +125,8 @@ static int	ft_bslash_escape_check(t_term *t, ssize_t pos)
 	ssize_t	start;
 	ssize_t	count;
 
+	if (!pos)
+		return (0);
 	start = pos - 1;
 	while (start && t->inp[start] == '\\')
 		start--;
@@ -119,14 +166,14 @@ void	ft_heredoc_handling(t_term *t, int index)
 	ssize_t	count;
 
 	start = index;
-	while (start > 1 && t->inp[start] == '<')
+	while (start && t->inp[start] == '<')
 		start--;
 	if (start)
 		start++;
 	count = start;
 	while (count < t->bytes && t->inp[count] == '<')
 		count++;
-	if ((count - start) == 2)
+	if ((count - start) >= 2)
 		t->heredoc = 1;
 	else
 		t->heredoc = 0;
@@ -162,6 +209,12 @@ void	ft_shift_nl_addre(t_term *t, int num)
 		t->nl_addr[row - 1] = &t->nl_addr[row - 1][num];
 }
 
+/*
+ * It shifts all the characters in the input buffer to the right of the
+ * cursor one position to the right
+ *
+ * @param t the term structure
+ */
 void	ft_shift_insert(t_term *t)
 {
 	ssize_t	bytes_cpy;
@@ -224,7 +277,7 @@ static void	ft_insertion_char(t_term *t)
 		&& !t->heredoc)
 	{
 		if (!ft_bslash_escape_check(t, t->index - 1))
-			ft_quote_handling(t, t->inp[t->index - 1]);
+			ft_quote_flag_reset(t);
 	}
 	if (t->inp[t->index - 1] == '<')
 	{

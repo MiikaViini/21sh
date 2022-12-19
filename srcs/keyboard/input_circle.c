@@ -6,7 +6,7 @@
 /*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/25 19:41:32 by spuustin          #+#    #+#             */
-/*   Updated: 2022/12/17 18:44:51 by spuustin         ###   ########.fr       */
+/*   Updated: 2022/12/19 20:27:38 by spuustin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,12 +49,12 @@ void	ft_end_cycle(t_term *t)
 
 static int	ft_isprint_or_enter(t_term *t)
 {
-	if (ft_isprint(t->ch) || t->ch == ENTER)
+	if ((ft_isprint(t->ch) || t->ch == ENTER) && t->bytes < BUFFSIZE)
 		insertion(t);
-	if (t->ch == ENTER && (t->c_row == t->total_row))
+	if (t->ch == ENTER && t->c_row == t->total_row)
 	{
 		if ((!t->bslash && !(t->q_qty % 2) && !t->delim) \
-			|| ft_strequ(t->nl_addr[t->c_row], t->delim))
+			|| (t->delim && ft_strequ(t->nl_addr[t->c_row], t->delim)))
 		{
 			ft_end_cycle(t);
 			return (1);
@@ -74,6 +74,10 @@ static void	ft_backspace_or_escape(t_term *t)
 
 int	input_cycle(t_term *t)
 {
+	int		ctrl_d_ret;
+
+	ctrl_d_ret = 0;
+	t->c_col = write(1, SHELL_PROMPT, (size_t)t->prompt_len);
 	ft_add_nl_last_row(t, t->inp, 0);
 	while (t->ch != -1)
 	{
