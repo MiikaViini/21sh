@@ -6,7 +6,7 @@
 /*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/26 16:23:16 by spuustin          #+#    #+#             */
-/*   Updated: 2022/12/19 20:19:32 by spuustin         ###   ########.fr       */
+/*   Updated: 2022/12/19 20:43:49 by spuustin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,5 +64,4 @@ void	ft_scroll_down(void)
 	run_capability("sc");
 	run_capability("sf");
 	run_capability("rc");
-	run_capability("up");
 }

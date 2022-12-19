@@ -6,7 +6,7 @@
 /*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/14 19:12:47 by spuustin          #+#    #+#             */
-/*   Updated: 2022/12/19 20:26:10 by spuustin         ###   ########.fr       */
+/*   Updated: 2022/12/19 20:44:18 by spuustin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,32 @@ void	ft_reset_nl_addr(t_term *t)
 
 void	trigger_nl(t_term *t)
 {
+	// this ''worked''
+	
+	// ssize_t	len;
+	// ssize_t	row;
+
+	// row = ft_row_lowest_line(t);
+	// len = ft_len_lowest_line(t, row);
+	// if (len == t->ws_col)
+	// {
+	// 	t->total_row++;
+	// 	if (get_linenbr() == (t->ws_row - 1))
+	// 		ft_scroll_down();
+	// 	if (t->nl_addr[t->c_row + 1])
+	// 	{
+	// 		run_capability("cd");
+	// 		ft_reset_nl_addr(t);
+	// 	}
+	// 	else
+	// 		ft_add_nl_last_row(t, t->inp, t->bytes);
+	// }
+	// if (t->c_col == t->ws_col)
+	// {
+	// 	t->c_col = 0;
+	// 	set_cursor(t->c_col, get_linenbr() + 1);
+	// 	t->c_row++;
+	// }
 	ssize_t	len;
 	ssize_t	row;
 
@@ -94,20 +120,17 @@ void	trigger_nl(t_term *t)
 	if (len == t->ws_col)
 	{
 		t->total_row++;
-		if (get_linenbr() == (t->ws_row - 1))
+		if ((t->start_row + t->total_row) >= t->ws_row)
 			ft_scroll_down();
 		if (t->nl_addr[t->c_row + 1])
-		{
-			run_capability("cd");
 			ft_reset_nl_addr(t);
-		}
 		else
 			ft_add_nl_last_row(t, t->inp, t->bytes);
 	}
 	if (t->c_col == t->ws_col)
 	{
 		t->c_col = 0;
-		set_cursor(t->c_col, get_linenbr() + 1);
 		t->c_row++;
+		run_capability("do");
 	}
 }

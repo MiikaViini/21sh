@@ -6,7 +6,7 @@
 /*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/02 15:40:13 by spuustin          #+#    #+#             */
-/*   Updated: 2022/12/19 20:37:01 by spuustin         ###   ########.fr       */
+/*   Updated: 2022/12/19 20:44:53 by spuustin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -332,7 +332,6 @@ static void	ft_print_traill(t_term *t)
 {
 	run_capability("vi");
 	run_capability("sc");
-	run_capability("vi");
 	ft_print_line_traill(t);
 	run_capability("rc");
 	run_capability("ve");
