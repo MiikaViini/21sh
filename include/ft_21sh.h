@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 08:59:36 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/16 13:00:45 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/19 10:02:39 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,16 +20,17 @@
 # include <stdio.h>
 # include <error.h>
 
-# ifdef __linux__
-#  define LIN 1
-#  include <sys/wait.h>
-# endif
+// # ifdef __linux__
+// #  define LIN 1
+// #  include <sys/wait.h>
+// # endif
 
-# ifdef	__APPLE__
-#  define LIN 0
-#  include <sys/wait.h>
-# endif
+// # ifdef	__APPLE__
+// #  define LIN 0
+// #  include <sys/wait.h>
+// # endif
 
+ # define LIN 0	
 # include "../libft/include/libft.h"
 # include "ast.h"
 # include "tokens.h"
