@@ -12,11 +12,8 @@
 
 #include "ft_21sh.h"
 
-<<<<<<< HEAD
 extern int g_signal;
 
-=======
->>>>>>> d2af59b6a916da8df7680e8907f33cef73fee879
 void	free_parsed_input(char **p_input)
 {
 	int	i;
@@ -88,8 +85,6 @@ int	main(int argc, char **argv, char **environ)
 			ft_putstr("21sh$ ");
 		g_signal = 0;
 		rb = ft_21sh(&env, builtins);
-		
-		
 	}
 	free_strarr(env.env);
 	free_strarr(env.path);
