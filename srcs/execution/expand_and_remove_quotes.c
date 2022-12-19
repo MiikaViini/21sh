@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 12:17:07 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/16 15:23:35 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/19 16:19:30 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	expand_and_remove_quotes(t_ast **tree, t_env *env)
 	k = 0;
 	i = 0;
 	initialise_structs(&quotes, NULL, NULL);
-	while ((*tree)->cmd[i] && (*tree)->type != NODE_PIPE)
+	while ((*tree)->type != NODE_PIPE && (*tree)->cmd[i])
 	{
 		see_quote(&quotes, (*tree)->cmd[i], k);
 		while ((*tree)->cmd[i][k])

@@ -6,35 +6,11 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 12:12:58 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/19 14:33:27 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/19 15:07:29 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
-
-static void execute_redir_out(t_tlist *redirs)
-{
-	if (ft_strcmp(redirs->file, "/dev/fd/1") 
-		&& ft_strcmp(redirs->file, "/dev/stdout"))
-	{
-		close(redirs->from_fd);
-		if (redirs->redir_type == REDIR_TRUNC
-			&& open(redirs->file, O_CREAT | O_WRONLY | O_TRUNC, 0664) >= 0)
-			return ;
-		else if (redirs->redir_type == REDIR_APPEND
-			&& open(redirs->file, O_CREAT | O_WRONLY | O_APPEND, 0664) >= 0)
-			return ;
-		else if (redirs->redir_type == REDIR_AGGR_STERR_STOUT)
-		{
-			close(redirs->to_fd);
-			open(redirs->file, O_CREAT | O_WRONLY | O_TRUNC, 0664);
-			dup2(redirs->to_fd, redirs->from_fd);
-			return ;
-		}
-		else
-			error_print(NULL, ft_itoa(redirs->from_fd), E_BFD);
-	}	
-}
 
 static int folder_access(t_tlist *redirs)
 {
@@ -58,21 +34,18 @@ static int folder_access(t_tlist *redirs)
 	return 0;
 }
 
-static int file_access(t_tlist *redirs, int *ret)
+static int file_access(t_tlist *redirs)
 {
 	struct stat	buf;
 		
 	if (stat(redirs->file, &buf) == 0 && S_ISDIR(buf.st_mode))
 	{
 		error_print(NULL, redirs->file, E_ISDIR);
-		*ret = -1;
 		return (0);
 	}
 	else if (access(redirs->file, F_OK) == 0 && access(redirs->file, W_OK) == -1)
 	{
-		exit(1);
 		error_print(NULL, redirs->file, E_NOPERM);
-		*ret = -1;
 		return (0);
 	}
 	return (1);
@@ -80,37 +53,23 @@ static int file_access(t_tlist *redirs, int *ret)
 
 static void	redir_out(t_tlist *redirs, int *ret)
 {
-
 	if (redirs->from_fd == -1)
 	{
 		error_print(NULL, ft_itoa(redirs->from_fd), E_BFD);
 		*ret = -1;
 	}
-	else
+	else if (!file_access(redirs))
 	{
-		if (!file_access(redirs, ret))
-		{
-			// if (stat(redirs->file, &buf) == 0 && S_ISDIR(buf.st_mode))
-			// {
-			// 	error_print(NULL, redirs->file, E_ISDIR);
-			// 	*ret = -1;
-			// 	return ;
-			// }
-			// else if (access(redirs->file, W_OK) == -1)
-			// {
-			// 	error_print(NULL, redirs->file, E_NOPERM);
-			// 	*ret = -1;
-			return ;
-			// }
-		}
-		else if (folder_access(redirs))
-		{
-			*ret = -1;
-			return ;
-		}
-		else
-			execute_redir_out(redirs);
+		*ret = -1;
+		return ;
 	}
+	else if (folder_access(redirs))
+	{
+		*ret = -1;
+		return ;
+	}
+	else
+		execute_redir_out(redirs);
 }
 
 static void	redir_in(t_tlist *redirs, int *ret)

@@ -6,7 +6,7 @@
 #    By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/07/09 19:07:08 by mviinika          #+#    #+#              #
-#    Updated: 2022/12/16 12:56:26 by mviinika         ###   ########.fr        #
+#    Updated: 2022/12/19 16:32:43 by mviinika         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -49,7 +49,8 @@ EXECUTION_FILES = check_builtins.c \
 				redirections.c \
 				redir_aggr.c \
 				execute_all.c \
-				expand_remove_quotes_redirs.c 
+				expand_remove_quotes_redirs.c \
+				execute_redir_out.c
 				
 				
 EXPANSIONS_DIR = expansions
@@ -78,6 +79,9 @@ PARSING_FILES = parse_input.c \
 			is_redirect.c \
 			tokens_del.c \
 
+SIGNALS_DIR = signals
+SIGNALS_FILES = set_signal_handling.c 
+
 UTILS_DIR = utils
 UTILS_FILES = check_quotes.c \
 			error_print.c \
@@ -96,6 +100,7 @@ SRC_FILES = main.c \
 			$(patsubst %, $(EXECUTION_DIR)/%, $(EXECUTION_FILES)) \
 			$(patsubst %, $(EXPANSIONS_DIR)/%, $(EXPANSIONS_FILES)) \
 			$(patsubst %, $(INITIALISING_DIR)/%, $(INITIALISING_FILES)) \
+			$(patsubst %, $(SIGNALS_DIR)/%, $(SIGNALS_FILES)) \
 			$(patsubst %, $(PARSING_DIR)/%, $(PARSING_FILES)) \
 			$(patsubst %, $(UTILS_DIR)/%, $(UTILS_FILES))
 

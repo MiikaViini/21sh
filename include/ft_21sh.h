@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 08:59:36 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/19 10:02:39 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/19 16:33:51 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,17 +20,16 @@
 # include <stdio.h>
 # include <error.h>
 
-// # ifdef __linux__
-// #  define LIN 1
-// #  include <sys/wait.h>
-// # endif
+# ifdef __linux__
+#  define LIN 1
+#  include <sys/wait.h>
+# endif
 
-// # ifdef	__APPLE__
-// #  define LIN 0
-// #  include <sys/wait.h>
-// # endif
+# ifdef	__APPLE__
+#  define LIN 0
+#  include <sys/wait.h>
+# endif
 
- # define LIN 0	
 # include "../libft/include/libft.h"
 # include "ast.h"
 # include "tokens.h"
@@ -114,6 +113,8 @@ void	set_pars_struct(t_pars *pars, char *input);
 void	set_start_values(t_ast ***tree, char *buf, int *rb);
 void	execute_all(t_env *env, char **builtins, t_ast **tree);
 int		expand_remove_quotes_redirs(t_tlist **redirs, t_env *env);
+void 	execute_redir_out(t_tlist *redirs);
+void	set_signal_int(int signal);
 
 /***********\
 ** utils.c **
@@ -143,6 +144,7 @@ int		check_syntax(t_pars *pars, t_tlist *tokens);
 void	set_values_aggr_io(t_word *ints, char **word);
 int		set_redirections(t_pars *pars, t_word *ints, char *word, t_quotes *quots);
 char	*remove_quotes(char *input);
+void	set_signal_handling(void);
 
 typedef int					(*t_builtins)(char **input, t_env *env);
 
