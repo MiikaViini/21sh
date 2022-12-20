@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/10 20:20:37 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/16 12:06:50 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/20 10:33:25 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ static int	var_name_len(char *word, int len, int i)
 static char	*expand_and_concat(char *expanded, char **env, int k, int len)
 {
 	char	*temp;
-
 
 	temp = ft_strjoin(expanded, env[k] + len + 1);
 	expanded = ft_strcpy(expanded, temp);
@@ -54,24 +53,20 @@ char	*dollar_expansion(char *expanded, char *word, char **env, int len)
 	j = 0;
 	while (word[i])
 	{
-		ft_printf("dollar %s\n", word);
 		if (!add_letter_exp(word, expanded, &i, &j))
 			;
 		else
 		{
 			k = -1;
 			len = var_name_len(word, len, ++i);
-			ft_printf("dollar [%d]\n", word[i]);
 			while (env[++k])
 				if (ft_strncmp(env[k], &word[i], len) == 0
 					&& env[k][len] == '=')
 					expanded = expand_and_concat(expanded, env, k, len);
 			i += len;
-			ft_printf("dollar [%d]\n", word[i]);
 			j = ft_strlen(expanded);
 			len = 0;
 		}
 	}
-	ft_printf("dollar %s\n", expanded);
 	return (expanded);
 }

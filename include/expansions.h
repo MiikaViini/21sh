@@ -1,22 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   set_values_aggr_io.c                               :+:      :+:    :+:   */
+/*   expansions.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/15 21:34:26 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/20 10:35:34 by mviinika         ###   ########.fr       */
+/*   Created: 2022/12/20 12:38:18 by mviinika          #+#    #+#             */
+/*   Updated: 2022/12/20 12:41:16 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_21sh.h"
+#ifndef EXPANSIONS_H
+# define EXPANSIONS_H
 
-void	set_values_aggr_io(t_word *ints, char **word)
-{
-	ints->type = TOKEN_REDIRECT;
-	ints->redir = REDIR_AGGR_STERR_STOUT;
-	(*word)[0] = '&';
-	(*word)[1] = '>';
-	ints->total += 2;
-}
+char		*dollar_expansion(char *expanded, char *word, char **env, int len);
+char		*handle_expansions(char *input, char **env);
+int			is_expansion(char *str, int i);
+char		*passwd_user(char *input);
+char		*tilde_expansion(char *word, char **env, char *expanded);
+char		*user_expansion(char *input);
+
+#endif

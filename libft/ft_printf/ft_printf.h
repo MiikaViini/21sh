@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 09:58:49 by mviinika          #+#    #+#             */
-/*   Updated: 2022/10/18 12:49:57 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/20 10:50:59 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,6 @@ typedef struct s_modifiers
 
 int			ft_printf(char *format, ...);
 int			conversion(va_list args, char *format);
-// int			find_letter(char c, char *letters);
 int			f_specifier(va_list args, t_modifiers *mods);
 int			p_specifier(va_list args, t_modifiers *mods);
 int			u_specifier(va_list args, t_modifiers *mods);

@@ -6,12 +6,12 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/03 12:16:42 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/16 19:53:15 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/20 10:38:32 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef ERRORS_H
-# define ERRORS_H
+#ifndef ERROR_H
+# define ERROR_H
 
 # define E_EXE "error occured during execution"
 # define E_NOTF "command not found"

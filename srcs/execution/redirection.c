@@ -6,44 +6,45 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 12:12:58 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/19 15:07:29 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/20 10:32:37 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
 
-static int folder_access(t_tlist *redirs)
+static int	folder_access(t_tlist *redirs)
 {
 	char	folder[MAX_PATH];
 	char	file[255];
 	int		len;
 
 	if (ft_strchr(redirs->file, '/') == NULL)
-		return 0;
+		return (0);
 	ft_memset(folder, '\0', MAX_PATH);
 	ft_memset(file, '\0', 255);
 	ft_strcat(file, ft_strrchr(redirs->file, '/'));
 	len = ft_strlen(file) - 1;
 	ft_strncat(folder, redirs->file, ft_strlen(redirs->file) - len);
-	if (access(folder, F_OK) == 0 && access(redirs->file, F_OK) == -1 
+	if (access(folder, F_OK) == 0 && access(redirs->file, F_OK) == -1
 		&& access(folder, W_OK) == -1)
 	{
 		error_print(NULL, redirs->file, E_NOPERM);
-		return 1;
+		return (1);
 	}
-	return 0;
+	return (0);
 }
 
-static int file_access(t_tlist *redirs)
+static int	file_access(t_tlist *redirs)
 {
 	struct stat	buf;
-		
+
 	if (stat(redirs->file, &buf) == 0 && S_ISDIR(buf.st_mode))
 	{
 		error_print(NULL, redirs->file, E_ISDIR);
 		return (0);
 	}
-	else if (access(redirs->file, F_OK) == 0 && access(redirs->file, W_OK) == -1)
+	else if (access(redirs->file, F_OK) == 0
+		&& access(redirs->file, W_OK) == -1)
 	{
 		error_print(NULL, redirs->file, E_NOPERM);
 		return (0);
@@ -97,7 +98,7 @@ int	redirection(t_tlist *redirs, int *ret, t_env *env)
 	if (!redirs)
 		return (*ret);
 	expand_remove_quotes_redirs(&redirs, env);
-	if (redirs->redir_type == REDIR_TRUNC 
+	if (redirs->redir_type == REDIR_TRUNC
 		|| redirs->redir_type == REDIR_APPEND
 		|| redirs->redir_type == REDIR_AGGR_STERR_STOUT)
 		redir_out(redirs, ret);

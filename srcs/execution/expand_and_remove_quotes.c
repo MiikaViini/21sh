@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 12:17:07 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/19 16:19:30 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/20 10:29:41 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ int	expand_and_remove_quotes(t_ast **tree, t_env *env)
 				(*tree)->cmd[i] = handle_expansions((*tree)->cmd[i], env->env);
 				break ;
 			}
-				
 			k++;
 		}
 		(*tree)->cmd[i] = remove_quotes((*tree)->cmd[i]);

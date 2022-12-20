@@ -6,15 +6,15 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 15:07:42 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/19 15:08:00 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/20 10:29:30 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
 
-void execute_redir_out(t_tlist *redirs)
+void	execute_redir_out(t_tlist *redirs)
 {
-	if (ft_strcmp(redirs->file, "/dev/fd/1") 
+	if (ft_strcmp(redirs->file, "/dev/fd/1")
 		&& ft_strcmp(redirs->file, "/dev/stdout"))
 	{
 		close(redirs->from_fd);

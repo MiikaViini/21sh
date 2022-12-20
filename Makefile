@@ -6,7 +6,7 @@
 #    By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/07/09 19:07:08 by mviinika          #+#    #+#              #
-#    Updated: 2022/12/19 16:32:43 by mviinika         ###   ########.fr        #
+#    Updated: 2022/12/20 12:49:58 by mviinika         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -46,7 +46,7 @@ EXECUTION_FILES = check_builtins.c \
 				exec_single_command.c \
 				expand_and_remove_quotes.c \
 				get_path.c \
-				redirections.c \
+				redirection.c \
 				redir_aggr.c \
 				execute_all.c \
 				expand_remove_quotes_redirs.c \
@@ -65,6 +65,8 @@ INITIALISING_DIR = initialising
 INITIALISING_FILES = initialize_and_set_builtins.c \
 					set_pars_struct.c \
 					set_start_values.c \
+					initialise_structs.c \
+					init_tree.c
 					
 
 PARSING_DIR = parsing
@@ -73,7 +75,6 @@ PARSING_FILES = parse_input.c \
 			redir_token.c \
 			token_to_last.c \
 			check_syntax.c \
-			init_tree.c \
 			set_values_aggr_io.c \
 			set_redirections.c \
 			is_redirect.c \
