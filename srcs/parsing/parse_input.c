@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 09:14:23 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/20 12:19:54 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/20 14:33:47 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,21 @@ static t_tlist	*get_token(t_pars *pars, t_word *values)
 	}
 	return (create_token(&word, pars, values));
 }
+static size_t	wc_delim(const char *s, char delim)
+{
+	size_t	i;
+	size_t	count;
+
+	i = 0;
+	count = 1;
+	while (s[i])
+	{
+		if (s[i] == delim)
+			count++;
+		i++;
+	}
+	return (count);
+}
 
 // Parsing and lexing input, *get_token()* will make token list as a linked list
 // *make_ast()* will make abstract syntax tree from tokens
@@ -75,7 +90,7 @@ t_ast	**parse_input(t_pars *pars)
 	values.total = 0;
 	tokens = NULL;
 	tree = (t_ast **)ft_memalloc(sizeof(t_ast *) * \
-	ft_wordcount_ws(pars->trimmed) + 1);
+								(wc_delim(pars->trimmed, ';') + 1));
 	while (values.i < pars->len)
 	{
 		token_to_last(&tokens, get_token(pars, &values));

@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 11:08:24 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/16 12:14:57 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/20 14:02:25 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,9 @@ int	do_exit(char **input, t_env *env)
 {
 	int	exit_status;
 
-	(void)env;
 	exit_status = 0;
 	ft_putendl("exit");
-	if (input[1])
+	if (input && input[1])
 	{
 		if (check_exit_code(input[1]))
 			exit_status = ft_atoi(input[1]);
@@ -43,8 +42,11 @@ int	do_exit(char **input, t_env *env)
 			exit_status = 2;
 		}
 	}
-	free_strarr(input);
-	free_strarr(env->env);
-	free_strarr(env->path);
+	if (input)
+	{
+		free_strarr(input);
+		free_strarr(env->env);
+		free_strarr(env->path);
+	}
 	exit(exit_status);
 }

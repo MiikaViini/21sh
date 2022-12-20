@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 08:59:36 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/20 13:00:19 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/20 14:04:54 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@
 # define MAX_PATH 1024
 # define MAX_LINE 4096
 # define SHELL "21sh"
+# define MAX_TREES 50
 
 void		free_parsed_input(char **p_input);
 

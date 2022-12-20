@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/03 12:54:32 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/16 12:17:57 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/20 14:29:12 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,5 +74,5 @@ void	build_all_asts(t_ast **tree, t_tlist *tokens)
 			tokens = tokens->next;
 		i++;
 	}
-	tree[i] = NULL;
+	//tree[i] = NULL;
 }

@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 09:15:09 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/16 12:06:05 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/20 13:07:14 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,6 @@ static char	*replace_expansion(char *word, char **env, char *input)
 	int		len;
 
 	len = 0;
-	ft_printf("%c %c\n", word[0], word[1]);
 	expanded = ft_strnew(mall_c(input, env) + ft_strlen(input));
 	if (word[0] == '~' && word[1] != '$')
 		expanded = tilde_expansion(word, env, expanded);

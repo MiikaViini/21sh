@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 19:07:23 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/20 10:28:44 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/20 13:14:16 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,14 @@ void	free_all(t_pars *pars, t_ast **tree, char *buf)
 	ft_memset(buf, '\0', 4096);
 }
 
+void check_read_bytes(int rb, t_env *env)
+{
+	if (rb == -1)
+		exit(1);
+	else if (rb == 0)
+		do_exit(NULL, env);
+}
+
 static int	ft_21sh(t_env *env, char **builtins)
 {
 	int		rb;
@@ -43,8 +51,7 @@ static int	ft_21sh(t_env *env, char **builtins)
 	t_pars	parsed;
 
 	set_start_values(&tree, buf, &rb);
-	if (rb == -1)
-		exit(1);
+	check_read_bytes(rb, env);
 	set_pars_struct(&parsed, buf);
 	if (check_quotes(buf))
 		error_print(NULL, NULL, E_QUOT);
