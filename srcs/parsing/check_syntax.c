@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 14:25:27 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/16 15:28:37 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/20 14:57:36 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,11 @@ static int	check_cons_redirs(t_tlist *tokens)
 	while (tokens->next)
 	{
 		if (tokens->type == TOKEN_REDIRECT
-			&& tokens->next->type == TOKEN_REDIRECT)
+			&& tokens->next->type != TOKEN_WORD)
+		{
+			error_print(NULL, tokens->next->str, E_SYNERR);
 			return (1);
+		}
 		tokens = tokens->next;
 	}
 	return (0);
@@ -31,7 +34,11 @@ int	check_syntax(t_pars *pars, t_tlist *tokens)
 	int		err;
 
 	temp = tokens;
-	err = check_cons_redirs(temp);
+	err = 0;
+	if (check_cons_redirs(temp))
+	{
+		return (1);
+	}
 	i = ft_strlen(pars->last_token_str) - 1;
 	if (pars->last_token_str[i] == '&'
 		|| pars->last_token_str[i] == '|'
@@ -40,6 +47,6 @@ int	check_syntax(t_pars *pars, t_tlist *tokens)
 		|| pars->last_token_str[i] == '<')
 		err = 1;
 	if (err)
-		error_print(NULL, NULL, E_SYNERR);
+		error_print("newline", NULL, E_SYNERR);
 	return (err);
 }

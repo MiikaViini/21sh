@@ -1,0 +1,19 @@
+total 2720
+-rw-r--r--   1 mviinika  2020        0 Dec 20 14:50 &
+drwxr-xr-x  18 mviinika  2020      612 Dec 20 14:50 .
+drwxr-xr-x  30 mviinika  2020     1020 Nov  3 09:23 ..
+drwxr-xr-x  14 mviinika  2020      476 Dec 20 14:37 .git
+-rw-r--r--   1 mviinika  2020       27 Dec 20 11:23 .gitignore
+drwxr-xr-x   3 mviinika  2020      102 Dec 19 16:11 .vscode
+-rwxr-xr-x   1 mviinika  2020    68436 Dec 20 14:44 21sh
+drwxr-xr-x   3 mviinika  2020      102 Dec 20 14:01 21sh.dSYM
+-rw-r--r--   1 mviinika  2020  1300693 Dec 19 10:01 21sh.en.pdf
+-rw-r--r--   1 mviinika  2020     3800 Dec 20 14:35 Makefile
+-rw-r--r--   1 mviinika  2020      809 Dec 19 10:01 README.md
+-rw-r--r--   1 mviinika  2020     1267 Dec 20 10:30 abandoned_funcs.txt
+-rw-r--r--   1 mviinika  2020       20 Dec 15 10:14 author
+drwxr-xr-x   4 mviinika  2020      136 Dec 19 13:53 eval_tests
+drwxr-xr-x  13 mviinika  2020      442 Dec 20 12:54 include
+drwxr-xr-x   9 mviinika  2020      306 Dec 20 14:44 libft
+drwxr-xr-x  11 mviinika  2020      374 Dec 20 14:43 objs
+drwxr-xr-x  11 mviinika  2020      374 Dec 20 09:10 srcs

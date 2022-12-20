@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/03 12:16:42 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/20 14:19:45 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/20 14:56:53 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,7 @@
 # define E_NODIGIT "numeric argument required"
 # define E_PIPEFAIL "failed to open with pipe()"
 # define E_NOFORK "failed to to fork process"
-# define E_SYNERR "syntax error"
 # define E_AMB "ambigous redirect"
 # define E_BFD "Bad file descriptor"
-# define E_MAX "maximum amount of separated commands exceeded"
+# define E_SYNERR "syntax error near unexpected token"
 #endif
