@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 19:07:23 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/20 13:14:16 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/21 15:24:50 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,9 @@ int	main(int argc, char **argv, char **environ)
 	ft_putstr("\033[2J\033[H");
 	while (rb != 0)
 	{
+		
 		set_signal_handling();
+		//ft_printf("%d\n", g_signal);
 		if (g_signal != 1)
 			ft_putstr("21sh$ ");
 		g_signal = 0;

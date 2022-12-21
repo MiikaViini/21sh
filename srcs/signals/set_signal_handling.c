@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 16:28:37 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/20 12:58:11 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/21 15:25:42 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,9 @@ static void	set_signal_int(int signal)
 	{
 		g_signal = 1;
 		ft_putchar('\n');
-		ft_putstr("21sh$ ");
+	
 	}
-	else if (signal == SIGWINCH)
-		;
+	ft_putstr("21sh$ ");
 }
 
 void	set_signal_handling(void)
