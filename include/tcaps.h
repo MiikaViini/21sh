@@ -158,6 +158,7 @@ void	update_nl_addr_del(t_term *t);
 
 // history
 void	ft_history_trigger(t_term *t, ssize_t pos);
+void	history_write_to_file(t_term *t);
 
 //prompt
 void	ft_create_prompt_line(t_term *t, ssize_t loc);

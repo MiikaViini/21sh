@@ -6,13 +6,13 @@
 /*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 22:45:45 by spuustin          #+#    #+#             */
-/*   Updated: 2022/12/17 17:41:48 by spuustin         ###   ########.fr       */
+/*   Updated: 2022/12/21 21:23:37 by spuustin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
 
-void	ft_history_write_to_file(t_term *t)
+void	history_write_to_file(t_term *t)
 {
 	int		cpy;
 	int		fd;

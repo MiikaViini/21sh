@@ -6,7 +6,7 @@
 /*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/25 19:41:32 by spuustin          #+#    #+#             */
-/*   Updated: 2022/12/19 20:27:38 by spuustin         ###   ########.fr       */
+/*   Updated: 2022/12/21 21:25:31 by spuustin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,30 +72,49 @@ static void	ft_backspace_or_escape(t_term *t)
 		ft_esc_parse(t);
 }
 
+int	ctrl_d(t_term *t)
+{
+	if (!t->bytes)
+		return (-1);
+	if (t->index < t->bytes)
+		ft_delete(t);
+	if (t->heredoc && !*t->nl_addr[t->c_row])
+	{
+		ft_putstr("21sh: warning: here-document at line ");
+		ft_putnbr(t->c_row);
+		ft_putstr(" delimited by end-of-file (wanted `EOF')");
+		ft_end_cycle(t);
+		return (1);
+	}
+	return (0);
+}
+
+static int	ctrl_d_exit(t_term *t)
+{
+	t = NULL;
+	write(1, "\n", 1);
+	//history_write_to_file(t);
+	return (1);
+}
+//return values differ from ref
 int	input_cycle(t_term *t)
 {
 	int		ctrl_d_ret;
 
-	ctrl_d_ret = 0;
 	t->c_col = write(1, SHELL_PROMPT, (size_t)t->prompt_len);
 	ft_add_nl_last_row(t, t->inp, 0);
 	while (t->ch != -1)
 	{
 		t->ch = get_input();
 		if (ft_isprint_or_enter(t))
-			return (1);
-		else if (t->ch == CTRL_D)
+			return (0);
+		if (t->ch == CTRL_D)
 		{
-			if (!t->bytes)
-				return (0);
-			else if (t->index < t->bytes)
-				ft_delete(t);
-			else if ((t->heredoc && !*t->nl_addr[t->c_row]))
-			{
-				t->heredoc = 0;
-				ft_end_cycle(t);
-				return (-1);
-			}
+			ctrl_d_ret = ctrl_d(t);
+			if (ctrl_d_ret == 1)
+				break ;
+			if (ctrl_d_ret == -1)
+				return (ctrl_d_exit(t));
 		}
 		ft_ctrl(t);
 		ft_backspace_or_escape(t);
