@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cut.c                                              :+:      :+:    :+:   */
+/*   ctrl_cut.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/09 22:47:32 by spuustin          #+#    #+#             */
-/*   Updated: 2022/12/09 22:47:47 by spuustin         ###   ########.fr       */
+/*   Updated: 2022/12/21 21:35:07 by spuustin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,15 +33,18 @@ void	ft_cut(t_term *t)
 {
 	int	i;
 
-	i = -1;
-	run_capability("vi");
-	if (t->clipboard.buff)
-		ft_strdel(&t->clipboard.buff);
-	t->clipboard.buff = cut_to_clipboard(t);
-	while (t->clipboard.buff[++i])
-		ft_backspace(t);
-	if (t->inp[t->index])
-		ft_print_trail(t);
-	t->clipboard.type = CUT;
-	run_capability("ve");
+	if (t->bytes)
+	{
+		i = -1;
+		run_capability("vi");
+		if (t->clipboard.buff)
+			ft_strdel(&t->clipboard.buff);
+		t->clipboard.buff = cut_to_clipboard(t);
+		while (t->clipboard.buff[++i])
+			ft_backspace(t);
+		if (t->inp[t->index])
+			ft_print_trail(t);
+		t->clipboard.type = CUT;
+		run_capability("ve");
+	}
 }

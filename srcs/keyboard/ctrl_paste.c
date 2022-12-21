@@ -6,7 +6,7 @@
 /*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/09 23:14:23 by spuustin          #+#    #+#             */
-/*   Updated: 2022/12/17 18:19:15 by spuustin         ###   ########.fr       */
+/*   Updated: 2022/12/21 21:37:23 by spuustin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	ft_paste(t_term *t)
 	if (t->clipboard.buff)
 	{
 		run_capability("vi");
-		while (t->clipboard.buff[++i])
+		while (t->bytes < BUFFSIZE && t->clipboard.buff[++i])
 		{
 			t->c_col++;
 			ft_putc(t->clipboard.buff[i]);

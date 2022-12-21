@@ -6,7 +6,7 @@
 /*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/14 19:25:25 by spuustin          #+#    #+#             */
-/*   Updated: 2022/12/14 19:25:45 by spuustin         ###   ########.fr       */
+/*   Updated: 2022/12/21 21:33:20 by spuustin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,7 @@
 
 void	ft_ctrl(t_term *t)
 {
-	if (t->ch == CTRL_C)
-		ft_restart_cycle(t);
-	else if (t->ch == CTRL_W)
+	if (t->ch == CTRL_W)
 		ft_cut(t);
 	else if (t->ch == CTRL_U)
 		ft_copy(t);
@@ -24,7 +22,10 @@ void	ft_ctrl(t_term *t)
 		ft_paste(t);
 	else if (t->ch == CTRL_L)
 	{
+		t->start_row = 0;
+		run_capability("vi");
 		run_capability("cl");
-		write(1, SHELL_PROMPT, 6);
+		ft_print_input(t, 0, 0);
+		run_capability("ve");
 	}
 }

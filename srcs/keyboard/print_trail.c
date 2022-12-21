@@ -6,7 +6,7 @@
 /*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/14 19:15:38 by spuustin          #+#    #+#             */
-/*   Updated: 2022/12/19 20:47:07 by spuustin         ###   ########.fr       */
+/*   Updated: 2022/12/21 21:43:58 by spuustin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static void	ft_print_line_trail(t_term *t)
 	ssize_t	dis_row;
 
 	row = t->c_row;
-	dis_row = get_linenbr();
+	dis_row = t->start_row + t->c_row;
 	while (row <= t->total_row)
 	{
 		run_capability("ce");

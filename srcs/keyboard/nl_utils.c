@@ -6,7 +6,7 @@
 /*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/14 19:12:47 by spuustin          #+#    #+#             */
-/*   Updated: 2022/12/19 20:44:18 by spuustin         ###   ########.fr       */
+/*   Updated: 2022/12/21 21:37:37 by spuustin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,6 +131,5 @@ void	trigger_nl(t_term *t)
 	{
 		t->c_col = 0;
 		t->c_row++;
-		run_capability("do");
 	}
 }

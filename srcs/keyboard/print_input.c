@@ -6,7 +6,7 @@
 /*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 18:14:38 by spuustin          #+#    #+#             */
-/*   Updated: 2022/12/17 18:15:33 by spuustin         ###   ########.fr       */
+/*   Updated: 2022/12/21 21:32:12 by spuustin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,9 +69,9 @@ void	ft_print_input(t_term *t, ssize_t row, int mode)
 		if (ft_is_prompt_line(t, row))
 		{
 			if (!row)
-				col = write(STDOUT_FILENO, SHELL_PROMPT, 7);
+				col = write(STDOUT_FILENO, SHELL_PROMPT, t->prompt_len);
 			else
-				col = write(STDOUT_FILENO, OPEN_QUOTE, 2);
+				col = write(STDOUT_FILENO, OPEN_QUOTE, t->m_prompt_len);
 		}
 		else
 			col = 0;
