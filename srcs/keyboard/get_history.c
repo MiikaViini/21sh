@@ -6,7 +6,7 @@
 /*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 22:29:47 by spuustin          #+#    #+#             */
-/*   Updated: 2022/12/28 20:08:22 by spuustin         ###   ########.fr       */
+/*   Updated: 2022/12/28 20:53:54 by spuustin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,24 @@
 // 	ft_history_trigger_end(t, display_row);
 // }
 
+static void	ft_history_push(t_term *t)
+{
+	if (t->history_row == -1)
+	{
+		t->input_cpy = ft_strsub(t->nl_addr[t->c_row], 0, \
+		ft_strlen(t->nl_addr[t->c_row]));
+		if (*t->history_buff)
+		{
+			ft_nl_removal(t);
+			add_command_to_history(t, t->history_buff);
+			ft_memset((void *)t->history_buff, '\0', \
+			ft_strlen(t->history_buff));
+		}
+		t->history_row = t->c_row;
+	}
+	t->c_row = t->history_row;
+}
+
 void	ft_history_trigger(t_term *t, ssize_t pos)
 {
 	ssize_t	row;
@@ -102,7 +120,7 @@ void	ft_history_trigger(t_term *t, ssize_t pos)
 	if (t->c_row != t->total_row)
 		return ;
 	row = t->c_row;
-	//ft_history_push(t);
+	ft_history_push(t);
 	run_capability("vi");
 	//history = (char *)ft_vec_get(&t->v_history, t->v_history.len - (size_t)his);
 	history = ft_strdup(t->history[t->history_size - pos]); //maybe off by one, maybe casting needed for his
