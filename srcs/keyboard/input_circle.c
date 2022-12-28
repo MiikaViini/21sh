@@ -6,7 +6,7 @@
 /*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/25 19:41:32 by spuustin          #+#    #+#             */
-/*   Updated: 2022/12/28 21:40:21 by spuustin         ###   ########.fr       */
+/*   Updated: 2022/12/28 21:54:11 by spuustin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,6 @@ static int	ctrl_d_exit(t_term *t)
 {
 	t = NULL;
 	write(1, "\n", 1);
-	write_history_to_file(t);
 	return (1);
 }
 

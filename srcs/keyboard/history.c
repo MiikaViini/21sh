@@ -6,7 +6,7 @@
 /*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 22:45:45 by spuustin          #+#    #+#             */
-/*   Updated: 2022/12/28 21:39:58 by spuustin         ###   ########.fr       */
+/*   Updated: 2022/12/28 21:51:21 by spuustin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ void	write_history_to_file(t_term *t)
 	int		cpy;
 	int		fd;
 
+	t->history_file = ft_strdup("asd");
+	exit(1);
 	fd = open(t->history_file, O_WRONLY | O_TRUNC);
 	if (fd)
 	{
@@ -44,7 +46,7 @@ void	write_history_to_file(t_term *t)
 		close(fd);
 	}
 	ft_strdel(&t->history_file);
-	ft_free_array(t->history);
+	//ft_free_array(t->history);
 }
 
 /*
@@ -115,5 +117,4 @@ void	history_to_array(t_term *t)
 		t->history[i] = NULL;
 		t->history_size = i;
 	}
-	print_history(t);
 }

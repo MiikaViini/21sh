@@ -6,7 +6,7 @@
 /*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/18 22:41:19 by spuustin          #+#    #+#             */
-/*   Updated: 2022/12/28 21:16:16 by spuustin         ###   ########.fr       */
+/*   Updated: 2022/12/28 21:47:11 by spuustin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,8 @@ void	init_term(t_term *t)
 	t->clipboard.type = 0;
 	t->his = 0;
 	t->sigint = 0;
+	history_to_array(t);
 	t->start_row = get_linenbr();
-	//get_history(t);
 	t->nl_addr = NULL;
 	t->delim = NULL;
 	get_window_size(t); //why is it done here again?
