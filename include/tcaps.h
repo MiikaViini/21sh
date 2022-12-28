@@ -157,8 +157,9 @@ void	ft_add_nl_mid_row(t_term *t, ssize_t row, ssize_t pos);
 void	update_nl_addr_del(t_term *t);
 
 // history
+void	history_to_array(t_term *t);
 void	ft_history_trigger(t_term *t, ssize_t pos);
-void	history_write_to_file(t_term *t);
+void	write_history_to_file(t_term *t);
 void	add_command_to_history(t_term *t, char *line);
 
 //prompt

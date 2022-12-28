@@ -6,13 +6,26 @@
 /*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 22:45:45 by spuustin          #+#    #+#             */
-/*   Updated: 2022/12/28 19:07:59 by spuustin         ###   ########.fr       */
+/*   Updated: 2022/12/28 21:39:58 by spuustin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
 
-void	history_write_to_file(t_term *t)
+void	print_history(t_term *t)
+{
+	int		i;
+
+	i = 0;
+	while (t->history[i])
+	{
+		ft_putstr(t->history[i]);
+		write(1, "\n", 1);
+		i++;
+	}
+}
+
+void	write_history_to_file(t_term *t)
 {
 	int		cpy;
 	int		fd;
@@ -78,7 +91,6 @@ static void	count_history(t_term *t)
 */
 void	history_to_array(t_term *t)
 {
-	char	*file;
 	char	*line;
 	int		fd;
 	int		i;
@@ -88,7 +100,7 @@ void	history_to_array(t_term *t)
 	t->history = (char **)malloc(sizeof(char *) * (t->history_size + 1));
 	ft_bzero(t->history, MAX_HISTORY + 1);
 	i = 0;
-	fd = open(file, O_RDONLY | O_CREAT, 420);
+	fd = open(t->history_file, O_RDONLY | O_CREAT, 420);
 	if (fd)
 	{
 		line = NULL;
@@ -103,17 +115,5 @@ void	history_to_array(t_term *t)
 		t->history[i] = NULL;
 		t->history_size = i;
 	}
-}
-
-void	print_history(t_term *t)
-{
-	int		i;
-
-	i = 0;
-	while (i < t->history_size)
-	{
-		write(1, &t->history[i], ft_strlen(t->history[i]));
-		write(1, "\n", 1);
-		i++;
-	}
+	print_history(t);
 }

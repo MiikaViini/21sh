@@ -6,7 +6,7 @@
 /*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 22:29:47 by spuustin          #+#    #+#             */
-/*   Updated: 2022/12/28 20:53:54 by spuustin         ###   ########.fr       */
+/*   Updated: 2022/12/28 21:03:12 by spuustin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,63 @@
 // 	ft_history_trigger_end(t, display_row);
 // }
 
+static void	ft_history_reset_nl(t_term *t, char *inp)
+{
+	ssize_t	i;
+	ssize_t	col;
+	ssize_t	row;
+
+	i = -1;
+	col = 0;
+	row = t->c_row;
+	while (inp[++i])
+	{
+		col++;
+		if (((col + ft_get_prompt_len(t, row))) == t->ws_col || inp[i] == '\n')
+		{
+			row++;
+			col = 0;
+			t->total_row++;
+			ft_add_nl_last_row(t, inp, i + 1);
+		}
+	}
+	t->bytes = &inp[i] - t->nl_addr[0];
+	t->index = t->bytes;
+}
+
+static void	ft_history_inp_update(t_term *t, char *history)
+{
+	if (history)
+	{
+		ft_memset((void *)t->nl_addr[t->c_row], '\0', \
+		ft_strlen(t->nl_addr[t->c_row]));
+		ft_memcpy(t->nl_addr[t->c_row], history, ft_strlen(history));
+	}
+	else
+	{
+		ft_memset((void *)t->nl_addr[t->c_row], '\0', \
+		ft_strlen(t->nl_addr[t->c_row]));
+		if (t->input_cpy)
+			ft_memcpy(t->nl_addr[t->c_row], t->input_cpy, \
+			ft_strlen(t->input_cpy));
+	}
+}
+
+static void	ft_history_clear_line(t_term *t, ssize_t row)
+{
+	set_cursor(0, (t->start_row + t->history_row));
+	if (row > t->history_row)
+	{
+		while (row > t->history_row)
+		{
+			ft_remove_nl_addr(t, row);
+			t->total_row--;
+			row--;
+		}
+	}
+	run_capability("cd");
+}
+
 static void	ft_history_push(t_term *t)
 {
 	if (t->history_row == -1)
@@ -124,9 +181,9 @@ void	ft_history_trigger(t_term *t, ssize_t pos)
 	run_capability("vi");
 	//history = (char *)ft_vec_get(&t->v_history, t->v_history.len - (size_t)his);
 	history = ft_strdup(t->history[t->history_size - pos]); //maybe off by one, maybe casting needed for his
-	// ft_history_clear_line(t, row);
-	// ft_history_inp_update(t, history);
-	// ft_history_reset_nl(t, t->nl_addr[t->history_row]);
+	ft_history_clear_line(t, row);
+	ft_history_inp_update(t, history);
+	ft_history_reset_nl(t, t->nl_addr[t->history_row]);
 	ft_quote_flag_reset(t);
 	if (t->start_row + t->total_row >= t->ws_row)
 		t->start_row = t->ws_row - (t->total_row + 1);
