@@ -6,7 +6,7 @@
 /*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 19:07:23 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/21 21:27:16 by spuustin         ###   ########.fr       */
+/*   Updated: 2022/12/28 20:00:52 by spuustin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,8 +136,8 @@ int	main(int argc, char **argv, char **environ)
 	get_env(&env, environ, argc, argv);
 	ft_putstr("\033[2J\033[H");
 	prompt(&t, &env, builtins);
-	ft_free_array(env.env);
-	ft_free_array(env.path);
+	// ft_free_array(env.env);
+	// ft_free_array(env.path);
 	// free_strarr(env.env);
 	// free_strarr(env.path);
 	return (0);

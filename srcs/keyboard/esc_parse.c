@@ -6,7 +6,7 @@
 /*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 23:14:16 by spuustin          #+#    #+#             */
-/*   Updated: 2022/12/14 18:52:14 by spuustin         ###   ########.fr       */
+/*   Updated: 2022/12/28 19:54:05 by spuustin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,10 @@ void	ft_line_mv(t_term *t)
 		if (t->ch == '3')
 		{
 			t->ch = get_input();
-			if (t->ch == ARROW_UP && t->c_row && get_linenbr())
-				ft_line_up(t);
+			{
+				if (t->ch == ARROW_UP && t->c_row)
+					ft_line_up(t);
+			}
 			if (t->ch == ARROW_DOWN && t->c_row < t->total_row)
 				ft_line_down(t);
 			t->ch = 0;
@@ -51,11 +53,13 @@ void	ft_arrow_input(t_term *t)
 		ft_left(t);
 	else if (t->ch == ARROW_LFT && t->index < t->bytes)
 		ft_right(t);
-	// segfault happens here
-	// else if (t->ch == ARROW_UP && (size_t)t->his < (size_t)t->history_size)
-	// 	ft_history_trigger(t, ++t->his);
-	// else if (t->ch == ARROW_DOWN && t->his > 0)
-	// 	ft_history_trigger(t, --t->his);
+	else if (t->ch == ARROW_UP && (size_t)t->his < (size_t)t->history_size)
+	{
+		write(1, "HERE", 5);
+		ft_history_trigger(t, ++t->his);
+	}
+	else if (t->ch == ARROW_DOWN && t->his > 0)
+		ft_history_trigger(t, --t->his);
 }
 
 void	ft_alt_mv(t_term *t)

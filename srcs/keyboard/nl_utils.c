@@ -6,7 +6,7 @@
 /*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/14 19:12:47 by spuustin          #+#    #+#             */
-/*   Updated: 2022/12/21 21:37:37 by spuustin         ###   ########.fr       */
+/*   Updated: 2022/12/28 19:31:05 by spuustin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,10 @@ void	trigger_nl(t_term *t)
 	{
 		t->total_row++;
 		if ((t->start_row + t->total_row) >= t->ws_row)
+		{
+			t->start_row--;
 			ft_scroll_down();
+		}
 		if (t->nl_addr[t->c_row + 1])
 			ft_reset_nl_addr(t);
 		else

@@ -6,7 +6,7 @@
 /*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/25 19:41:32 by spuustin          #+#    #+#             */
-/*   Updated: 2022/12/21 21:25:31 by spuustin         ###   ########.fr       */
+/*   Updated: 2022/12/28 20:00:10 by spuustin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ void	ft_end_cycle(t_term *t)
 		ft_memcpy(t->history_buff, t->inp, t->bytes);
 		ft_nl_removal(t);
 		//vec_push(&t->v_history, t->history_buff); //copy from buff to history-array
+		//add_command_to_history(t, t->history_buff);
 		ft_strclr(t->history_buff);
 	}
 	// if (!ft_strncmp(t->inp, "history", 7))
@@ -96,13 +97,13 @@ static int	ctrl_d_exit(t_term *t)
 	//history_write_to_file(t);
 	return (1);
 }
-//return values differ from ref
+
 int	input_cycle(t_term *t)
 {
 	int		ctrl_d_ret;
 
-	t->c_col = write(1, SHELL_PROMPT, (size_t)t->prompt_len);
 	ft_add_nl_last_row(t, t->inp, 0);
+	t->c_col = write(1, SHELL_PROMPT, (size_t)t->prompt_len);
 	while (t->ch != -1)
 	{
 		t->ch = get_input();

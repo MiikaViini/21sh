@@ -6,7 +6,7 @@
 /*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 23:36:28 by spuustin          #+#    #+#             */
-/*   Updated: 2022/12/01 23:41:28 by spuustin         ###   ########.fr       */
+/*   Updated: 2022/12/28 19:57:40 by spuustin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ ssize_t	ft_mv_prompt_lens(t_term *t, int num)
  */
 static void	ft_move_up_end_line(t_term *t, ssize_t len, ssize_t prompt_len)
 {
-	t->c_col = (len + prompt_len) - 1;
+	t->c_col = len + prompt_len;
 	t->index = (t->nl_addr[t->c_row] - t->nl_addr[0]) - 1;
 }
 
@@ -70,12 +70,11 @@ void	ft_line_up(t_term *t)
 	ssize_t	len;
 	ssize_t	prompt_len;
 
-	len = t->nl_addr[t->c_row] - t->nl_addr[t->c_row - 1];
-	prompt_len = ft_mv_prompt_lens(t, -1);
+	len = t->nl_addr[t->c_row] - t->nl_addr[t->c_row - 1] - 1;
+	prompt_len = ft_get_prompt_len(t, t->c_row - 1);
 	if (t->c_col < (len + prompt_len))
 		ft_move_up(t, prompt_len);
 	else
 		ft_move_up_end_line(t, len, prompt_len);
-	t->c_row--;
-	set_cursor(t->c_col, (get_linenbr() - 1));
+	set_cursor(t->c_col, t->start_row + --t->c_row);
 }

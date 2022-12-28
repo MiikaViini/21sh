@@ -6,7 +6,7 @@
 /*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 22:45:45 by spuustin          #+#    #+#             */
-/*   Updated: 2022/12/21 22:01:29 by spuustin         ###   ########.fr       */
+/*   Updated: 2022/12/28 19:07:59 by spuustin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,30 +50,31 @@ static char	*get_file(void)
 	return (ft_strjoin(file, "/.42sh_history"));
 }
 
-int	count_history(char *file)
+static void	count_history(t_term *t)
 {
 	int		fd;
-	char	line;
-	int		history_size;
+	char	*line;
+	int		size;
 
-	fd = open(file, O_RDONLY | O_CREAT, 420);
-	history_size = 0;
+	fd = open(t->history_file, O_RDONLY | O_CREAT, 420);
+	size = 0;
 	if (fd)
 	{
 		line = NULL;
 		while (get_next_line(fd, &line) > 0)
 		{
-			history_size++;
+			size++;
 			ft_strdel(&line);
 		}
 		ft_strdel(&line);
 		close(fd);
 	}
-	return (history_size);
+	t->history_size = size;
 }
 
 /*
-	maybe a dynamic history size isnt the way to go, could count size of file.
+	also possible to go with dynamic history size, and add to that as long as
+	there is room (doesnt have to be same as max)
 */
 void	history_to_array(t_term *t)
 {
@@ -83,7 +84,8 @@ void	history_to_array(t_term *t)
 	int		i;
 
 	t->history_file = get_file();
-	t->history = (char **)malloc(sizeof(char *) * (count_history(t->history_file) + 1));
+	count_history(t);
+	t->history = (char **)malloc(sizeof(char *) * (t->history_size + 1));
 	ft_bzero(t->history, MAX_HISTORY + 1);
 	i = 0;
 	fd = open(file, O_RDONLY | O_CREAT, 420);
