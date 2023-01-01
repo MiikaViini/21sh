@@ -6,7 +6,7 @@
 /*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 22:45:45 by spuustin          #+#    #+#             */
-/*   Updated: 2022/12/28 21:51:21 by spuustin         ###   ########.fr       */
+/*   Updated: 2023/01/01 18:34:48 by spuustin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,27 +25,39 @@ void	print_history(t_term *t)
 	}
 }
 
+void	test_print_his(char **his)
+{
+	int i= 0;
+	while(his[i])
+	{
+		ft_printf("%s\n", his[i]);
+		i++;
+	}
+}
+
 void	write_history_to_file(t_term *t)
 {
 	int		cpy;
 	int		fd;
 
-	t->history_file = ft_strdup("asd");
-	exit(1);
+	test_print_his(t->history);
+	ft_printf("size: %d\n", t->history_size);
 	fd = open(t->history_file, O_WRONLY | O_TRUNC);
 	if (fd)
 	{
+		//ft_printf("file: %s\n", t->history_file);
 		cpy = 0;
 		if (t->history_size > MAX_HISTORY)
 			cpy = t->history_size % MAX_HISTORY;
 		while (cpy < t->history_size)
 		{
+			//ft_printf("to be copied: %s\n", t->history[cpy]);
 			ft_putendl_fd((char *)t->history[cpy], fd);
 			cpy++;
 		}
 		close(fd);
 	}
-	ft_strdel(&t->history_file);
+	//ft_strdel(&t->history_file);
 	//ft_free_array(t->history);
 }
 
@@ -87,10 +99,6 @@ static void	count_history(t_term *t)
 	t->history_size = size;
 }
 
-/*
-	also possible to go with dynamic history size, and add to that as long as
-	there is room (doesnt have to be same as max)
-*/
 void	history_to_array(t_term *t)
 {
 	char	*line;
@@ -100,7 +108,7 @@ void	history_to_array(t_term *t)
 	t->history_file = get_file();
 	count_history(t);
 	t->history = (char **)malloc(sizeof(char *) * (t->history_size + 1));
-	ft_bzero(t->history, MAX_HISTORY + 1);
+	ft_bzero(t->history, t->history_size + 1);
 	i = 0;
 	fd = open(t->history_file, O_RDONLY | O_CREAT, 420);
 	if (fd)

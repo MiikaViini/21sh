@@ -6,7 +6,7 @@
 /*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 22:08:59 by spuustin          #+#    #+#             */
-/*   Updated: 2022/12/21 22:20:18 by spuustin         ###   ########.fr       */
+/*   Updated: 2023/01/01 18:34:53 by spuustin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,32 @@ static void	add_to_capped_history(t_term *t, char *command)
 	t->history = temp;
 }
 
+// this could be done in a way, that size is doubled if needed
+
+static void	increase_history_size(t_term *t)
+{
+	char	**temp;
+	int		i;
+
+	temp = (char **)malloc(sizeof(char *) * (t->history_size + 2));
+	if (!temp)
+		exit(1);
+	i = 0;
+	while (t->history[i])
+	{
+		temp[i] = ft_strdup(t->history[i]);
+		i++;
+	}
+	temp[i] = NULL;
+	ft_free_array(t->history);
+	t->history = temp;
+}
+
 void	add_command_to_history(t_term *t, char *command)
 {
 	if (t->history_size <= MAX_HISTORY)
 	{
-		// for now we assume t->history is always size 1024
+		increase_history_size(t);
 		t->history[t->history_size] = ft_strdup(command);
 		t->history_size++;
 		t->history[t->history_size] = NULL;
