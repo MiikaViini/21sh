@@ -6,7 +6,7 @@
 /*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 22:29:47 by spuustin          #+#    #+#             */
-/*   Updated: 2022/12/28 21:03:12 by spuustin         ###   ########.fr       */
+/*   Updated: 2023/01/01 16:58:50 by spuustin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,8 +179,10 @@ void	ft_history_trigger(t_term *t, ssize_t pos)
 	row = t->c_row;
 	ft_history_push(t);
 	run_capability("vi");
-	//history = (char *)ft_vec_get(&t->v_history, t->v_history.len - (size_t)his);
-	history = ft_strdup(t->history[t->history_size - pos]); //maybe off by one, maybe casting needed for his
+	if (t->history[t->history_size - pos])
+		history = ft_strdup(t->history[t->history_size - (size_t)pos]);
+	else
+		history = ft_strdup("");
 	ft_history_clear_line(t, row);
 	ft_history_inp_update(t, history);
 	ft_history_reset_nl(t, t->nl_addr[t->history_row]);
