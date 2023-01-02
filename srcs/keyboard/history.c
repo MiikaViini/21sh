@@ -6,7 +6,7 @@
 /*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 22:45:45 by spuustin          #+#    #+#             */
-/*   Updated: 2023/01/02 18:58:24 by spuustin         ###   ########.fr       */
+/*   Updated: 2023/01/02 19:06:22 by spuustin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,9 @@ void	history_command(t_term *t)
 	while (t->history[i])
 	{
 		ft_printf("%4d %s", i, t->history[i]);
-		write(1, "\n", 1);
 		i++;
+		if (t->history[i])
+			write(1, "\n", 1);
 	}
 }
 
