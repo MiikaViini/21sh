@@ -6,7 +6,7 @@
 /*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 22:45:45 by spuustin          #+#    #+#             */
-/*   Updated: 2023/01/02 19:06:22 by spuustin         ###   ########.fr       */
+/*   Updated: 2023/01/02 19:51:17 by spuustin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,6 @@ void	write_history_to_file(t_term *t)
 		}
 		close(fd);
 	}
-	//ft_strdel(&t->history_file);
-	//ft_free_array(t->history);
 }
 
 /*

@@ -6,7 +6,7 @@
 #    By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/07/09 19:07:08 by mviinika          #+#    #+#              #
-#    Updated: 2023/01/02 18:40:04 by spuustin         ###   ########.fr        #
+#    Updated: 2023/01/02 19:53:10 by spuustin         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -89,7 +89,11 @@ KEYBOARD_FILES = tcaps.c \
 				get_line_len.c \
 				print_input.c \
 				nl_removal.c \
-				history_new_line.c
+				history_new_line.c \
+				backslash.c \
+				quote_utils.c \
+				delim_utils.c \
+				ctrl_d.c
 
 PARSING_DIR = parsing
 PARSING_FILES = parse_input.c \

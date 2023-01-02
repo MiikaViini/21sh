@@ -6,7 +6,7 @@
 /*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/25 19:41:32 by spuustin          #+#    #+#             */
-/*   Updated: 2023/01/02 18:59:21 by spuustin         ###   ########.fr       */
+/*   Updated: 2023/01/02 19:52:26 by spuustin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,30 +52,6 @@ static void	ft_backspace_or_escape(t_term *t)
 		ft_backspace(t);
 	if (t->ch == ESCAPE)
 		ft_esc_parse(t);
-}
-
-int	ctrl_d(t_term *t)
-{
-	if (!t->bytes)
-		return (-1);
-	if (t->index < t->bytes)
-		ft_delete(t);
-	if (t->heredoc && !*t->nl_addr[t->c_row])
-	{
-		ft_putstr("21sh: warning: here-document at line ");
-		ft_putnbr(t->c_row);
-		ft_putstr(" delimited by end-of-file (wanted `EOF')");
-		ft_end_cycle(t);
-		return (1);
-	}
-	return (0);
-}
-
-static int	ctrl_d_exit(t_term *t)
-{
-	t = NULL;
-	write(1, "\n", 1);
-	return (1);
 }
 
 int	input_cycle(t_term *t)

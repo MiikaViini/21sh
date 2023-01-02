@@ -6,7 +6,7 @@
 /*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/18 22:41:19 by spuustin          #+#    #+#             */
-/*   Updated: 2023/01/02 18:51:05 by spuustin         ###   ########.fr       */
+/*   Updated: 2023/01/02 19:50:39 by spuustin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,8 @@
 
 t_term	*g_t;
 
-void	init_term(t_term *t)
+void	set_to_zero(t_term *t)
 {
-	g_t = t;
-	init_signals();
-	ft_memset(t->inp, '\0', BUFFSIZE);
-	ft_memset(t->history_buff, '\0', BUFFSIZE);
 	t->ch = 0;
 	t->quote = 0;
 	t->q_qty = 0;
@@ -35,6 +31,16 @@ void	init_term(t_term *t)
 	t->clipboard.type = 0;
 	t->his = 0;
 	t->sigint = 0;
+	t->total_row_cpy = 0;
+}
+
+void	init_term(t_term *t)
+{
+	g_t = t;
+	init_signals();
+	ft_memset(t->inp, '\0', BUFFSIZE);
+	ft_memset(t->history_buff, '\0', BUFFSIZE);
+	set_to_zero(t);
 	history_to_array(t);
 	t->start_row = get_linenbr();
 	t->nl_addr = NULL;
@@ -44,7 +50,6 @@ void	init_term(t_term *t)
 	t->m_prompt_len = (ssize_t)ft_strlen(OPEN_QUOTE);
 	t->c_col = ft_strlen(SHELL_PROMPT);
 	t->input_cpy = NULL;
-	//t->total_row_cpy = 0; not needed?
 	t->clipboard.buff = NULL;
 }
 
@@ -65,8 +70,6 @@ static struct termios	init_termios(void)
 		write(2, "error tcsetattr\n", 16);
 		exit(1);
 	}
-	// run_capability("ti");
-	// run_capability("cl");
 	return (ret);
 }
 

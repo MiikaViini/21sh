@@ -114,6 +114,7 @@ void	ft_reset_nl_addr(t_term *t);
 ssize_t	ft_row_lowest_line(t_term *t);
 
 void	ft_restart_cycle(t_term *t);
+void	ft_end_cycle(t_term *t);
 
 //signals
 void	init_signals(void);
@@ -171,5 +172,20 @@ void	ft_quote_flag_check(t_term *t, ssize_t index);
 void	ft_print_input(t_term *t, ssize_t row, int mode);
 
 void	ft_nl_removal(t_term *t);
+
+//backslash and delim
+void	ft_bslash_handling(t_term *t);
+int		ft_bslash_escape_check(t_term *t, ssize_t pos);
+int		ft_delim_fetch(t_term *t);
+
+//quotes
+void	ft_quote_flag_reset(t_term *t);
+void	ft_quote_flag_check(t_term *t, ssize_t index);
+
+void	ft_heredoc_handling(t_term *t, int index);
+
+//ctrl_d
+int		ctrl_d_exit(t_term *t);
+int		ctrl_d(t_term *t);
 
 #endif
