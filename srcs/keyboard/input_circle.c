@@ -6,7 +6,7 @@
 /*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/25 19:41:32 by spuustin          #+#    #+#             */
-/*   Updated: 2023/01/02 18:52:17 by spuustin         ###   ########.fr       */
+/*   Updated: 2023/01/02 18:59:21 by spuustin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@ void	ft_end_cycle(t_term *t)
 		add_command_to_history(t, t->history_buff);
 		ft_strclr(t->history_buff);
 	}
-	// if (!ft_strncmp(t->inp, "history", 7))
-	// 	ft_history(t);
+	if (ft_strequ(t->inp, "history"))
+		history_command(t);
 	ft_memdel((void **)&t->nl_addr);
 	if (t->input_cpy)
 		ft_strdel(&t->input_cpy);

@@ -6,20 +6,20 @@
 /*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 22:45:45 by spuustin          #+#    #+#             */
-/*   Updated: 2023/01/02 18:38:25 by spuustin         ###   ########.fr       */
+/*   Updated: 2023/01/02 18:58:24 by spuustin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
 
-void	print_history(t_term *t)
+void	history_command(t_term *t)
 {
 	int		i;
 
 	i = 0;
 	while (t->history[i])
 	{
-		ft_putstr(t->history[i]);
+		ft_printf("%4d %s", i, t->history[i]);
 		write(1, "\n", 1);
 		i++;
 	}

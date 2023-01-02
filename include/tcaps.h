@@ -159,6 +159,7 @@ void	history_to_array(t_term *t);
 void	ft_history_trigger(t_term *t, ssize_t pos);
 void	write_history_to_file(t_term *t);
 void	add_command_to_history(t_term *t, char *line);
+void	history_command(t_term *t);
 
 //prompt
 void	ft_create_prompt_line(t_term *t, ssize_t loc);
