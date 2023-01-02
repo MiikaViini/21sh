@@ -6,7 +6,7 @@
 /*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 19:07:23 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/28 21:47:05 by spuustin         ###   ########.fr       */
+/*   Updated: 2023/01/02 18:45:56 by spuustin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,14 +32,14 @@ void	set_pars_struct(t_pars *pars, char *input)
 	pars->last_token_str = NULL;
 }
 
-int is_pipe_sequence(t_ast *tree)
+int	is_pipe_sequence(t_ast *tree)
 {
 	if (tree->right)
 		return (1);
 	return (0);
 }
 
-void reset_fds_to_default(char *terminal)
+void	reset_fds_to_default(char *terminal)
 {
 	close(STDIN_FILENO);
 	open(terminal, O_RDWR);
@@ -54,22 +54,17 @@ void reset_fds_to_default(char *terminal)
 static int	ft_21sh(t_env *env, char **builtins, char *input)
 {
 	int		rb;
-	//char	buf[MAX_LINE + 1];
 	t_ast	**tree;
 	t_pars	parsed;
 	int		i;
-	char *terminal = ttyname(1);
+	char 	*terminal = ttyname(1);
 
 	rb = ft_strlen(input);
 	i = 0;
-	//ft_memset(buf, '\0', MAX_LINE + 1);
 	tree = NULL;
-	write(1, "\n", 1); //should be removed at some point, right?
-	//rb = read(0, &buf, MAX_LINE);
-	// if (rb == -1)
-	// 	exit(1);
+	write(1, "\n", 1);
 	set_pars_struct(&parsed, input);
-	if (check_quotes(input)) //this condition should never happen, right?
+	if (check_quotes(input))
 		error_print(NULL, NULL, E_QUOT);
 	else
 	{
@@ -96,7 +91,6 @@ static int	ft_21sh(t_env *env, char **builtins, char *input)
 			reset_fds_to_default(terminal);
 			i++;
 		}
-		//ft_memset(buf, '\0', 4096);
 		free(tree);
 		free_parsed_input(parsed.parsed);
 		free(parsed.parsed);
@@ -118,6 +112,7 @@ static void	prompt(t_term *t, t_env *env, char **builtins)
 	rb = 1;
 	while (!input_cycle(t))
 	{
+		write_history_to_file(t);
 		rb = ft_21sh(env, builtins, t->inp);
 		ft_restart_cycle(t);
 	}
@@ -134,11 +129,9 @@ int	main(int argc, char **argv, char **environ)
 	rb = 1;
 	builtins = initialize_and_set_builtins();
 	get_env(&env, environ, argc, argv);
-	//ft_putstr("\033[2J\033[H");
+	ft_putstr("\033[2J\033[H");
 	prompt(&t, &env, builtins);
-	// ft_free_array(env.env);
-	// ft_free_array(env.path);
-	// free_strarr(env.env);
-	// free_strarr(env.path);
+	free_strarr(env.env);
+	free_strarr(env.path);
 	return (0);
 }

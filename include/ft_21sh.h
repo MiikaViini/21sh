@@ -6,7 +6,7 @@
 /*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 08:59:36 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/12 22:24:49 by spuustin         ###   ########.fr       */
+/*   Updated: 2023/01/01 18:01:04 by spuustin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,9 @@ typedef struct s_env
 {
 	char	**env;
 	char	**path;
+	// char	**history;
+	// char	*history_file;
+	// int		history_size;
 }			t_env;
 
 typedef struct s_quotes

@@ -6,7 +6,7 @@
 /*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 18:45:23 by spuustin          #+#    #+#             */
-/*   Updated: 2022/12/19 20:50:30 by spuustin         ###   ########.fr       */
+/*   Updated: 2023/01/02 18:47:58 by spuustin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ static int	ft_get_bslash_pos(t_term *t, int i)
 	else
 		return (i - 1);
 }
-//refactor
+
 void	ft_nl_removal(t_term *t)
 {
 	int		k;

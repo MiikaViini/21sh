@@ -6,7 +6,7 @@
 /*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/25 19:41:32 by spuustin          #+#    #+#             */
-/*   Updated: 2022/12/28 21:54:11 by spuustin         ###   ########.fr       */
+/*   Updated: 2023/01/02 18:52:17 by spuustin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,7 @@ void	ft_end_cycle(t_term *t)
 	{
 		ft_memcpy(t->history_buff, t->inp, t->bytes);
 		ft_nl_removal(t);
-		//vec_push(&t->v_history, t->history_buff); //copy from buff to history-array
-		//add_command_to_history(t, t->history_buff);
+		add_command_to_history(t, t->history_buff);
 		ft_strclr(t->history_buff);
 	}
 	// if (!ft_strncmp(t->inp, "history", 7))
@@ -29,24 +28,6 @@ void	ft_end_cycle(t_term *t)
 	if (t->input_cpy)
 		ft_strdel(&t->input_cpy);
 }
-
-// static int	ctrl_d(t_term *t)
-// {
-// 	if (!t->bytes)
-// 		return (-1);
-// 	if (t->index < t->bytes)
-// 		ft_delete(t);
-// 	if (t->heredoc && !*t->nl_addr[t->c_row])
-// 	{
-// 		ft_putstr("21sh: warning: here-document at line ");
-// 		ft_putnbr(t->c_row);
-// 		ft_putstr(" delimited by end-of-file (wanted `EOF')");
-// 		ft_end_cycle(t);
-// 		ft_restart_cycle(t);
-// 		return (1);
-// 	}
-// 	return (0);
-// }
 
 static int	ft_isprint_or_enter(t_term *t)
 {

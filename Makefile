@@ -6,7 +6,7 @@
 #    By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/07/09 19:07:08 by mviinika          #+#    #+#              #
-#    Updated: 2022/12/21 22:17:30 by spuustin         ###   ########.fr        #
+#    Updated: 2023/01/02 18:40:04 by spuustin         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ LIBFT = ./libft/libft.a
 LIBFT_DIR = ./libft/
 LIB_INCLUDE_DIR = ./libft/include
 
-FLAGS = -Wall -Wextra -Werror -pedantic -g -fsanitize=address
+FLAGS = -Wall -Wextra -Werror -pedantic -g #-fsanitize=address
 
 UNAME :=$(shell uname)
 

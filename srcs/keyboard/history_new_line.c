@@ -6,7 +6,7 @@
 /*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 22:08:59 by spuustin          #+#    #+#             */
-/*   Updated: 2023/01/01 18:34:53 by spuustin         ###   ########.fr       */
+/*   Updated: 2023/01/02 18:50:41 by spuustin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,9 @@ static void	add_to_capped_history(t_term *t, char *command)
 	t->history = temp;
 }
 
-// this could be done in a way, that size is doubled if needed
+/*
+	memmove possible
+*/
 
 static void	increase_history_size(t_term *t)
 {

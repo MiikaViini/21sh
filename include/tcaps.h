@@ -60,9 +60,7 @@ typedef struct s_term
 
 	char			inp[BUFFSIZE];
 	char			history_buff[BUFFSIZE];
-	//t_vec			v_history;
-
-	char			**history; //
+	char			**history;
 	int				history_size;
 	t_clipboard		clipboard;
 	char			**nl_addr;

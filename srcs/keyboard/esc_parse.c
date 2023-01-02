@@ -6,7 +6,7 @@
 /*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 23:14:16 by spuustin          #+#    #+#             */
-/*   Updated: 2022/12/28 21:07:09 by spuustin         ###   ########.fr       */
+/*   Updated: 2023/01/01 16:45:25 by spuustin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,6 @@ void	ft_line_mv(t_term *t)
 
 void	ft_arrow_input(t_term *t)
 {
-	ft_printf("his: %d, size: %d\n", t->his, t->history_size);
 	if (t->ch == ARROW_RGHT && t->index)
 		ft_left(t);
 	else if (t->ch == ARROW_LFT && t->index < t->bytes)

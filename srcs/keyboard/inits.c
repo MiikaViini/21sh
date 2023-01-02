@@ -6,7 +6,7 @@
 /*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/18 22:41:19 by spuustin          #+#    #+#             */
-/*   Updated: 2022/12/28 21:47:11 by spuustin         ###   ########.fr       */
+/*   Updated: 2023/01/02 18:51:05 by spuustin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	init_term(t_term *t)
 	t->start_row = get_linenbr();
 	t->nl_addr = NULL;
 	t->delim = NULL;
-	get_window_size(t); //why is it done here again?
+	get_window_size(t);
 	t->prompt_len = (ssize_t)ft_strlen(SHELL_PROMPT);
 	t->m_prompt_len = (ssize_t)ft_strlen(OPEN_QUOTE);
 	t->c_col = ft_strlen(SHELL_PROMPT);
