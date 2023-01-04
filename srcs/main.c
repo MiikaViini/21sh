@@ -82,13 +82,12 @@ int	main(int argc, char **argv, char **environ)
 	ft_putstr("\033[2J\033[H");
 	while (rb != 0)
 	{
-		
 		set_signal_handling();
 		//ft_printf("%d\n", g_signal);
-		if (g_signal != 1)
+		if (g_signal != 2)
 			ft_putstr("21sh$ ");
-		g_signal = 0;
 		rb = ft_21sh(&env, builtins);
+		g_signal = 0;
 	}
 	free_strarr(env.env);
 	free_strarr(env.path);

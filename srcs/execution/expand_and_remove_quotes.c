@@ -12,13 +12,14 @@
 
 #include "ft_21sh.h"
 
+
 // Expands variables from environment and removes quotes
 int	expand_and_remove_quotes(t_ast **tree, t_env *env)
 {
 	int			i;
 	int			k;
 	t_quotes	quotes;
-
+ 
 	k = 0;
 	i = 0;
 	initialise_structs(&quotes, NULL, NULL);

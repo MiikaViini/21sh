@@ -6,21 +6,26 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 16:28:37 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/21 15:25:42 by mviinika         ###   ########.fr       */
+/*   Updated: 2022/12/19 16:33:40 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
 
-int	g_signal;
+int g_signal;
 
-static void	set_signal_int(int signal)
+void	set_signal_int(int signal)
 {
 	if (signal == SIGINT)
 	{
-		g_signal = 1;
+		g_signal = signal;
 		ft_putchar('\n');
-	
+		
+		//ft_putchar('\n');
+	}
+	else if (signal == SIGWINCH)
+	{
+		;
 	}
 	ft_putstr("21sh$ ");
 }
