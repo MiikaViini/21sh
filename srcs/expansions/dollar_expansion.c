@@ -6,16 +6,19 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/10 20:20:37 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/20 10:33:25 by mviinika         ###   ########.fr       */
+/*   Updated: 2023/01/04 10:39:57 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
 
-static int	var_name_len(char *word, int len, int i)
+static int	var_name_len(char *word, int len, int *i)
 {
-	while (ft_isalnum(word[len + i])
-		|| (!ft_isalnum(word[len + i]) && word[len + i] == '_'))
+	(*i)++;
+	if (word[*i] == '{' || word[*i] == '}')
+		(*i)++;
+	while (ft_isalnum(word[len + *i])
+		|| (!ft_isalnum(word[len + *i]) && word[len + *i] == '_'))
 		len++;
 	return (len);
 }
@@ -32,7 +35,12 @@ static char	*expand_and_concat(char *expanded, char **env, int k, int len)
 
 static int	add_letter_exp(char *word, char *expanded, int *i, int *j)
 {
-	if (!is_expansion(word, *i)
+	if (word[*i] == '}')
+	{
+		*i += 1;
+		return (0);
+	}
+	else if (!is_expansion(word, *i)
 		|| (word[*i] == '~' && is_expansion(word, *i + 1)))
 	{
 		expanded[*j] = word[*i];
@@ -58,7 +66,7 @@ char	*dollar_expansion(char *expanded, char *word, char **env, int len)
 		else
 		{
 			k = -1;
-			len = var_name_len(word, len, ++i);
+			len = var_name_len(word, len, &i);
 			while (env[++k])
 				if (ft_strncmp(env[k], &word[i], len) == 0
 					&& env[k][len] == '=')

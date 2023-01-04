@@ -6,13 +6,11 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 19:07:23 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/21 15:24:50 by mviinika         ###   ########.fr       */
+/*   Updated: 2023/01/04 13:24:53 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
-
-extern int	g_signal;
 
 void	free_parsed_input(char **p_input)
 {
@@ -35,7 +33,7 @@ void	free_all(t_pars *pars, t_ast **tree, char *buf)
 	ft_memset(buf, '\0', 4096);
 }
 
-void check_read_bytes(int rb, t_env *env)
+void	check_read_bytes(int rb, t_env *env)
 {
 	if (rb == -1)
 		exit(1);
@@ -82,12 +80,8 @@ int	main(int argc, char **argv, char **environ)
 	ft_putstr("\033[2J\033[H");
 	while (rb != 0)
 	{
-		
 		set_signal_handling();
-		//ft_printf("%d\n", g_signal);
-		if (g_signal != 1)
-			ft_putstr("21sh$ ");
-		g_signal = 0;
+		ft_putstr("21sh$ ");
 		rb = ft_21sh(&env, builtins);
 	}
 	free_strarr(env.env);

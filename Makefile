@@ -6,7 +6,7 @@
 #    By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/07/09 19:07:08 by mviinika          #+#    #+#              #
-#    Updated: 2022/12/20 14:35:44 by mviinika         ###   ########.fr        #
+#    Updated: 2023/01/04 13:21:35 by mviinika         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -81,7 +81,8 @@ PARSING_FILES = parse_input.c \
 			tokens_del.c \
 
 SIGNALS_DIR = signals
-SIGNALS_FILES = set_signal_handling.c 
+SIGNALS_FILES = set_signal_handling.c \
+				set_signal_fork.c
 
 UTILS_DIR = utils
 UTILS_FILES = check_quotes.c \

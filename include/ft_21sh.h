@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 08:59:36 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/20 14:04:54 by mviinika         ###   ########.fr       */
+/*   Updated: 2023/01/04 12:01:41 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 #  define SHELL_MAX_FD 256
 # endif
 
+
 # include "../libft/include/libft.h"
 # include "ast.h"
 # include "tokens.h"
@@ -40,6 +41,7 @@
 # include <dirent.h>
 # include <fcntl.h>
 # include <pwd.h>
+# include <term.h>
 
 # define MAX_PATH 1024
 # define MAX_LINE 4096
