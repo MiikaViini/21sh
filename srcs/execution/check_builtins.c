@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_builtins.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 12:11:50 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/19 16:11:37 by mviinika         ###   ########.fr       */
+/*   Updated: 2023/01/04 15:20:29 by spuustin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,13 @@
 
 int	check_builtins(char **input, char **builtins, t_env *env)
 {
-	int	k;
+	int		k;
 
 	k = -1;
 	if (*input == NULL)
 		return (-1);
+	if (ft_strequ(input[0], "history") == 1)
+		return (1);
 	while (builtins[++k])
 	{
 		if (ft_strequ(builtins[k], input[0]))

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_syntax.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 14:25:27 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/21 13:18:35 by mviinika         ###   ########.fr       */
+/*   Updated: 2023/01/04 19:36:13 by spuustin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,10 @@ int	check_syntax(t_pars *pars, t_tlist *tokens)
 	if (pars->last_token_str[i] == '&'
 		|| pars->last_token_str[i] == '|'
 		|| pars->last_token_str[i] == ';'
-		|| pars->last_token_str[i] == '>'
-		|| pars->last_token_str[i] == '<')
+		|| pars->last_token_str[i] == '>')
 		err = 1;
 	if (err)
 		error_print("newline", NULL, E_SYNERR);
 	return (err);
 }
+//|| pars->last_token_str[i] == '<'

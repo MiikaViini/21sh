@@ -1,0 +1,21 @@
+ls: sdfds: No such file or directory
+.:
+total 2864
+-rw-r--r--    1 spuustin  2020        0 Jan  4 15:16 %80
+
+drwxr-xr-x   17 spuustin  2020      578 Jan  4 16:57 .
+drwxr-xr-x  133 spuustin  2020     4522 Dec 19 20:05 ..
+drwxr-xr-x   18 spuustin  2020      612 Jan  4 15:38 .git
+-rw-r--r--    1 spuustin  2020       27 Jan  4 15:16 .gitignore
+drwxr-xr-x    3 spuustin  2020      102 Dec 12 20:06 .vscode
+-rwxr-xr-x    1 spuustin  2020   136388 Jan  4 16:54 21sh
+-rw-r--r--    1 spuustin  2020  1300693 Jan  4 15:16 21sh.en.pdf
+-rw-r--r--    1 spuustin  2020     4595 Jan  4 15:48 Makefile
+-rw-r--r--    1 spuustin  2020      809 Jan  4 15:16 README.md
+-rw-r--r--    1 spuustin  2020       20 Jan  4 15:16 author
+drwxr-xr-x    4 spuustin  2020      136 Jan  4 15:16 eval_tests
+drwxr-xr-x   14 spuustin  2020      476 Jan  4 15:16 include
+-rw-r--r--    1 spuustin  2020       37 Jan  4 16:57 jee
+drwxr-xr-x    9 spuustin  2020      306 Jan  4 16:54 libft
+drwxr-xr-x   12 spuustin  2020      408 Jan  4 16:54 objs
+drwxr-xr-x   12 spuustin  2020      408 Jan  4 15:16 srcs

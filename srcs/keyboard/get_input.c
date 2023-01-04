@@ -1,20 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   set_start_values.c                                 :+:      :+:    :+:   */
+/*   get_input.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/16 11:46:48 by mviinika          #+#    #+#             */
-/*   Updated: 2023/01/04 15:55:28 by spuustin         ###   ########.fr       */
+/*   Created: 2022/12/02 15:19:54 by spuustin          #+#    #+#             */
+/*   Updated: 2022/12/02 15:20:34 by spuustin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
 
-void	set_start_values(t_ast ***tree, char *buf, int *rb)
+int	get_input(void)
 {
-	*rb = 1;
-	(*tree) = NULL;
-	*rb = read(0, buf, MAX_LINE);
+	int		c;
+
+	c = 0;
+	read(STDIN_FILENO, &c, 1);
+	return (c);
 }

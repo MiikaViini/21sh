@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   do_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 11:08:24 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/20 14:02:25 by mviinika         ###   ########.fr       */
+/*   Updated: 2023/01/04 15:20:14 by spuustin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ int	do_exit(char **input, t_env *env)
 	int	exit_status;
 
 	exit_status = 0;
+	//write_history_to_file();
 	ft_putendl("exit");
 	if (input && input[1])
 	{

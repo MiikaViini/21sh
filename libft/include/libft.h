@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/08 14:13:57 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/14 20:30:56 by mviinika         ###   ########.fr       */
+/*   Updated: 2023/01/04 15:19:49 by spuustin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,5 +110,6 @@ char	**ft_strarrcpy(char **dest, char **strarr);
 size_t	ft_linecount(char **arr);
 size_t	ft_wordcount_ws(const char *s);
 int		ft_only_digits(char *str);
+char	**ft_free_array(char **array);
 
 #endif

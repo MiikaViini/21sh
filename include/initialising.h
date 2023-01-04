@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   initialising.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/20 12:41:48 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/20 12:49:24 by mviinika         ###   ########.fr       */
+/*   Updated: 2023/01/04 15:39:53 by spuustin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ typedef struct s_word
 }			t_word;
 
 void		initialise_structs(t_quotes *quotes, t_word *values, char *input);
-char		**initialize_and_set_builtins(void);
+//char		**initialize_and_set_builtins(void);
 void		set_pars_struct(t_pars *pars, char *input);
 void		set_start_values(t_ast ***tree, char *buf, int *rb);
 void		init_tree(t_ast ***tree, size_t size);

@@ -1,20 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   set_start_values.c                                 :+:      :+:    :+:   */
+/*   space.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/16 11:46:48 by mviinika          #+#    #+#             */
-/*   Updated: 2023/01/04 15:55:28 by spuustin         ###   ########.fr       */
+/*   Created: 2022/12/02 15:44:36 by spuustin          #+#    #+#             */
+/*   Updated: 2022/12/02 15:45:02 by spuustin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
 
-void	set_start_values(t_ast ***tree, char *buf, int *rb)
+int	ft_sspace(const char *str)
 {
-	*rb = 1;
-	(*tree) = NULL;
-	*rb = read(0, buf, MAX_LINE);
+	if (!str)
+		return (0);
+	if ((*str >= 9 && *str <= 13) || *str == 32)
+		return (1);
+	return (0);
 }

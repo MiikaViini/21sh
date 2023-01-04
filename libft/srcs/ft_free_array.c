@@ -1,20 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   set_start_values.c                                 :+:      :+:    :+:   */
+/*   ft_free_array.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/16 11:46:48 by mviinika          #+#    #+#             */
-/*   Updated: 2023/01/04 15:55:28 by spuustin         ###   ########.fr       */
+/*   Created: 2021/11/23 16:36:51 by spuustin          #+#    #+#             */
+/*   Updated: 2022/08/19 18:36:21 by spuustin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_21sh.h"
+#include "libft.h"
 
-void	set_start_values(t_ast ***tree, char *buf, int *rb)
+char	**ft_free_array(char **array)
 {
-	*rb = 1;
-	(*tree) = NULL;
-	*rb = read(0, buf, MAX_LINE);
+	int		i;
+
+	i = 0;
+	while (array[i])
+	{
+		free(array[i]);
+		array[i] = NULL;
+		i++;
+	}
+	free(array);
+	array = NULL;
+	return (array);
 }

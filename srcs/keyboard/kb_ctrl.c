@@ -1,20 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   set_start_values.c                                 :+:      :+:    :+:   */
+/*   kb_ctrl.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/16 11:46:48 by mviinika          #+#    #+#             */
-/*   Updated: 2023/01/04 15:55:28 by spuustin         ###   ########.fr       */
+/*   Created: 2022/12/14 19:25:25 by spuustin          #+#    #+#             */
+/*   Updated: 2022/12/21 21:33:20 by spuustin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
 
-void	set_start_values(t_ast ***tree, char *buf, int *rb)
+void	ft_ctrl(t_term *t)
 {
-	*rb = 1;
-	(*tree) = NULL;
-	*rb = read(0, buf, MAX_LINE);
+	if (t->ch == CTRL_W)
+		ft_cut(t);
+	else if (t->ch == CTRL_U)
+		ft_copy(t);
+	else if (t->ch == CTRL_Y)
+		ft_paste(t);
+	else if (t->ch == CTRL_L)
+	{
+		t->start_row = 0;
+		run_capability("vi");
+		run_capability("cl");
+		ft_print_input(t, 0, 0);
+		run_capability("ve");
+	}
 }

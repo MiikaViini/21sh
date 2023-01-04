@@ -3,16 +3,16 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+         #
+#    By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/07/09 19:07:08 by mviinika          #+#    #+#              #
-#    Updated: 2023/01/04 13:21:35 by mviinika         ###   ########.fr        #
+#    Updated: 2023/01/04 15:48:42 by spuustin         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = 21sh
 
-CC = gcc 
+CC = gcc
 
 INCLUDE_DIR = ./include
 
@@ -20,7 +20,7 @@ LIBFT = ./libft/libft.a
 LIBFT_DIR = ./libft/
 LIB_INCLUDE_DIR = ./libft/include
 
-FLAGS = -Wall -Wextra -Werror -g -pedantic
+FLAGS = -Wall -Wextra -Werror -pedantic -g #-fsanitize=address
 
 UNAME :=$(shell uname)
 
@@ -51,8 +51,7 @@ EXECUTION_FILES = check_builtins.c \
 				execute_all.c \
 				expand_remove_quotes_redirs.c \
 				execute_redir_out.c
-				
-				
+
 EXPANSIONS_DIR = expansions
 EXPANSIONS_FILES = dollar_expansion.c \
 				handle_expansions.c \
@@ -67,7 +66,44 @@ INITIALISING_FILES = initialize_and_set_builtins.c \
 					set_start_values.c \
 					initialise_structs.c \
 					init_tree.c
-					
+
+KEYBOARD_DIR = keyboard
+KEYBOARD_FILES = tcaps.c \
+				inits.c \
+				window.c \
+				input_circle.c \
+				new_line.c \
+				nl_utils.c \
+				signals.c \
+				restart_cycle.c \
+				esc_parse.c \
+				move_word.c \
+				line_up.c \
+				line_down.c \
+				get_input.c \
+				insertion.c \
+				space.c \
+				backspace.c \
+				kb_ctrl.c \
+				ctrl_cut.c \
+				ctrl_copy.c \
+				ctrl_paste.c \
+				trigger_nl.c \
+				history.c \
+				get_history.c \
+				kb_utils.c \
+				cursor_control.c \
+				quote_management.c \
+				print_trail.c \
+				prompt_control.c \
+				get_line_len.c \
+				print_input.c \
+				nl_removal.c \
+				history_new_line.c \
+				backslash.c \
+				quote_utils.c \
+				delim_utils.c \
+				ctrl_d.c
 
 PARSING_DIR = parsing
 PARSING_FILES = parse_input.c \
@@ -104,7 +140,8 @@ SRC_FILES = main.c \
 			$(patsubst %, $(INITIALISING_DIR)/%, $(INITIALISING_FILES)) \
 			$(patsubst %, $(SIGNALS_DIR)/%, $(SIGNALS_FILES)) \
 			$(patsubst %, $(PARSING_DIR)/%, $(PARSING_FILES)) \
-			$(patsubst %, $(UTILS_DIR)/%, $(UTILS_FILES))
+			$(patsubst %, $(UTILS_DIR)/%, $(UTILS_FILES)) \
+			$(patsubst %, $(KEYBOARD_DIR)/%, $(KEYBOARD_FILES))
 
 DIR_O = ./objs
 DIR_S = ./srcs
@@ -129,7 +166,7 @@ endif
 
 $(NAME): $(OBJS)
 	@make -C $(LIBFT_DIR)
-	@$(CC) $(FLAGS) $(OBJS) -o $(NAME) $(LIBFT)
+	@$(CC) $(FLAGS) $(OBJS) -o $(NAME) -ltermcap $(LIBFT)
 	@echo "$(GREEN)$(NAME) compiled$(RESET)"
 
 $(OBJS): $(DIR_O)/%.o: $(DIR_S)/%.c include/ft_21sh.h

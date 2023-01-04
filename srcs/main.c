@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 19:07:23 by mviinika          #+#    #+#             */
-/*   Updated: 2023/01/04 13:24:53 by mviinika         ###   ########.fr       */
+/*   Updated: 2023/01/04 17:15:54 by spuustin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,21 +37,21 @@ void	check_read_bytes(int rb, t_env *env)
 {
 	if (rb == -1)
 		exit(1);
-	else if (rb == 0)
-		do_exit(NULL, env);
+	(void)env;
 }
 
-static int	ft_21sh(t_env *env, char **builtins)
+static int	ft_21sh(t_env *env, char **builtins, char *input)
 {
 	int		rb;
-	char	buf[MAX_LINE + 1];
 	t_ast	**tree;
 	t_pars	parsed;
 
-	set_start_values(&tree, buf, &rb);
+	rb = ft_strlen(input);
+	tree = NULL;
+	write(1, "\n", 1);
 	check_read_bytes(rb, env);
-	set_pars_struct(&parsed, buf);
-	if (check_quotes(buf))
+	set_pars_struct(&parsed, input);
+	if (check_quotes(input))
 		error_print(NULL, NULL, E_QUOT);
 	else
 	{
@@ -59,31 +59,46 @@ static int	ft_21sh(t_env *env, char **builtins)
 			tree = parse_input(&parsed);
 		else
 		{
-			free_all(&parsed, tree, buf);
+			free_all(&parsed, tree, input);
 			return (rb);
 		}
 		execute_all(env, builtins, tree);
-		free_all(&parsed, tree, buf);
+		free_all(&parsed, tree, input);
 	}
 	return (rb);
+}
+
+static char	**initialize_and_set_builtins(void)
+{
+	static char	*builtins[7] = {"echo", "cd", "setenv", "unsetenv", "env", "exit"};
+
+	return (builtins);
+}
+
+static void	prompt(t_term *t, t_env *env, char **builtins)
+{
+	int		rb;
+
+	rb = 1;
+	while (!input_cycle(t))
+	{
+		write_history_to_file(t);
+		rb = ft_21sh(env, builtins, t->inp);
+		ft_restart_cycle(t);
+	}
 }
 
 int	main(int argc, char **argv, char **environ)
 {
 	t_env	env;
+	t_term	t;
 	char	**builtins;
-	int		rb;
 
-	rb = 1;
+	init_tcaps(&t);
 	builtins = initialize_and_set_builtins();
 	get_env(&env, environ, argc, argv);
 	ft_putstr("\033[2J\033[H");
-	while (rb != 0)
-	{
-		set_signal_handling();
-		ft_putstr("21sh$ ");
-		rb = ft_21sh(&env, builtins);
-	}
+	prompt(&t, &env, builtins);
 	free_strarr(env.env);
 	free_strarr(env.path);
 	return (0);

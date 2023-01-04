@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_21sh.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 08:59:36 by mviinika          #+#    #+#             */
-/*   Updated: 2023/01/04 12:01:41 by mviinika         ###   ########.fr       */
+/*   Updated: 2023/01/04 17:06:21 by spuustin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@
 #  define SHELL_MAX_FD 256
 # endif
 
-
 # include "../libft/include/libft.h"
 # include "ast.h"
 # include "tokens.h"
@@ -41,14 +40,23 @@
 # include <dirent.h>
 # include <fcntl.h>
 # include <pwd.h>
-# include <term.h>
+# include "tcaps.h"
 
 # define MAX_PATH 1024
+# define MAX_HISTORY 1024
 # define MAX_LINE 4096
+
 # define SHELL "21sh"
 # define MAX_TREES 50
 
 void		free_parsed_input(char **p_input);
+# define SHELL_PROMPT "21sh> "
+# define OPEN_QUOTE ">"
+
+# define DB ft_putendl("tassa\n");
+# define DB1 ft_putendl("there\n");
+
+void	free_parsed_input(char **p_input);
 
 /***********\
 ** utils.c **
@@ -68,4 +76,15 @@ void		add_letter(char *word, char c, t_word *values);
 int			can_be_added(char c, t_quotes *quots);
 int			is_end_of_word(char c, t_quotes *quots, int index);
 
+void	ft_quote_handling(t_term *t, char ch);
+
+// static const t_builtins		g_builtins[7] = {
+// 	do_echo,
+// 	do_cd,
+// 	do_setenv,
+// 	do_unsetenv,
+// 	do_env,
+// 	do_exit,
+// 	NULL
+// };
 #endif
