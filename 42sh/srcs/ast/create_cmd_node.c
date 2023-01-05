@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 15:00:27 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/22 15:26:36 by mviinika         ###   ########.fr       */
+/*   Updated: 2023/01/05 13:33:38 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ t_ast	*simple_command(t_ast *node, t_tlist ***tokens)
 	{
 		if ((**tokens)->type == TOKEN_WORD)
 			create_words(node, tokens, &i);
-		else if((**tokens)->type == TOKEN_INTR_VAR)
+		else if ((**tokens)->type == TOKEN_INTR_VAR)
 		{
 			create_intr_var(node, tokens, &i);
 			(**tokens) = (**tokens)->next;

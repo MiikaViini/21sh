@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 09:14:23 by mviinika          #+#    #+#             */
-/*   Updated: 2023/01/03 15:35:49 by mviinika         ###   ########.fr       */
+/*   Updated: 2023/01/05 14:26:05 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ static t_tlist	*get_token(t_pars *pars, t_word *values)
 		see_quote(&quots, pars->trimmed, values->i);
 		if (set_redirections(pars, values, word, &quots))
 			break ;
-		if (is_intr_var(pars->trimmed[values->i], word))
+		if (is_intr_var(pars->trimmed[values->i], word) && values->count == 0)
 		{
 			values->type = TOKEN_INTR_VAR;
 		}
@@ -67,7 +67,6 @@ static t_tlist	*get_token(t_pars *pars, t_word *values)
 			break ;
 		}
 	}
-	ft_printf("word [%s] type [%d]\n", word, values->type);
 	return (create_token(&word, pars, values));
 }
 
@@ -98,6 +97,7 @@ t_ast	**parse_input(t_pars *pars)
 
 	values.i = 0;
 	values.total = 0;
+	values.count = 0;
 	tokens = NULL;
 	tree = (t_ast **)ft_memalloc(sizeof(t_ast *) * \
 								(wc_delim(pars->trimmed, ';') + 1));
@@ -105,6 +105,7 @@ t_ast	**parse_input(t_pars *pars)
 	{
 		token_to_last(&tokens, get_token(pars, &values));
 		values.i = values.total;
+		values.count++;
 	}
 	temp = tokens;
 	if (!check_syntax(pars, tokens))

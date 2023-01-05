@@ -6,7 +6,7 @@
 #    By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/07/09 19:07:08 by mviinika          #+#    #+#              #
-#    Updated: 2023/01/03 14:24:52 by mviinika         ###   ########.fr        #
+#    Updated: 2023/01/05 13:44:09 by mviinika         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -129,7 +129,7 @@ endif
 $(NAME): $(OBJS)
 	@make -C $(LIBFT_DIR)
 	@$(CC) $(FLAGS) $(OBJS) -o $(NAME) $(LIBFT)
-	@chmod 555 42sh
+	@chmod 755 42sh
 	@echo "$(GREEN)$(NAME) compiled$(RESET)"
 
 $(OBJS): $(DIR_O)/%.o: $(DIR_S)/%.c include/ft_21sh.h

@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/20 12:41:48 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/20 12:49:24 by mviinika         ###   ########.fr       */
+/*   Updated: 2023/01/05 14:23:48 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ typedef struct s_word
 	int		redir;
 	int		redir_way;
 	char	*file;
+	int		count;
 }			t_word;
 
 void		initialise_structs(t_quotes *quotes, t_word *values, char *input);
