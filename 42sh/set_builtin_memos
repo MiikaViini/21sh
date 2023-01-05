@@ -1,0 +1,4 @@
+set shell internal variable (another list of env variables)
+			
+				var_name=value
+NO OPTIONS REQUIRED!!!
