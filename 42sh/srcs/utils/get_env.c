@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/12 17:39:14 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/22 11:56:09 by mviinika         ###   ########.fr       */
+/*   Updated: 2023/01/06 13:05:34 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,24 @@ static void set_shell(t_env *env)
 	update_env(env->env, "42", "SHELL");
 }
 
+static void open_std_fds(void)
+{
+	int	fd;
+
+	fd = 0;
+	while (fd <= 3)
+	{
+		fd = open(ttyname(ttyslot()), O_RDWR);
+		if (fd < 0)
+			exit(1);
+		if (fd >= 3)
+		{
+			close(fd);
+			break ;
+		}
+	}
+}
+
 void	get_env(t_env *dest, char **environ, int argc, char **argv)
 {
 	int	i;
@@ -78,6 +96,7 @@ void	get_env(t_env *dest, char **environ, int argc, char **argv)
 		dest->env[i++] = ft_strdup(environ[k]);
 	}
 	dest->env[i] = NULL;
+	open_std_fds();
 	dest->terminal = ttyname(1);
 	set_shell_lvl(dest);
 	set_shell(dest);

@@ -6,35 +6,31 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/29 08:48:51 by mviinika          #+#    #+#             */
-/*   Updated: 2023/01/05 14:39:05 by mviinika         ###   ########.fr       */
+/*   Updated: 2023/01/06 10:42:45 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
 
-static int	sweep_input(char **input, int equ_sign)
+static int	sweep_input(char *input, int equ_sign)
 {
 	int	i;
-	int	k;
 
 	i = 0;
-	while (input[++i])
+	equ_sign = check_equalsign(input);
+	if (equ_sign)
 	{
-		k = -1;
-		equ_sign = check_equalsign(input[i]);
-		if (equ_sign)
+		//error_print(NULL, "setenv", E_ARGNOTVAL);
+		return (1);
+	}
+	while (input[i] && input[i] != '=')
+	{
+		if (!is_valid_char(input[i]))
 		{
-			error_print(NULL, "setenv", E_ARGNOTVAL);
+			error_print(NULL, "setenv", E_NOTALNUM);
 			return (1);
 		}
-		while (input[i][++k] && input[i][k] != '=')
-		{
-			if (!is_valid_char(input[i][k]))
-			{
-				error_print(NULL, "setenv", E_NOTALNUM);
-				return (1);
-			}
-		}
+		i++;
 	}
 	return (0);
 }
@@ -42,11 +38,11 @@ static int	sweep_input(char **input, int equ_sign)
 static int	check_validity(char **input)
 {
 	int	ret;
-	int	equ_sign;
+	//int	equ_sign;
 	int	i;
 
 	i = 0;
-	equ_sign = 0;
+//	equ_sign = 0;
 	ret = 0;
 	while (input[++i])
 	{
@@ -56,7 +52,7 @@ static int	check_validity(char **input)
 			return (1);
 		}
 	}
-	ret = sweep_input(input, equ_sign);
+	//ret = sweep_input(input, equ_sign);
 	return (ret);
 }
 
@@ -76,15 +72,48 @@ static int	get_var_len(char *input)
 	return (var_len);
 }
 
+static int	find_variable(char *input, t_env *env, int *added)
+{
+	int	var_len;
+	int	i;
+	int	k;
+
+	k = 0;
+	var_len = get_var_len(input);
+	i = 0;
+	while (env->intr->env[k])
+	{
+		if (ft_strncmp(env->intr->env[k], input, var_len) == 0
+			&& env->intr->env[k][var_len] == '=')
+		{
+			while(env->env[i])
+				i++;
+			ft_printf("ju %s\n", env->intr->env[k]);
+			env->env[i++] = ft_strdup(env->intr->env[k]);
+			ft_strdel(&env->intr->env[k]);
+			env->env[i] = NULL;
+			*added = 1;
+			break ;
+		}
+		k += 1;
+	}
+	return (*added);
+}
+
 static int	find_env(char *input, t_env *env, int *added, int *k)
 {
 	int	var_len;
+	int	equ;
 
+	equ = 0;
 	var_len = get_var_len(input);
+	if (find_variable(input, env, added) 
+		|| sweep_input(input, equ))
+		return (1);
 	while (env->env[*k])
 	{
 		if (ft_strncmp(env->env[*k], input, var_len) == 0
-			&& env->env[*k][var_len - 1] == '=')
+			&& env->env[*k][var_len] == '=')
 		{
 			ft_strdel(&env->env[*k]);
 			env->env[*k] = ft_strdup(input);

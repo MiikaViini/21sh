@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 15:00:27 by mviinika          #+#    #+#             */
-/*   Updated: 2023/01/05 13:33:38 by mviinika         ###   ########.fr       */
+/*   Updated: 2023/01/06 12:45:12 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,13 +65,10 @@ static void	create_words(t_ast *node, t_tlist ***tokens, int *i)
 	(**tokens) = (**tokens)->next;
 }
 
-static void create_intr_var(t_ast *node, t_tlist ***tokens, int *i)
+static void create_intr_var(t_ast *node, t_tlist ***tokens)
 {
-	node->cmd[*i] = ft_strdup((**tokens)->str);
-	(*i)++;
+	node->variables = new_variable((**tokens)->str);
 	node->type = NODE_INTR_VAR;
-	node->left = NULL;
-	node->right = NULL;
 }
 
 /* Creates simple command node, which can include redirections and aggregations.
@@ -94,7 +91,7 @@ t_ast	*simple_command(t_ast *node, t_tlist ***tokens)
 			create_words(node, tokens, &i);
 		else if ((**tokens)->type == TOKEN_INTR_VAR)
 		{
-			create_intr_var(node, tokens, &i);
+			create_intr_var(node, tokens);
 			(**tokens) = (**tokens)->next;
 		}
 		else if ((**tokens)->type == TOKEN_REDIRECT)

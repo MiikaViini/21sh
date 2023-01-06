@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 12:17:07 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/22 15:27:48 by mviinika         ###   ########.fr       */
+/*   Updated: 2023/01/06 12:06:20 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,11 +77,10 @@ static int	do_set_var(char *input, t_env *env)
 	int		added;
 
 	k = 0;
-
+	
 	if (check_validity(input))
 		return (1);
 	added = find_env(input, env, &k);
-	
 	if (!added)
 	{
 		env->intr->env[k++] = ft_strdup(input);
@@ -110,16 +109,18 @@ int	expand_and_remove_quotes(t_ast **tree, t_env *env)
 				(*tree)->cmd[i] = handle_expansions((*tree)->cmd[i], env->env);
 				break ;
 			}
+			(*tree)->cmd[i] = remove_quotes((*tree)->cmd[i]);
 			if ((*tree)->type == NODE_INTR_VAR)
 			{
 				do_set_var((*tree)->cmd[i], env);
+				ft_printf("intr var yes%s\n", (*tree)->cmd[i]);
 				return 1;
 			}
 			k++;
 		}
-		(*tree)->cmd[i] = remove_quotes((*tree)->cmd[i]);
 		k = 0;
 		i++;
+		ft_putnbr(i);
 	}
 	return (0);
 }

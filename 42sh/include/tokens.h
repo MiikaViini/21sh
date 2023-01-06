@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/03 11:22:36 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/22 14:53:06 by mviinika         ###   ########.fr       */
+/*   Updated: 2023/01/06 12:39:39 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,12 @@ typedef struct s_tlist
 	char			*str;
 	struct s_tlist	*next;
 }				t_tlist;
+
+typedef struct s_vars
+{
+	char			*var;
+	struct s_vars	*next;
+}				t_vars;
 
 typedef enum e_tokens
 {

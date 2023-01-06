@@ -6,7 +6,7 @@
 #    By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/07/09 19:07:08 by mviinika          #+#    #+#              #
-#    Updated: 2023/01/05 13:44:09 by mviinika         ###   ########.fr        #
+#    Updated: 2023/01/06 12:47:06 by mviinika         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,7 +28,8 @@ AST_DIR = ast
 AST_FILES = build_all_asts.c \
 			new_redir.c \
 			create_cmd_node.c \
-			set_aggr_values.c
+			set_aggr_values.c \
+			new_variable.c
 
 BUILT_INS_DIR = builtins
 BUILT_INS_FILES = do_cd.c \

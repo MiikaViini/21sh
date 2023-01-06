@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 21:36:13 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/20 10:37:16 by mviinika         ###   ########.fr       */
+/*   Updated: 2023/01/06 13:22:44 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 static int	is_aggr_err_out(char *redir, t_quotes *quots)
 {
-	return ((ft_strncmp(redir, ">&", 2) == 0
-			&& quots->d_quote == 0 && quots->s_quote == 0)
-		|| (ft_strncmp(redir, "&>", 2) == 0
+	return ((ft_strncmp(redir, ">&", 2) == 0 && ft_strncmp(redir, ">&-", 3)&& quots->d_quote == 0 
+			&& quots->s_quote == 0) ||
+			(ft_strncmp(redir, "&>", 2) == 0
 			&& quots->d_quote == 0 && quots->s_quote == 0));
 }
 
