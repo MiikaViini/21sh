@@ -6,7 +6,7 @@
 /*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/08 14:13:57 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/12 22:10:43 by spuustin         ###   ########.fr       */
+/*   Updated: 2023/01/07 16:12:44 by spuustin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # define CAPITAL 32
 
 # define BUFF_SIZE 32
+# define BSIZE 2048
 # define MAX_FD 4096
 
 typedef struct s_list

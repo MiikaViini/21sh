@@ -6,7 +6,7 @@
 /*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 22:29:47 by spuustin          #+#    #+#             */
-/*   Updated: 2023/01/02 18:49:56 by spuustin         ###   ########.fr       */
+/*   Updated: 2023/01/07 16:48:53 by spuustin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ static void	ft_history_push(t_term *t)
 		}
 		t->history_row = t->c_row;
 	}
-	t->c_row = t->history_row;
+	t->c_row = t->history_row - 1; //not sure about this
 }
 
 void	ft_history_trigger(t_term *t, ssize_t pos)
@@ -103,7 +103,7 @@ void	ft_history_trigger(t_term *t, ssize_t pos)
 		history = ft_strdup("");
 	ft_history_clear_line(t, row);
 	ft_history_inp_update(t, history);
-	ft_history_reset_nl(t, t->nl_addr[t->history_row]);
+	ft_history_reset_nl(t, t->nl_addr[t->history_row - 1]);
 	ft_quote_flag_reset(t);
 	if (t->start_row + t->total_row >= t->ws_row)
 		t->start_row = t->ws_row - (t->total_row + 1);

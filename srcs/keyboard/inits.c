@@ -6,7 +6,7 @@
 /*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/18 22:41:19 by spuustin          #+#    #+#             */
-/*   Updated: 2023/01/02 19:50:39 by spuustin         ###   ########.fr       */
+/*   Updated: 2023/01/07 15:59:50 by spuustin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 t_term	*g_t;
 
-void	set_to_zero(t_term *t)
+void	init_helper(t_term *t)
 {
 	t->ch = 0;
 	t->quote = 0;
@@ -40,7 +40,7 @@ void	init_term(t_term *t)
 	init_signals();
 	ft_memset(t->inp, '\0', BUFFSIZE);
 	ft_memset(t->history_buff, '\0', BUFFSIZE);
-	set_to_zero(t);
+	init_helper(t);
 	history_to_array(t);
 	t->start_row = get_linenbr();
 	t->nl_addr = NULL;

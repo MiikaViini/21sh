@@ -6,7 +6,7 @@
 /*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/14 18:41:18 by spuustin          #+#    #+#             */
-/*   Updated: 2022/12/19 20:26:42 by spuustin         ###   ########.fr       */
+/*   Updated: 2023/01/07 16:00:16 by spuustin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ char	*ft_is_prompt_line(t_term *t, ssize_t row)
 
 int	get_linenbr(void)
 {
-	char	buf[16];
+	char	buf[2048];
 	int		len;
 	int		i;
 
