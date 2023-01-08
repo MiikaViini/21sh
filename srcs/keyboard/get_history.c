@@ -6,7 +6,7 @@
 /*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 22:29:47 by spuustin          #+#    #+#             */
-/*   Updated: 2023/01/08 20:41:21 by spuustin         ###   ########.fr       */
+/*   Updated: 2023/01/08 20:50:01 by spuustin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,9 +119,7 @@ void	ft_history_trigger(t_term *t, ssize_t pos)
 		history = ft_strdup(t->history[t->history_size - (size_t)pos]);
 	else
 		history = ft_strdup("");
-	//rivinvaihtobugi on jossain taalla
 	ft_history_clear_line(t, row);
-	//rivinvaihtobugi on jossain taalla
 	ft_history_inp_update(t, history);
 	ft_history_reset_nl(t, t->nl_addr[t->history_row]);
 	ft_quote_flag_reset(t);
@@ -133,5 +131,6 @@ void	ft_history_trigger(t_term *t, ssize_t pos)
 		ft_strdel(&t->input_cpy);
 		t->history_row = -1;
 	}
+	ft_memdel((void *)&history);
 	run_capability("ve");
 }
