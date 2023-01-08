@@ -6,7 +6,7 @@
 /*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 22:29:47 by spuustin          #+#    #+#             */
-/*   Updated: 2023/01/08 19:05:29 by spuustin         ###   ########.fr       */
+/*   Updated: 2023/01/08 19:16:15 by spuustin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ static void	ft_history_inp_update(t_term *t, char *history)
 
 static void	ft_history_clear_line(t_term *t, ssize_t row)
 {
-	ft_printf("sr: %d, hr: %d\n", t->start_row, t->history_row);
+	//ft_printf("sr: %d, hr: %d\n", t->start_row, t->history_row);
 	set_cursor(0, (t->start_row + t->history_row));
 	if (row > t->history_row) //unneeded
 	{
