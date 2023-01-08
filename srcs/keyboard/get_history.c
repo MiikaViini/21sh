@@ -6,7 +6,7 @@
 /*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 22:29:47 by spuustin          #+#    #+#             */
-/*   Updated: 2023/01/08 19:16:15 by spuustin         ###   ########.fr       */
+/*   Updated: 2023/01/08 20:41:21 by spuustin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,11 +72,9 @@ static void	ft_history_inp_update(t_term *t, char *history)
 
 static void	ft_history_clear_line(t_term *t, ssize_t row)
 {
-	//ft_printf("sr: %d, hr: %d\n", t->start_row, t->history_row);
 	set_cursor(0, (t->start_row + t->history_row));
 	if (row > t->history_row) //unneeded
 	{
-		write(1, "a", 1);
 		while (row > t->history_row)
 		{
 			ft_remove_nl_addr(t, row);
@@ -102,7 +100,9 @@ static void	ft_history_push(t_term *t)
 		}
 		t->history_row = t->c_row;
 	}
-	t->c_row = t->history_row -1; //not sure about this
+	else if (t->history_row > 0)
+		t->history_row--;
+	t->c_row = t->history_row;
 }
 
 void	ft_history_trigger(t_term *t, ssize_t pos)
@@ -123,7 +123,7 @@ void	ft_history_trigger(t_term *t, ssize_t pos)
 	ft_history_clear_line(t, row);
 	//rivinvaihtobugi on jossain taalla
 	ft_history_inp_update(t, history);
-	ft_history_reset_nl(t, t->nl_addr[t->history_row - 1]);
+	ft_history_reset_nl(t, t->nl_addr[t->history_row]);
 	ft_quote_flag_reset(t);
 	if (t->start_row + t->total_row >= t->ws_row)
 		t->start_row = t->ws_row - (t->total_row + 1);
