@@ -6,7 +6,7 @@
 /*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 22:29:47 by spuustin          #+#    #+#             */
-/*   Updated: 2023/01/07 16:48:53 by spuustin         ###   ########.fr       */
+/*   Updated: 2023/01/08 19:05:29 by spuustin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,29 +36,47 @@ static void	ft_history_reset_nl(t_term *t, char *inp)
 	t->index = t->bytes;
 }
 
+static void	ft_historycpy(t_term *t, char *dst, char *src)
+{
+	int		i;
+	size_t	len;
+
+	i = -1;
+	len = ft_strlen(t->inp);
+	while (src[++i] && (len + i) < (BUFF_SIZE - 1))
+		dst[i] = src[i];
+}
+
 static void	ft_history_inp_update(t_term *t, char *history)
 {
+	// if (history)
+	// {
+	// 	ft_memset((void *)t->nl_addr[t->c_row], '\0', \
+	// 	ft_strlen(t->nl_addr[t->c_row]));
+	// 	ft_memcpy(t->nl_addr[t->c_row], history, ft_strlen(history));
+	// }
+	// else
+	// {
+	// 	ft_memset((void *)t->nl_addr[t->c_row], '\0', \
+	// 	ft_strlen(t->nl_addr[t->c_row]));
+	// 	if (t->input_cpy)
+	// 		ft_memcpy(t->nl_addr[t->c_row], t->input_cpy, \
+	// 		ft_strlen(t->input_cpy));
+	// }
+	ft_strclr(t->nl_addr[t->c_row]);
 	if (history)
-	{
-		ft_memset((void *)t->nl_addr[t->c_row], '\0', \
-		ft_strlen(t->nl_addr[t->c_row]));
-		ft_memcpy(t->nl_addr[t->c_row], history, ft_strlen(history));
-	}
-	else
-	{
-		ft_memset((void *)t->nl_addr[t->c_row], '\0', \
-		ft_strlen(t->nl_addr[t->c_row]));
-		if (t->input_cpy)
-			ft_memcpy(t->nl_addr[t->c_row], t->input_cpy, \
-			ft_strlen(t->input_cpy));
-	}
+		ft_historycpy(t, t->nl_addr[t->c_row], history);
+	else if (t->input_cpy)
+		ft_historycpy(t, t->nl_addr[t->c_row], t->input_cpy);
 }
 
 static void	ft_history_clear_line(t_term *t, ssize_t row)
 {
+	ft_printf("sr: %d, hr: %d\n", t->start_row, t->history_row);
 	set_cursor(0, (t->start_row + t->history_row));
-	if (row > t->history_row)
+	if (row > t->history_row) //unneeded
 	{
+		write(1, "a", 1);
 		while (row > t->history_row)
 		{
 			ft_remove_nl_addr(t, row);
@@ -84,7 +102,7 @@ static void	ft_history_push(t_term *t)
 		}
 		t->history_row = t->c_row;
 	}
-	t->c_row = t->history_row - 1; //not sure about this
+	t->c_row = t->history_row -1; //not sure about this
 }
 
 void	ft_history_trigger(t_term *t, ssize_t pos)
@@ -101,7 +119,9 @@ void	ft_history_trigger(t_term *t, ssize_t pos)
 		history = ft_strdup(t->history[t->history_size - (size_t)pos]);
 	else
 		history = ft_strdup("");
+	//rivinvaihtobugi on jossain taalla
 	ft_history_clear_line(t, row);
+	//rivinvaihtobugi on jossain taalla
 	ft_history_inp_update(t, history);
 	ft_history_reset_nl(t, t->nl_addr[t->history_row - 1]);
 	ft_quote_flag_reset(t);
