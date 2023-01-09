@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/20 12:47:03 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/20 12:52:40 by mviinika         ###   ########.fr       */
+/*   Updated: 2023/01/09 10:30:42 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ int		set_redirections(t_pars *pars, t_word *values, \
 											char *word, t_quotes *quots);
 void	set_values_aggr_io(t_word *values, char **word);
 void	token_to_last(t_tlist **alst, t_tlist *new);
+void	token_to_last_var(t_vars **alst, t_vars *new);
 void	tokens_del(t_tlist **tokens);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/03 09:14:35 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/16 12:15:13 by mviinika         ###   ########.fr       */
+/*   Updated: 2023/01/09 13:36:24 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@ static int	check_env_var(char *input, char **env)
 	}
 	else if (!*env && ft_strncmp(input, "-", 1) == 0)
 	{
+		if (!is_accessable(input))
+			return (1);
 		error_print("OLDPWD", "cd", E_NULLVAR);
 		return (1);
 	}
@@ -59,8 +61,12 @@ static int	env_dir(char *input, char **env)
 		if (!input || ft_strncmp(input, "--", 2) == 0)
 		{
 			if (ft_strncmp(env[i], "HOME=", 5) == 0)
-				if (!chdir(env[i] + 5))
+			{
+				if (!is_accessable(env[i] + 5))
+					return (1);
+				else if (!chdir(env[i] + 5))
 					break ;
+			}
 		}
 		else if (ft_strncmp(input, "-", 1) == 0)
 		{

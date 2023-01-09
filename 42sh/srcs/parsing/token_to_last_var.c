@@ -1,28 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   new_variable.c                                     :+:      :+:    :+:   */
+/*   token_to_last_var.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/06 12:33:54 by mviinika          #+#    #+#             */
-/*   Updated: 2023/01/09 09:43:22 by mviinika         ###   ########.fr       */
+/*   Created: 2023/01/09 10:27:13 by mviinika          #+#    #+#             */
+/*   Updated: 2023/01/09 10:31:16 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
 
-t_vars	*new_variable(char *content)
+void	token_to_last_var(t_vars **alst, t_vars *new)
 {
-	t_vars	*new;
+	t_vars	*temp;
 
-	new = (t_vars *)ft_memalloc(sizeof(t_vars));
-	new->next = NULL;
-	if (content == NULL)
+	temp = *alst;
+	if (*alst == NULL)
 	{
-		new->var = NULL;
-		return (new);
+		*alst = new;
+		return ;
 	}
-	new->var = ft_strdup(content);
-	return (new);
+	while (temp != NULL)
+	{
+		if (temp->next == NULL)
+		{
+			temp->next = new;
+			break ;
+		}
+		temp = temp->next;
+	}
 }

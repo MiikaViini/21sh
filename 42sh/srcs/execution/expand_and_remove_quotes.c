@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 12:17:07 by mviinika          #+#    #+#             */
-/*   Updated: 2023/01/06 12:06:20 by mviinika         ###   ########.fr       */
+/*   Updated: 2023/01/09 13:43:38 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,9 +52,11 @@ static int	get_var_len(char *input)
 static int	find_env(char *input, t_env *env, int *k)
 {
 	int	var_len;
-	int ret;
+	int	ret;
+	int	i;
 
 	ret = 0;
+	i = 0;
 	var_len = get_var_len(input);
 	while (env->intr->env[*k])
 	{
@@ -68,6 +70,18 @@ static int	find_env(char *input, t_env *env, int *k)
 		}
 		*k += 1;
 	}
+	while (env->env[i])
+	{
+		if (ft_strncmp(env->env[i], input, var_len) == 0
+			&& env->env[i][var_len - 1] == '=')
+		{
+			ft_strdel(&env->env[i]);
+			env->env[i] = ft_strdup(input);
+			ret = 1;
+			break ;
+		}
+		i++;
+	}
 	return (ret);
 }
 
@@ -77,12 +91,12 @@ static int	do_set_var(char *input, t_env *env)
 	int		added;
 
 	k = 0;
-	
 	if (check_validity(input))
 		return (1);
 	added = find_env(input, env, &k);
 	if (!added)
 	{
+		ft_printf("input %s\n", input);
 		env->intr->env[k++] = ft_strdup(input);
 		env->intr->env[k] = NULL;
 	}
@@ -95,27 +109,32 @@ int	expand_and_remove_quotes(t_ast **tree, t_env *env)
 	int			i;
 	int			k;
 	t_quotes	quotes;
- 
+
 	k = 0;
 	i = 0;
 	initialise_structs(&quotes, NULL, NULL);
+	ft_printf("var %d\n", (*tree)->type);
+	if ((*tree)->type == NODE_INTR_VAR)
+	{
+		
+		while ((*tree)->variables)
+		{
+		
+			do_set_var((*tree)->variables->var, env);
+			(*tree)->variables = (*tree)->variables->next;
+		}
+	}
 	while ((*tree)->type != NODE_PIPE && (*tree)->cmd[i])
 	{
 		see_quote(&quotes, (*tree)->cmd[i], k);
 		while ((*tree)->cmd[i][k])
-		{ 
+		{
 			if (is_expansion((*tree)->cmd[i], k) && !quotes.s_quote)
 			{
 				(*tree)->cmd[i] = handle_expansions((*tree)->cmd[i], env->env);
 				break ;
 			}
 			(*tree)->cmd[i] = remove_quotes((*tree)->cmd[i]);
-			if ((*tree)->type == NODE_INTR_VAR)
-			{
-				do_set_var((*tree)->cmd[i], env);
-				ft_printf("intr var yes%s\n", (*tree)->cmd[i]);
-				return 1;
-			}
 			k++;
 		}
 		k = 0;

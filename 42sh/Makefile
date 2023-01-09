@@ -6,7 +6,7 @@
 #    By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/07/09 19:07:08 by mviinika          #+#    #+#              #
-#    Updated: 2023/01/06 12:47:06 by mviinika         ###   ########.fr        #
+#    Updated: 2023/01/09 10:31:02 by mviinika         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -80,6 +80,7 @@ PARSING_FILES = parse_input.c \
 			set_redirections.c \
 			is_redirect.c \
 			tokens_del.c \
+			token_to_last_var.c
 
 SIGNALS_DIR = signals
 SIGNALS_FILES = set_signal_handling.c 

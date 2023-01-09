@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 15:00:27 by mviinika          #+#    #+#             */
-/*   Updated: 2023/01/06 12:45:12 by mviinika         ###   ########.fr       */
+/*   Updated: 2023/01/09 14:04:07 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,9 +56,10 @@ static void	create_redirs(t_ast *node, t_tlist ***tokens)
 
 static void	create_words(t_ast *node, t_tlist ***tokens, int *i)
 {
+	ft_printf("node fd%d\n", node->type);
 	node->cmd[(*i)] = ft_strdup((**tokens)->str);
 	(*i)++;
-	if (node->type != NODE_REDIR)
+	if (node->type != NODE_REDIR && node->type != NODE_INTR_VAR)
 		node->type = NODE_CMD;
 	node->left = NULL;
 	node->right = NULL;
@@ -67,8 +68,8 @@ static void	create_words(t_ast *node, t_tlist ***tokens, int *i)
 
 static void create_intr_var(t_ast *node, t_tlist ***tokens)
 {
-	node->variables = new_variable((**tokens)->str);
 	node->type = NODE_INTR_VAR;
+	node->variables = new_variable((**tokens)->str);
 }
 
 /* Creates simple command node, which can include redirections and aggregations.
@@ -79,19 +80,23 @@ t_ast	*simple_command(t_ast *node, t_tlist ***tokens)
 {
 	int		i;
 	t_tlist	*redirs;
+	t_vars	*vars;
 
 	i = 0;
 	node = (t_ast *)ft_memalloc(sizeof(t_ast));
 	node->cmd = (char **)ft_memalloc(sizeof(char *) * 100);
 	node->file = NULL;
 	redirs = NULL;
+	vars = NULL;
 	while (**tokens)
 	{
+		ft_printf("node %d\n", node->type);
 		if ((**tokens)->type == TOKEN_WORD)
 			create_words(node, tokens, &i);
 		else if ((**tokens)->type == TOKEN_INTR_VAR)
 		{
 			create_intr_var(node, tokens);
+			token_to_last_var(&vars, node->variables);
 			(**tokens) = (**tokens)->next;
 		}
 		else if ((**tokens)->type == TOKEN_REDIRECT)
@@ -104,6 +109,8 @@ t_ast	*simple_command(t_ast *node, t_tlist ***tokens)
 			break ;
 	}
 	node->redirs = redirs;
+	node->variables = vars;
 	node->cmd[i] = NULL;
+	ft_printf("node %d\n", node->type);
 	return (node);
 }
