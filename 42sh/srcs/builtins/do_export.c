@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/29 08:48:51 by mviinika          #+#    #+#             */
-/*   Updated: 2023/01/06 10:42:45 by mviinika         ###   ########.fr       */
+/*   Updated: 2023/01/09 15:01:44 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,7 @@ static int	find_variable(char *input, t_env *env, int *added)
 			*added = 1;
 			break ;
 		}
+		i = 0;
 		k += 1;
 	}
 	return (*added);
@@ -107,13 +108,13 @@ static int	find_env(char *input, t_env *env, int *added, int *k)
 
 	equ = 0;
 	var_len = get_var_len(input);
-	if (find_variable(input, env, added) 
+	if (find_variable(input, env, added)
 		|| sweep_input(input, equ))
 		return (1);
 	while (env->env[*k])
 	{
-		if (ft_strncmp(env->env[*k], input, var_len) == 0
-			&& env->env[*k][var_len] == '=')
+		if (ft_strncmp(env->env[*k], input, var_len - 1) == 0
+			&& env->env[*k][var_len - 1] == '=')
 		{
 			ft_strdel(&env->env[*k]);
 			env->env[*k] = ft_strdup(input);
@@ -137,6 +138,7 @@ int	do_export(char **input, t_env *env)
 		return (1);
 	while (input[++i])
 	{
+		ft_printf("input %s\n", input[i]);
 		k = 0;
 		added = 0;
 		added = find_env(input[i], env, &added, &k);
