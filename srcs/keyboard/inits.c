@@ -6,7 +6,7 @@
 /*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/18 22:41:19 by spuustin          #+#    #+#             */
-/*   Updated: 2023/01/09 20:25:28 by spuustin         ###   ########.fr       */
+/*   Updated: 2023/01/09 21:08:31 by spuustin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	init_term(t_term *t)
 	ft_memset(t->history_buff, '\0', BUFFSIZE);
 	init_helper(t);
 	history_to_array(t);
-	t->start_row = 0; //maybe wrong
+	t->start_row = 0;
 	t->nl_addr = NULL;
 	t->delim = NULL;
 	get_window_size(t);
