@@ -6,7 +6,7 @@
 /*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 21:37:49 by spuustin          #+#    #+#             */
-/*   Updated: 2023/01/08 19:58:13 by spuustin         ###   ########.fr       */
+/*   Updated: 2023/01/09 19:15:39 by spuustin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ void	ft_restart_cycle(t_term *t)
 	t->c_row = t->total_row;
 	t->start_row = get_linenbr();
 	t->c_col = 0;
+	t->history_row = -1;
 	//t->c_col = ft_strlen(SHELL_PROMPT);
 	ft_strdel(&t->delim);
 	set_cursor(t->c_col, t->c_row + t->start_row);
