@@ -140,7 +140,7 @@ int		ft_sspace(const char *str);
 void	ft_backspace(t_term *t);
 void	ft_print_trail(t_term *t);
 void	ft_quote_decrement(t_term *t, int num);
-void	ft_deletion_shift(t_term *t, int index);
+void	ft_deletion_shift(t_term *t, ssize_t index);
 void	ft_shift_nl_addr(t_term *t, int num);
 void	ft_remove_nl_addr(t_term *t, ssize_t row);
 int		ft_putc(int c);
@@ -149,7 +149,7 @@ void	ft_shift_insert(t_term *t);
 void	trigger_nl(t_term *t);
 
 ssize_t	ft_row_lowest_line(t_term *t);
-ssize_t	ft_len_lowest_line(t_term *t, ssize_t row); //maybe refactor with lowest
+ssize_t	ft_len_lowest_line(t_term *t, ssize_t row);
 void	ft_add_nl_last_row(t_term *t, char *array, ssize_t pos);
 void	ft_add_nl_mid_row(t_term *t, ssize_t row, ssize_t pos);
 void	update_nl_addr_del(t_term *t);
@@ -181,7 +181,7 @@ int		ft_delim_fetch(t_term *t);
 void	ft_quote_flag_reset(t_term *t);
 void	ft_quote_flag_check(t_term *t, ssize_t index);
 
-void	ft_heredoc_handling(t_term *t, int index);
+void	ft_heredoc_handling(t_term *t);
 
 //ctrl_d
 int		ctrl_d_exit(t_term *t);

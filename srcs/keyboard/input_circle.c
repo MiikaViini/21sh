@@ -6,7 +6,7 @@
 /*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/25 19:41:32 by spuustin          #+#    #+#             */
-/*   Updated: 2023/01/02 19:52:26 by spuustin         ###   ########.fr       */
+/*   Updated: 2023/01/09 20:25:14 by spuustin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ void	ft_end_cycle(t_term *t)
 	ft_memdel((void **)&t->nl_addr);
 	if (t->input_cpy)
 		ft_strdel(&t->input_cpy);
+	t->sigint = 0;
 }
 
 static int	ft_isprint_or_enter(t_term *t)

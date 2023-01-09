@@ -6,7 +6,7 @@
 /*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 18:45:23 by spuustin          #+#    #+#             */
-/*   Updated: 2023/01/02 18:47:58 by spuustin         ###   ########.fr       */
+/*   Updated: 2023/01/09 20:24:29 by spuustin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,4 +91,6 @@ void	ft_nl_removal(t_term *t)
 		ft_memmove((void *)&t->history_buff[k], (void *)&t->history_buff[i], \
 		ft_strlen(&t->history_buff[i]) + 1);
 	}
+	if (t->delim)
+		ft_strclr(ft_strchr(t->history_buff, '\n'));
 }
