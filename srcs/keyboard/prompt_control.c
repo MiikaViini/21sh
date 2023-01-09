@@ -6,7 +6,7 @@
 /*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/14 19:19:15 by spuustin          #+#    #+#             */
-/*   Updated: 2023/01/09 20:24:13 by spuustin         ###   ########.fr       */
+/*   Updated: 2023/01/09 20:48:51 by spuustin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,16 +90,15 @@ void	ft_delete(t_term *t)
 
 void	ft_create_prompt_line(t_term *t, ssize_t loc)
 {
-	int		row;
-
-	row = get_linenbr();
 	t->c_row++;
 	t->total_row++;
-	if (row == (t->ws_row - 1))
+	ft_strdel(&t->input_cpy);
+	if (t->start_row + t->total_row >= t->ws_row)
+	{
 		run_capability("sf");
-	else
-		row++;
-	set_cursor(0, row);
+		t->start_row--;
+	}
+	set_cursor(0, t->start_row + t->c_row);
 	t->c_col = write(1, OPEN_QUOTE, ft_strlen(OPEN_QUOTE));
 	ft_add_nl_last_row(t, t->inp, loc);
 }

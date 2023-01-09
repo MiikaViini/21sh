@@ -6,7 +6,7 @@
 /*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 21:19:44 by spuustin          #+#    #+#             */
-/*   Updated: 2023/01/09 20:22:47 by spuustin         ###   ########.fr       */
+/*   Updated: 2023/01/09 20:34:04 by spuustin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ static void	sig_handler(int num)
 	{
 		write(1, "\n", 1);
 		ft_restart_cycle(g_t);
-		ft_memdel((void **)&g_t->nl_addr);
     	ft_add_nl_last_row(g_t, g_t->inp, 0);
 		write(1, SHELL_PROMPT, 7);
 		g_t->sigint = 1;
