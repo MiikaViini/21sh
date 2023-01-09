@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/29 08:48:51 by mviinika          #+#    #+#             */
-/*   Updated: 2023/01/09 15:01:44 by mviinika         ###   ########.fr       */
+/*   Updated: 2023/01/09 21:08:04 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,18 @@ static int	get_var_len(char *input)
 	return (var_len);
 }
 
+static void	delete_var(t_env *env, int *k)
+{
+	ft_strdel(&env->intr->env[*k]);
+	env->intr->env[*k] = env->intr->env[*k + 1];
+	while (env->intr->env[*k + 1])
+	{
+		env->intr->env[*k] =env->intr->env[*k + 1];
+		*k += 1;
+	}
+	env->intr->env[*k] = NULL;
+}
+
 static int	find_variable(char *input, t_env *env, int *added)
 {
 	int	var_len;
@@ -81,21 +93,23 @@ static int	find_variable(char *input, t_env *env, int *added)
 	k = 0;
 	var_len = get_var_len(input);
 	i = 0;
+	while (env->env[i])
+		i++;
+	ft_printf("start %s %s input%d\n", env->intr->env[k],input, i);
 	while (env->intr->env[k])
 	{
+		ft_printf("loop %s input%s %d %c\n", env->intr->env[k], input,i, env->intr->env[k][var_len]);
 		if (ft_strncmp(env->intr->env[k], input, var_len) == 0
 			&& env->intr->env[k][var_len] == '=')
 		{
-			while(env->env[i])
-				i++;
-			ft_printf("ju %s\n", env->intr->env[k]);
+			ft_printf("ju %s %d\n", env->intr->env[k], i);
 			env->env[i++] = ft_strdup(env->intr->env[k]);
-			ft_strdel(&env->intr->env[k]);
+			delete_var(env, &k);
+			//env->intr->env[k] = env->intr->env[k + 1];
 			env->env[i] = NULL;
 			*added = 1;
 			break ;
 		}
-		i = 0;
 		k += 1;
 	}
 	return (*added);
@@ -136,6 +150,12 @@ int	do_export(char **input, t_env *env)
 	i = 0;
 	if (check_validity(input))
 		return (1);
+	if (!input[1])
+	{
+		while (env->env[++i])
+			ft_printf("export %s\n", env->env[i]);
+		return (0);
+	}
 	while (input[++i])
 	{
 		ft_printf("input %s\n", input[i]);

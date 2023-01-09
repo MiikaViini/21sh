@@ -6,7 +6,7 @@
 #    By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/07/09 19:07:08 by mviinika          #+#    #+#              #
-#    Updated: 2023/01/09 10:31:02 by mviinika         ###   ########.fr        #
+#    Updated: 2023/01/09 21:00:25 by mviinika         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,7 +36,7 @@ BUILT_INS_FILES = do_cd.c \
 				do_echo.c \
 				do_exit.c \
 				do_export.c \
-				do_unsetenv.c \
+				do_unset.c \
 				do_set.c
 
 EXECUTION_DIR = execution

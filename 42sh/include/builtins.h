@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/20 12:22:36 by mviinika          #+#    #+#             */
-/*   Updated: 2023/01/03 14:23:15 by mviinika         ###   ########.fr       */
+/*   Updated: 2023/01/09 20:59:08 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,14 +39,14 @@ int			do_echo(char **input, t_env *env);
 int			do_env(char **input, t_env *env);
 int			do_exit(char **input, t_env *env);
 int			do_export(char **input, t_env *env);
-int			do_unsetenv(char **input, t_env *env);
+int			do_unset(char **input, t_env *env);
 int			do_set(char **input, t_env *env);
 
 static const t_builtins		g_builtins[7] = {
 	do_echo,
 	do_cd,
 	do_export,
-	do_unsetenv,
+	do_unset,
 	do_exit,
 	do_set,
 	NULL
