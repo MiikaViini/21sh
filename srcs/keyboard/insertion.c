@@ -6,7 +6,7 @@
 /*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/02 15:40:13 by spuustin          #+#    #+#             */
-/*   Updated: 2023/01/02 19:45:13 by spuustin         ###   ########.fr       */
+/*   Updated: 2023/01/09 19:32:04 by spuustin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,24 +32,27 @@ static void	ft_insertion_enter(t_term *t)
 	}
 }
 
-void	ft_heredoc_handling(t_term *t, int index)
-{
-	ssize_t	start;
+void	ft_heredoc_handling(t_term *t)
+	{
 	ssize_t	count;
+	ssize_t	start;
 
-	start = index;
-	while (start && t->inp[start] == '<')
-		start--;
-	if (start)
-		start++;
-	count = start;
-	while (count < t->bytes && t->inp[count] == '<')
-		count++;
-	if ((count - start) >= 2)
+	count = 0;
+	start = -1;
+	while (t->inp[++start] && count <= 2)
+	{
+		if (t->inp[start] == '<')
+			count++;
+		else if (t->inp[start] != '<' && count == 2)
+			break ;
+		else
+			count = 0;
+	}
+	if (count == 2)
 		t->heredoc = 1;
 	else
 		t->heredoc = 0;
-}
+	}
 
 /*
  * It shifts all the characters in the input buffer to the right of the
@@ -87,9 +90,9 @@ static void	ft_insertion_char(t_term *t)
 		if (!ft_bslash_escape_check(t, t->index - 1))
 			ft_quote_flag_reset(t);
 	}
-	if (t->inp[t->index - 1] == '<')
+	if (t->inp[t->index - 1] == '<' && !t->heredoc && !t->quote)
 	{
-		ft_heredoc_handling(t, t->index - 1);
+		ft_heredoc_handling(t);
 		if (!t->heredoc && t->delim)
 			ft_strdel(&t->delim);
 	}

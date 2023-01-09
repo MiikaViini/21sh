@@ -6,11 +6,25 @@
 /*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/14 19:19:15 by spuustin          #+#    #+#             */
-/*   Updated: 2023/01/08 19:56:30 by spuustin         ###   ########.fr       */
+/*   Updated: 2023/01/09 19:36:10 by spuustin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
+
+static int	ft_inhibitor_catch(t_term *t, ssize_t index, int *bs, int *hd)
+{
+	*bs = 0;
+	*hd = 0;
+	if (t->inp[index] == '<')
+		*hd = 1;
+	else if (t->inp[index] == '\\')
+		*bs = 1;
+	else if ((t->inp[index] == D_QUO || t->inp[index] == S_QUO) \
+	&& !ft_bslash_escape_check(t, index))
+		return (1);
+	return (0);
+}
 
 /*
  * It deletes a character from the input string and shifts the rest of the
@@ -19,22 +33,32 @@
  * @param t the t_term struct
  * @param mode 0 for backspace, 1 for delete
  */
-void	ft_deletion_shift(t_term *t, int mode)
+void	ft_deletion_shift(t_term *t, ssize_t index)
 {
-	ssize_t	index_cpy;
+	int	blash;
+	int	quote;
+	int	heredoc;
 
-	if (mode == BCK)
-		t->index--;
-	index_cpy = t->index;
-	t->inp[index_cpy] = '\0';
-	while (&t->inp[index_cpy] < &t->inp[t->bytes])
+	quote = ft_inhibitor_catch(t, index, &blash, &heredoc);
+	t->inp[index] = '\0';
+	while (&t->inp[index] < &t->inp[t->bytes])
 	{
-		t->inp[index_cpy] = t->inp[index_cpy] ^ t->inp[index_cpy + 1];
-		t->inp[index_cpy + 1] = t->inp[index_cpy] ^ t->inp[index_cpy + 1];
-		t->inp[index_cpy] = t->inp[index_cpy] ^ t->inp[index_cpy + 1];
-		index_cpy++;
+		t->inp[index] = t->inp[index] ^ t->inp[index + 1];
+		t->inp[index + 1] = t->inp[index] ^ t->inp[index + 1];
+		t->inp[index] = t->inp[index] ^ t->inp[index + 1];
+		index++;
 	}
 	t->bytes--;
+	if (blash)
+		ft_quote_flag_check(t, t->index);
+	else if (heredoc)
+	{
+		ft_heredoc_handling(t);
+		if (!t->heredoc && t->delim)
+			ft_strdel(&t->delim);
+	}
+	else if (quote)
+		ft_quote_flag_reset(t);
 }
 
 void	ft_delete(t_term *t)

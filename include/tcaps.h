@@ -141,7 +141,7 @@ int		ft_sspace(const char *str);
 void	ft_backspace(t_term *t);
 void	ft_print_trail(t_term *t);
 void	ft_quote_decrement(t_term *t, int num);
-void	ft_deletion_shift(t_term *t, int mode);
+void	ft_deletion_shift(t_term *t, ssize_t index);
 void	ft_shift_nl_addr(t_term *t, int num);
 void	ft_remove_nl_addr(t_term *t, ssize_t row);
 int		ft_putc(int c);
@@ -182,7 +182,7 @@ int		ft_delim_fetch(t_term *t);
 void	ft_quote_flag_reset(t_term *t);
 void	ft_quote_flag_check(t_term *t, ssize_t index);
 
-void	ft_heredoc_handling(t_term *t, int index);
+void	ft_heredoc_handling(t_term *t);
 
 //ctrl_d
 int		ctrl_d_exit(t_term *t);

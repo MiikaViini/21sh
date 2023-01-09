@@ -6,7 +6,7 @@
 /*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 19:07:23 by mviinika          #+#    #+#             */
-/*   Updated: 2023/01/02 18:45:56 by spuustin         ###   ########.fr       */
+/*   Updated: 2023/01/09 19:41:52 by spuustin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ static int	ft_21sh(t_env *env, char **builtins, char *input)
 	int		i;
 	char 	*terminal = ttyname(1);
 
+	// ft_printf("input: |%s|\n", input);
 	rb = ft_strlen(input);
 	i = 0;
 	tree = NULL;
