@@ -6,7 +6,7 @@
 /*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/18 22:41:19 by spuustin          #+#    #+#             */
-/*   Updated: 2023/01/09 21:08:31 by spuustin         ###   ########.fr       */
+/*   Updated: 2023/01/11 20:51:04 by spuustin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,9 @@ void	init_helper(t_term *t)
 	t->heredoc = 0;
 	t->total_row_cpy = 0;
 	t->clipboard.type = 0;
-	t->history_row = -1;
 	t->his = 0;
+	t->history_row = -1;
 	t->sigint = 0;
-	t->total_row_cpy = 0;
 }
 
 void	init_term(t_term *t)

@@ -6,7 +6,7 @@
 /*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/14 18:44:38 by spuustin          #+#    #+#             */
-/*   Updated: 2023/01/04 17:11:58 by spuustin         ###   ########.fr       */
+/*   Updated: 2023/01/11 20:36:49 by spuustin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,10 @@ void	ft_left(t_term *t)
 	}
 	t->index--;
 }
+
+/*
+	moves cursor to right
+*/
 
 void	ft_right(t_term *t)
 {

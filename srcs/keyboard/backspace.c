@@ -6,7 +6,7 @@
 /*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/09 22:26:56 by spuustin          #+#    #+#             */
-/*   Updated: 2023/01/09 20:44:53 by spuustin         ###   ########.fr       */
+/*   Updated: 2023/01/11 20:23:46 by spuustin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,9 @@
  */
 static void	ft_scroll_up(t_term *t)
 {
-	ssize_t	row;
-
-	row = t->start_row + t->c_row;
 	run_capability("ho");
 	run_capability("sr");
-	set_cursor(t->c_col, row);
+	set_cursor(t->c_col, (t->start_row + t->c_row));
 }
 
 /*

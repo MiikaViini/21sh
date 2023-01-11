@@ -173,7 +173,6 @@ void	ft_scroll_down(void);
 void	ft_nl_removal(t_term *t);
 
 //backslash and delim
-void	ft_bslash_handling(t_term *t);
 int		ft_bslash_escape_check(t_term *t, ssize_t pos);
 int		ft_delim_fetch(t_term *t);
 

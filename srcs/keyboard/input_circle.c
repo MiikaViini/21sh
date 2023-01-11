@@ -6,7 +6,7 @@
 /*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/25 19:41:32 by spuustin          #+#    #+#             */
-/*   Updated: 2023/01/09 20:25:14 by spuustin         ###   ########.fr       */
+/*   Updated: 2023/01/11 20:55:10 by spuustin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static int	ft_isprint_or_enter(t_term *t)
 	if (t->ch == ENTER && t->c_row == t->total_row)
 	{
 		if ((!t->bslash && !(t->q_qty % 2) && !t->delim) \
-			|| (t->delim && ft_strequ(t->nl_addr[t->c_row], t->delim)))
+			|| (t->delim && !ft_strcmp(t->nl_addr[t->c_row], t->delim)))
 		{
 			ft_end_cycle(t);
 			return (1);

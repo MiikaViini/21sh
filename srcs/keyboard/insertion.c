@@ -6,7 +6,7 @@
 /*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/02 15:40:13 by spuustin          #+#    #+#             */
-/*   Updated: 2023/01/09 20:25:01 by spuustin         ###   ########.fr       */
+/*   Updated: 2023/01/11 20:58:02 by spuustin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,8 @@ static void	ft_insertion_enter(t_term *t)
 {
 	if (!t->nl_addr[t->c_row + 1])
 	{
-		ft_delim_fetch(t);
+		if (ft_delim_fetch(t))
+			return ;
 		t->bslash = ft_bslash_escape_check(t, t->bytes);
 		if (t->q_qty % 2 \
 			|| (t->heredoc \
