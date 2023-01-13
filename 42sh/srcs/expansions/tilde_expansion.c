@@ -6,13 +6,13 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 20:50:39 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/16 12:04:49 by mviinika         ###   ########.fr       */
+/*   Updated: 2023/01/10 15:38:31 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
 
-static char	*expand_and_cat_tld(char *expanded, char **env, char *word, int len)
+static char	*expand_and_cat_tld(char *expanded, t_env *env, char *word, int len)
 {
 	char	*temp;
 
@@ -23,7 +23,7 @@ static char	*expand_and_cat_tld(char *expanded, char **env, char *word, int len)
 	return (expanded);
 }
 
-static char	*handle_home(char *word, char **env, char *expanded)
+static char	*handle_home(char *word, t_env *env, char *expanded)
 {
 	int	k;
 
@@ -44,7 +44,7 @@ static char	*handle_home(char *word, char **env, char *expanded)
 	return (expanded);
 }
 
-static char	*handle_oldpwd(char *word, char **env, char *expanded)
+static char	*handle_oldpwd(char *word, t_env *env, char *expanded)
 {
 	int	k;
 
@@ -65,7 +65,7 @@ static char	*handle_oldpwd(char *word, char **env, char *expanded)
 	return (expanded);
 }
 
-static char	*handle_pwd(char *word, char **env, char *expanded)
+static char	*handle_pwd(char *word, t_env *env, char *expanded)
 {
 	int	k;
 
@@ -86,7 +86,7 @@ static char	*handle_pwd(char *word, char **env, char *expanded)
 	return (expanded);
 }
 
-char	*tilde_expansion(char *word, char **env, char *expanded)
+char	*tilde_expansion(char *word, t_env *env, char *expanded)
 {
 	char	*temp;
 

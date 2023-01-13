@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+         #
+#    By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/07/09 19:07:08 by mviinika          #+#    #+#              #
-#    Updated: 2023/01/04 15:48:42 by spuustin         ###   ########.fr        #
+#    Updated: 2023/01/13 16:16:33 by mviinika         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ LIBFT = ./libft/libft.a
 LIBFT_DIR = ./libft/
 LIB_INCLUDE_DIR = ./libft/include
 
-FLAGS = -Wall -Wextra -Werror -pedantic -g #-fsanitize=address
+FLAGS = -Wall -Wextra -Werror -pedantic -g -fsanitize=address
 
 UNAME :=$(shell uname)
 
@@ -28,7 +28,7 @@ AST_DIR = ast
 AST_FILES = build_all_asts.c \
 			new_redir.c \
 			create_cmd_node.c \
-			set_aggr_values.c
+			set_aggr_values.c \
 
 BUILT_INS_DIR = builtins
 BUILT_INS_FILES = do_cd.c \
@@ -133,6 +133,7 @@ UTILS_FILES = check_quotes.c \
 			remove_quotes.c
 
 SRC_FILES = main.c \
+			heredocs.c \
 			$(patsubst %, $(AST_DIR)/%, $(AST_FILES)) \
 			$(patsubst %, $(BUILT_INS_DIR)/%, $(BUILT_INS_FILES)) \
 			$(patsubst %, $(EXECUTION_DIR)/%, $(EXECUTION_FILES)) \

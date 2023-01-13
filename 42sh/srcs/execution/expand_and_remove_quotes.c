@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 12:17:07 by mviinika          #+#    #+#             */
-/*   Updated: 2023/01/09 13:43:38 by mviinika         ###   ########.fr       */
+/*   Updated: 2023/01/10 15:36:46 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,6 @@ static int	do_set_var(char *input, t_env *env)
 	added = find_env(input, env, &k);
 	if (!added)
 	{
-		ft_printf("input %s\n", input);
 		env->intr->env[k++] = ft_strdup(input);
 		env->intr->env[k] = NULL;
 	}
@@ -113,13 +112,10 @@ int	expand_and_remove_quotes(t_ast **tree, t_env *env)
 	k = 0;
 	i = 0;
 	initialise_structs(&quotes, NULL, NULL);
-	ft_printf("var %d\n", (*tree)->type);
 	if ((*tree)->type == NODE_INTR_VAR)
 	{
-		
 		while ((*tree)->variables)
 		{
-		
 			do_set_var((*tree)->variables->var, env);
 			(*tree)->variables = (*tree)->variables->next;
 		}
@@ -131,7 +127,7 @@ int	expand_and_remove_quotes(t_ast **tree, t_env *env)
 		{
 			if (is_expansion((*tree)->cmd[i], k) && !quotes.s_quote)
 			{
-				(*tree)->cmd[i] = handle_expansions((*tree)->cmd[i], env->env);
+				(*tree)->cmd[i] = handle_expansions((*tree)->cmd[i], env);
 				break ;
 			}
 			(*tree)->cmd[i] = remove_quotes((*tree)->cmd[i]);
@@ -139,7 +135,6 @@ int	expand_and_remove_quotes(t_ast **tree, t_env *env)
 		}
 		k = 0;
 		i++;
-		ft_putnbr(i);
 	}
 	return (0);
 }

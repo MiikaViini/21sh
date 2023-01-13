@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 15:00:27 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/19 10:35:01 by mviinika         ###   ########.fr       */
+/*   Updated: 2023/01/13 16:14:29 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,8 @@ static void	create_redirs(t_ast *node, t_tlist ***tokens)
 	node->type = NODE_REDIR;
 	node->redirs = new_redir((**tokens)->str, NULL, 0, (**tokens)->redir_type);
 	if (node->redir_type == REDIR_TRUNC
-		|| node->redir_type == REDIR_IN || node->redir_type == REDIR_APPEND)
+		|| node->redir_type == REDIR_IN
+		|| node->redir_type == REDIR_APPEND)
 		apply_redir_attrs(node, tokens);
 	else if (node->redir_type == REDIR_AGGR_IN
 		|| node->redir_type == REDIR_AGGR_OUT)

@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 15:00:27 by mviinika          #+#    #+#             */
-/*   Updated: 2023/01/09 14:04:07 by mviinika         ###   ########.fr       */
+/*   Updated: 2023/01/10 10:58:09 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,6 @@ static void	create_redirs(t_ast *node, t_tlist ***tokens)
 
 static void	create_words(t_ast *node, t_tlist ***tokens, int *i)
 {
-	ft_printf("node fd%d\n", node->type);
 	node->cmd[(*i)] = ft_strdup((**tokens)->str);
 	(*i)++;
 	if (node->type != NODE_REDIR && node->type != NODE_INTR_VAR)
@@ -90,7 +89,6 @@ t_ast	*simple_command(t_ast *node, t_tlist ***tokens)
 	vars = NULL;
 	while (**tokens)
 	{
-		ft_printf("node %d\n", node->type);
 		if ((**tokens)->type == TOKEN_WORD)
 			create_words(node, tokens, &i);
 		else if ((**tokens)->type == TOKEN_INTR_VAR)
@@ -111,6 +109,5 @@ t_ast	*simple_command(t_ast *node, t_tlist ***tokens)
 	node->redirs = redirs;
 	node->variables = vars;
 	node->cmd[i] = NULL;
-	ft_printf("node %d\n", node->type);
 	return (node);
 }

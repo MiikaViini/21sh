@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_21sh.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 08:59:36 by mviinika          #+#    #+#             */
-/*   Updated: 2023/01/04 17:06:21 by spuustin         ###   ########.fr       */
+/*   Updated: 2023/01/13 16:12:48 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ void		free_parsed_input(char **p_input);
 # define DB1 ft_putendl("there\n");
 
 void	free_parsed_input(char **p_input);
+char	*ft_heredoc(t_term *t, char *str);
 
 /***********\
 ** utils.c **

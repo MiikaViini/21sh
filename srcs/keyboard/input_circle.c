@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input_circle.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/25 19:41:32 by spuustin          #+#    #+#             */
-/*   Updated: 2023/01/11 20:55:10 by spuustin         ###   ########.fr       */
+/*   Updated: 2023/01/13 09:49:37 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	ft_end_cycle(t_term *t)
 
 static int	ft_isprint_or_enter(t_term *t)
 {
-	if ((ft_isprint(t->ch) || t->ch == ENTER) && t->bytes < BUFFSIZE)
+	if ((ft_isprint(t->ch) || t->ch == ENTER) && t->bytes < (BUFFSIZE - 1))
 		insertion(t);
 	if (t->ch == ENTER && t->c_row == t->total_row)
 	{

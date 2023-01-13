@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 19:07:23 by mviinika          #+#    #+#             */
-/*   Updated: 2023/01/11 20:45:41 by spuustin         ###   ########.fr       */
+/*   Updated: 2023/01/13 16:20:29 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,16 +75,31 @@ static char	**initialize_and_set_builtins(void)
 	return (builtins);
 }
 
+char	*ft_lexer(t_term *t)
+{
+	char	*new;
+
+	new = ft_strtrim(t->inp);
+	if (!*new)
+		ft_strdel(&new);
+	new = ft_heredoc(t, new);
+	return (new);
+}
+
 static void	prompt(t_term *t, t_env *env, char **builtins)
 {
 	int		rb;
+	char 	*new;
 
 	rb = 1;
+	
 	while (!input_cycle(t))
 	{
+		new = ft_lexer(t);
 		write_history_to_file(t);
-		rb = ft_21sh(env, builtins, t->inp);
+		rb = ft_21sh(env, builtins, new);
 		ft_restart_cycle(t);
+		ft_strdel(&new);
 	}
 }
 

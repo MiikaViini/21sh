@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 09:14:23 by mviinika          #+#    #+#             */
-/*   Updated: 2023/01/09 20:18:35 by mviinika         ###   ########.fr       */
+/*   Updated: 2023/01/10 10:57:21 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,6 @@ static t_tlist	*get_token(t_pars *pars, t_word *values)
 		see_quote(&quots, pars->trimmed, values->i);
 		if (set_redirections(pars, values, word, &quots))
 			break ;
-		ft_printf("char [%c] pars char [%c]\n", word[0], pars->trimmed[values->i]);
 		if (is_intr_var(pars->trimmed[values->i], word) && values->count == 0)
 		{
 			values->type = TOKEN_INTR_VAR;

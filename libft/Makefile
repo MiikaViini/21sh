@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+         #
+#    By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/30 09:25:07 by mviinika          #+#    #+#              #
-#    Updated: 2023/01/04 15:49:08 by spuustin         ###   ########.fr        #
+#    Updated: 2023/01/13 16:11:48 by mviinika         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,8 +39,7 @@ SRC_FILES = ft_atoi.c ft_bzero.c ft_isalnum.c ft_isalpha.c \
 	ft_itoabase.c ft_ftoa.c ft_ltoa.c ft_utoa.c ft_putstrlen.c \
 	get_next_line.c ft_strsplitws.c ft_strarrcpy.c \
 	ft_strarrndup.c ft_linecount.c ft_wordcount_ws.c ft_only_digits.c \
-	ft_strarrndup.c ft_linecount.c ft_wordcount_ws.c \
-	ft_free_array.c
+	ft_free_array.c ft_strjoin_head.c ft_strjoin_tail.c
 
 DIR_O = objs
 

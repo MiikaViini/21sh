@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/29 08:48:51 by mviinika          #+#    #+#             */
-/*   Updated: 2023/01/09 21:08:04 by mviinika         ###   ########.fr       */
+/*   Updated: 2023/01/10 10:42:47 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,21 +139,42 @@ static int	find_env(char *input, t_env *env, int *added, int *k)
 	}
 	return (*added);
 }
+char *ft_strtok(char *str, char *delim)
+{
+	int		i;
+	char	*new;
+
+	i = -1;
+	new = ft_strnew(ft_strlen(str));
+	while (str[++i])
+	{
+		new[i] = str[i];
+		if (ft_strncmp(&str[i], delim, 1) == 0)
+			break ;
+	}
+	return (new);
+}
 
 int	do_export(char **input, t_env *env)
 {
 	int		i;
 	int		k;
 	int		added;
+	char	*token;
 
 	k = 0;
 	i = 0;
+	token = NULL;
 	if (check_validity(input))
 		return (1);
 	if (!input[1])
 	{
 		while (env->env[++i])
-			ft_printf("export %s\n", env->env[i]);
+		{
+			token = ft_strtok(env->env[i], "=");
+			ft_printf("export %s\"%s\"\n", token , ft_strchr(env->env[i], '=') + 1);
+			ft_strdel(&token);
+		}
 		return (0);
 	}
 	while (input[++i])

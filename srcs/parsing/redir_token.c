@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/08 20:51:44 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/17 14:01:20 by mviinika         ###   ########.fr       */
+/*   Updated: 2023/01/13 15:54:20 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,11 +51,28 @@ int	add_redir_out(char *trimmed, char *word, t_word *ints)
 	return (1);
 }
 
-int	add_redir_in(char *trimmed, char *word, t_word *ints)
+int set_here_doc(char **trimmed, char *word, t_word *ints)
+{
+	(void)word;
+	(void)ints;
+	(void)trimmed;
+	ints->total += 2;
+	ints->i += 10;
+	return (2);
+}
+
+int	add_redir_in(char **trimmed, char *word, t_word *ints)
 {
 	ints->total += 1;
-	*word = *trimmed;
-	(trimmed)++;
+	*word = **trimmed;
+	(*trimmed)++;
+	if (**trimmed == '<')
+	{
+		ints->total += 1;
+		*word = **trimmed;
+		ints->redir = REDIR_HERED;
+		return (set_here_doc(trimmed, word, ints));
+	}
 	ints->redir = REDIR_IN;
 	return (1);
 }
@@ -73,6 +90,6 @@ int	redir_token(char *trimmed, char *word, t_word *ints)
 	else if (*trimmed == '>')
 		i = add_redir_out(trimmed, word, ints);
 	else if (*trimmed == '<')
-		i = add_redir_in(trimmed, word, ints);
+		i = add_redir_in(&trimmed, word, ints);
 	return (i);
 }

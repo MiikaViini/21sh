@@ -1,0 +1,42 @@
+--------${parameter:-word}---------
+ 
+ echo ${kyl:-*$f$f$f#$@#@$f}
+
+Since "kyl" is null everything after :- is substituted
+
+ output: *jeejeejee##@jee
+
+If "kyl" isnt null, value of "kyl" will take place
+If dash is excluded, error print is:
+	bash: kyl: *jeejeejee##@jee: syntax error: invalid arithmetic operator (error token is "##@jee")
+
+--------${parameter:=word}---------
+
+	echo ${kyl:=*$f$f$f#$@#@$f}
+
+Since "kyl" is null everything after := is substituted and setted to "kyl"'s value
+	output: *jeejeejee##@jee
+
+If "kyl" isnt null, kyl value is displayed
+
+If "kyl" doesnt exist, it will be created as intern variable with value of *$f$f$f#$@#@$f
+	output: *jeejeejee##@jee
+
+--------${parameter:?word}----------
+
+	echo ${kyl:?*$f$f$f#$@#@$f}
+
+if kyl exists and value is null, error print is
+	bash: kyl: *jeejeejee##@jee
+
+if kyl exists and value isnt null print is kyl value
+
+if kyl is null or unset and after :? isnt anything output is
+	bash: kyl: parameter null or not set
+
+--------${parameter:+word}----------
+
+	echo ${kyl:+*$f$f$f#$@#@$f}
+
+If kyl is null or unset, nothing is substituted
+otherwise value of +*$f$f$f#$@#@$f is substituted

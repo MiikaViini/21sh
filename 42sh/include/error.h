@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/03 12:16:42 by mviinika          #+#    #+#             */
-/*   Updated: 2023/01/03 15:32:02 by mviinika         ###   ########.fr       */
+/*   Updated: 2023/01/10 11:44:15 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,4 +31,5 @@
 # define E_AMB "ambigous redirect"
 # define E_BFD "Bad file descriptor"
 # define E_SYNERR "syntax error near unexpected token"
+# define E_BADS "bad substitution"
 #endif
