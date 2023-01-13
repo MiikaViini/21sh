@@ -6,7 +6,7 @@
 /*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 22:08:59 by spuustin          #+#    #+#             */
-/*   Updated: 2023/01/02 18:50:41 by spuustin         ###   ########.fr       */
+/*   Updated: 2023/01/13 20:51:19 by spuustin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static void	increase_history_size(t_term *t)
 	char	**temp;
 	int		i;
 
-	temp = (char **)malloc(sizeof(char *) * (t->history_size + 2));
+	temp = (char **)malloc(sizeof(char *) * (t->history_size + 1));
 	if (!temp)
 		exit(1);
 	i = 0;
@@ -63,7 +63,7 @@ static void	increase_history_size(t_term *t)
 
 void	add_command_to_history(t_term *t, char *command)
 {
-	if (t->history_size <= MAX_HISTORY)
+	if (t->history_size < MAX_HISTORY)
 	{
 		increase_history_size(t);
 		t->history[t->history_size] = ft_strdup(command);

@@ -6,11 +6,9 @@
 /*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 22:45:45 by spuustin          #+#    #+#             */
-/*   Updated: 2023/01/09 21:01:21 by spuustin         ###   ########.fr       */
+/*   Updated: 2023/01/13 20:47:27 by spuustin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-#include "ft_21sh.h"
 
 #include "ft_21sh.h"
 
@@ -19,6 +17,7 @@ void	history_command(t_term *t)
 	int		i;
 
 	i = 0;
+	write(1, "\n", 1);
 	while (t->history[i])
 	{
 		ft_printf("%4d %s", i, t->history[i]);
@@ -59,9 +58,9 @@ static char	*get_file(void)
 
 	home = getenv("HOME");
 	if (home)
-		return (ft_strjoin(home, "/.42sh_history"));
+		return (ft_strjoin(home, "/.21sh_history"));
 	file = getcwd(cwd, sizeof(cwd));
-	return (ft_strjoin(file, "/.42sh_history"));
+	return (ft_strjoin(file, "/.21sh_history"));
 }
 
 static void	count_history(t_term *t)
