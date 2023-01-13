@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 19:07:23 by mviinika          #+#    #+#             */
-/*   Updated: 2023/01/13 16:20:29 by mviinika         ###   ########.fr       */
+/*   Updated: 2023/01/13 19:23:02 by spuustin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,10 @@ static void	prompt(t_term *t, t_env *env, char **builtins)
 	{
 		new = ft_lexer(t);
 		write_history_to_file(t);
-		rb = ft_21sh(env, builtins, new);
+		if (new)
+			rb = ft_21sh(env, builtins, new);
+		else
+			write(1, "\n", 1);
 		ft_restart_cycle(t);
 		ft_strdel(&new);
 	}

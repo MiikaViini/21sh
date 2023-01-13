@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input_circle.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/25 19:41:32 by spuustin          #+#    #+#             */
-/*   Updated: 2023/01/13 09:49:37 by mviinika         ###   ########.fr       */
+/*   Updated: 2023/01/13 19:58:00 by spuustin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static int	ft_isprint_or_enter(t_term *t)
 {
 	if ((ft_isprint(t->ch) || t->ch == ENTER) && t->bytes < (BUFFSIZE - 1))
 		insertion(t);
-	if (t->ch == ENTER && t->c_row == t->total_row)
+	if (t->ch == ENTER)
 	{
 		if ((!t->bslash && !(t->q_qty % 2) && !t->delim) \
 			|| (t->delim && !ft_strcmp(t->nl_addr[t->c_row], t->delim)))
