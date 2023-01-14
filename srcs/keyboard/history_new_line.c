@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   history_new_line.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 22:08:59 by spuustin          #+#    #+#             */
-/*   Updated: 2023/01/13 20:51:19 by spuustin         ###   ########.fr       */
+/*   Updated: 2023/01/14 09:43:39 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static void	increase_history_size(t_term *t)
 	char	**temp;
 	int		i;
 
-	temp = (char **)malloc(sizeof(char *) * (t->history_size + 1));
+	temp = (char **)malloc(sizeof(char *) * (t->history_size + 2));
 	if (!temp)
 		exit(1);
 	i = 0;

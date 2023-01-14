@@ -1,2 +1,24 @@
-[?25l[?12l[?25h[2J[H21sh> sdasdfdsdfsdf
-21sh: sdasdfdsdfsdf: command not found
+total 2952
+-rw-r--r--   1 mviinika  staff        0 Jan 13 19:34 %80
+
+-rw-r--r--   1 mviinika  staff        0 Jan 14 10:03 -
+drwxr-xr-x  22 mviinika  staff      704 Jan 14 10:03 .
+drwxrwxrwx  33 mviinika  staff     1056 Dec  9 09:28 ..
+drwxr-xr-x  15 mviinika  staff      480 Jan 14 09:27 .git
+-rw-r--r--   1 mviinika  staff       27 Jan 13 19:34 .gitignore
+-rwxr-xr-x   1 mviinika  staff   166464 Jan 14 10:02 21sh
+-rw-r--r--   1 mviinika  staff  1300693 Dec 19 09:50 21sh.en.pdf
+drwxr-xr-x  17 mviinika  staff      544 Jan 13 19:34 42sh
+-rw-r--r--   1 mviinika  staff     4613 Jan 14 09:53 Makefile
+-rw-r--r--   1 mviinika  staff      809 Dec 16 15:25 README.md
+-rw-r--r--   1 mviinika  staff       19 Jan 13 19:34 author
+drwxr-xr-x   4 mviinika  staff      128 Jan 13 19:34 eval_tests
+-rwxr-xr-x   1 mviinika  staff     1237 Jan 13 19:34 free_space.sh
+drwxr-xr-x  14 mviinika  staff      448 Jan 14 09:27 include
+-rw-r--r--   1 mviinika  staff        6 Jan 13 19:34 kyl
+drwxr-xr-x   9 mviinika  staff      288 Jan 14 09:54 libft
+drwxr-xr-x  13 mviinika  staff      416 Jan 14 10:02 objs
+drwxr-xr-x  13 mviinika  staff      416 Jan 14 09:27 srcs
+-rw-r--r--   1 mviinika  staff       57 Jan 13 19:34 test
+-rwxr-xr-x   1 mviinika  staff       24 Jan 13 19:34 test.sh
+-rw-r--r--   1 mviinika  staff     1293 Jan 13 19:34 testi

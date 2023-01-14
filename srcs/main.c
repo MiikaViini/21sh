@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 19:07:23 by mviinika          #+#    #+#             */
-/*   Updated: 2023/01/13 19:23:02 by spuustin         ###   ########.fr       */
+/*   Updated: 2023/01/14 10:01:04 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	free_all(t_pars *pars, t_ast **tree, char *buf)
 	free_parsed_input(pars->parsed);
 	ft_strdel(&pars->trimmed);
 	free(pars->parsed);
-	ft_memset(buf, '\0', 4096);
+	ft_strdel(&buf);
 }
 
 void	check_read_bytes(int rb, t_env *env)
@@ -102,7 +102,7 @@ static void	prompt(t_term *t, t_env *env, char **builtins)
 		else
 			write(1, "\n", 1);
 		ft_restart_cycle(t);
-		ft_strdel(&new);
+		//ft_strdel(&new);
 	}
 }
 
