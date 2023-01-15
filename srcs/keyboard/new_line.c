@@ -6,13 +6,13 @@
 /*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/26 16:23:16 by spuustin          #+#    #+#             */
-/*   Updated: 2022/12/19 20:43:49 by spuustin         ###   ########.fr       */
+/*   Updated: 2023/01/15 17:09:51 by spuustin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
 
-void	ft_add_nl_last_row(t_term *t, char *array, ssize_t pos)
+void	add_nl_last_row(t_term *t, char *array, ssize_t pos)
 {
 	int		index;
 	char	**n_arr;
@@ -38,7 +38,7 @@ void	ft_add_nl_last_row(t_term *t, char *array, ssize_t pos)
 	}
 }
 
-void	ft_add_nl_mid_row(t_term *t, ssize_t row, ssize_t pos)
+void	add_nl_mid_row(t_term *t, ssize_t row, ssize_t pos)
 {
 	ssize_t	i;
 	ssize_t	j;
@@ -59,7 +59,7 @@ void	ft_add_nl_mid_row(t_term *t, ssize_t row, ssize_t pos)
 	t->nl_addr = new_arr;
 }
 
-void	ft_scroll_down(void)
+void	scroll_down(void)
 {
 	run_capability("sc");
 	run_capability("sf");

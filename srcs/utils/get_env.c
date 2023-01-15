@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_env.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/12 17:39:14 by mviinika          #+#    #+#             */
-/*   Updated: 2023/01/14 15:49:45 by mviinika         ###   ########.fr       */
+/*   Updated: 2023/01/15 18:54:41 by spuustin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static void	set_shell_lvl(t_env *env)
 	update_env(env->env, "1", "SHLVL");
 }
 
-static void open_std_fds(void)
+static void	open_std_fds(void)
 {
 	int	fd;
 

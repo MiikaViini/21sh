@@ -6,13 +6,13 @@
 /*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/02 15:44:36 by spuustin          #+#    #+#             */
-/*   Updated: 2022/12/02 15:45:02 by spuustin         ###   ########.fr       */
+/*   Updated: 2023/01/15 17:12:43 by spuustin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
 
-int	ft_sspace(const char *str)
+int	is_space(const char *str)
 {
 	if (!str)
 		return (0);

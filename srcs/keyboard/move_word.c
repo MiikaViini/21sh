@@ -6,7 +6,7 @@
 /*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 23:26:39 by spuustin          #+#    #+#             */
-/*   Updated: 2022/12/02 15:46:48 by spuustin         ###   ########.fr       */
+/*   Updated: 2023/01/15 18:39:10 by spuustin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,15 +17,15 @@
  *
  * @param t the term structure
  */
-static void	ft_word_left(t_term *t)
+static void	word_left(t_term *t)
 {
-	while (t->index && ft_sspace(&t->inp[t->index - 1]))
+	while (t->index && is_space(&t->inp[t->index - 1]))
 	{
 		if (&t->inp[t->index + 1] == t->nl_addr[t->c_row])
 			break ;
 		t->index--;
 	}
-	while (t->index && !ft_sspace(&t->inp[t->index - 1]))
+	while (t->index && !is_space(&t->inp[t->index - 1]))
 	{
 		if (&t->inp[t->index] == t->nl_addr[t->c_row])
 			break ;
@@ -34,7 +34,7 @@ static void	ft_word_left(t_term *t)
 	t->c_col = &t->inp[t->index] - t->nl_addr[t->c_row];
 	if (t->nl_addr[t->c_row] == &t->inp[0])
 		t->c_col += t->prompt_len;
-	else if (ft_is_prompt_line(t, t->c_row))
+	else if (is_prompt_line(t, t->c_row))
 		t->c_col += t->m_prompt_len;
 	set_cursor(t->c_col, get_linenbr());
 }
@@ -45,18 +45,18 @@ static void	ft_word_left(t_term *t)
  *
  * @param t the term structure
  */
-static void	ft_word_right(t_term *t)
+static void	word_right(t_term *t)
 {
 	ssize_t	row;
 
 	row = t->c_row;
-	while (t->index < t->bytes && ft_sspace(&t->inp[t->index]))
+	while (t->index < t->bytes && is_space(&t->inp[t->index]))
 	{
 		if (t->nl_addr[row + 1] && &t->inp[t->index + 1] == t->nl_addr[row + 1])
 			break ;
 		t->index++;
 	}
-	while (t->index < t->bytes && !ft_sspace(&t->inp[t->index]))
+	while (t->index < t->bytes && !is_space(&t->inp[t->index]))
 	{
 		if (t->nl_addr[row + 1] \
 		&& &t->inp[t->index + 1] == t->nl_addr[row + 1])
@@ -66,7 +66,7 @@ static void	ft_word_right(t_term *t)
 	t->c_col = &t->inp[t->index] - t->nl_addr[row];
 	if (t->nl_addr[row] == &t->inp[0])
 		t->c_col += t->prompt_len;
-	else if (ft_is_prompt_line(t, row))
+	else if (is_prompt_line(t, row))
 		t->c_col += t->m_prompt_len;
 	set_cursor(t->c_col, get_linenbr());
 }
@@ -79,10 +79,10 @@ static void	ft_word_right(t_term *t)
  *
  * @param t the t_term struct
  */
-void	ft_word_mv(t_term *t)
+void	word_mv(t_term *t)
 {
 	if (t->ch == ALT_LFT && (&t->inp[t->index] > t->nl_addr[t->c_row]))
-		ft_word_left(t);
+		word_left(t);
 	else if (t->ch == ALT_RGHT && (t->index < t->bytes))
-		ft_word_right(t);
+		word_right(t);
 }

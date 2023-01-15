@@ -6,7 +6,7 @@
 /*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 23:38:43 by spuustin          #+#    #+#             */
-/*   Updated: 2023/01/11 21:02:01 by spuustin         ###   ########.fr       */
+/*   Updated: 2023/01/15 18:38:11 by spuustin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
  * @param prompt_len The length of the prompt.
  */
 
-static void	ft_move_down_end_line(t_term *t, ssize_t len, ssize_t prompt_len)
+static void	move_down_end_line(t_term *t, ssize_t len, ssize_t prompt_len)
 {
 	t->c_col = len + prompt_len;
 	if (t->c_row < (t->total_row - 1))
@@ -39,7 +39,7 @@ static void	ft_move_down_end_line(t_term *t, ssize_t len, ssize_t prompt_len)
  * @param t the term structure
  * @param prompt_len the length of the prompt
  */
-static void	ft_move_down(t_term *t, ssize_t prompt_len)
+static void	move_down(t_term *t, ssize_t prompt_len)
 {
 	if (t->c_col < prompt_len)
 	{
@@ -50,7 +50,7 @@ static void	ft_move_down(t_term *t, ssize_t prompt_len)
 		- t->nl_addr[0];
 }
 
-static ssize_t	ft_col_diff(t_term *t, ssize_t len)
+static ssize_t	col_diff(t_term *t, ssize_t len)
 {
 	int	len_cur_row;
 
@@ -66,7 +66,7 @@ static ssize_t	ft_col_diff(t_term *t, ssize_t len)
  *
  * @param t the term structure
  */
-void	ft_line_down(t_term *t)
+void	line_down(t_term *t)
 {
 	ssize_t	len;
 	ssize_t	prompt_len;
@@ -76,15 +76,15 @@ void	ft_line_down(t_term *t)
 		len = (t->nl_addr[t->c_row + 2] - t->nl_addr[t->c_row + 1]);
 	else
 		len = &t->inp[t->bytes] - t->nl_addr[t->c_row + 1];
-	col = ft_col_diff(t, len);
+	col = col_diff(t, len);
 	if (col < t->c_col)
 		col = t->c_col - col;
 	else
 		col = col - t->c_col;
-	prompt_len = ft_get_prompt_len(t, t->c_row + 1);
+	prompt_len = get_prompt_len(t, t->c_row + 1);
 	if (t->c_col < (len + prompt_len))
-		ft_move_down(t, prompt_len);
+		move_down(t, prompt_len);
 	else
-		ft_move_down_end_line(t, len, prompt_len);
+		move_down_end_line(t, len, prompt_len);
 	set_cursor(t->c_col, t->start_row + ++t->c_row);
 }

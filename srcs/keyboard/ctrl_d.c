@@ -6,7 +6,7 @@
 /*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 19:52:08 by spuustin          #+#    #+#             */
-/*   Updated: 2023/01/13 19:48:43 by spuustin         ###   ########.fr       */
+/*   Updated: 2023/01/15 18:25:56 by spuustin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,15 +17,15 @@ int	ctrl_d(t_term *t)
 	if (!t->bytes)
 		return (-1);
 	if (t->index < t->bytes)
-		ft_delete(t);
+		delete_char(t);
 	if (t->heredoc && !*t->nl_addr[t->c_row])
 	{
-		ft_delim_fetch(t);
+		delim_fetch(t);
 		ft_strcat(t->inp, t->delim);
 		ft_putstr("21sh: warning: here-document at line ");
 		ft_putnbr(t->c_row);
 		ft_putstr(" delimited by end-of-file (wanted `EOF')");
-		ft_end_cycle(t);
+		end_cycle(t);
 		return (1);
 	}
 	return (0);

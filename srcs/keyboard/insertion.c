@@ -6,19 +6,19 @@
 /*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/02 15:40:13 by spuustin          #+#    #+#             */
-/*   Updated: 2023/01/15 16:29:19 by spuustin         ###   ########.fr       */
+/*   Updated: 2023/01/15 18:36:32 by spuustin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
 
-static void	ft_insertion_enter(t_term *t)
+static void	insertion_enter(t_term *t)
 {
 	if (!t->nl_addr[t->c_row + 1])
 	{
-		if (ft_delim_fetch(t))
+		if (delim_fetch(t))
 			return ;
-		t->bslash = ft_bslash_escape_check(t, t->bytes);
+		t->bslash = backslash_escape_check(t, t->bytes);
 		if (t->q_qty % 2 \
 			|| (t->heredoc \
 			&& (t->delim && ft_strcmp(t->nl_addr[t->c_row], t->delim))) \
@@ -27,27 +27,28 @@ static void	ft_insertion_enter(t_term *t)
 			t->history_row = -1;
 			ft_memcpy(t->history_buff, t->inp, t->bytes);
 			t->inp[t->bytes++] = (char)t->ch;
-			ft_create_prompt_line(t, t->bytes);
+			create_prompt_line(t, t->bytes);
 			t->index = t->bytes;
 		}
 	}
 }
 
-void	ft_heredoc_handling(t_term *t)
+void	heredoc_handling(t_term *t)
 {
-	ssize_t	count;
-	ssize_t	start;
+	int	count;
+	int	i;
 
 	count = 0;
-	start = -1;
-	while (t->inp[++start] && count <= 2)
+	i = 0;
+	while (t->inp[i] && count <= 2)
 	{
-		if (t->inp[start] == '<')
+		if (t->inp[i] == '<')
 			count++;
-		else if (t->inp[start] != '<' && count == 2)
+		else if (t->inp[i] != '<' && count == 2)
 			break ;
 		else
 			count = 0;
+		i++;
 	}
 	if (count == 2)
 		t->heredoc = 1;
@@ -62,7 +63,7 @@ void	ft_heredoc_handling(t_term *t)
  * @param t the term structure
  */
 
-void	ft_shift_insert(t_term *t)
+void	shift_insert(t_term *t)
 {
 	ssize_t	bytes_cpy;
 
@@ -76,38 +77,38 @@ void	ft_shift_insert(t_term *t)
 	}
 }
 
-static void	ft_insertion_char(t_term *t)
+static void	insertion_char(t_term *t)
 {
 	ft_putc(t->ch);
 	t->c_col++;
-	ft_shift_nl_addr(t, 1);
+	shift_nl_addr(t, 1);
 	if (t->inp[t->index])
-		ft_shift_insert(t);
+		shift_insert(t);
 	t->inp[t->index++] = (char)t->ch;
 	t->bytes++;
 	if ((t->inp[t->index - 1] == D_QUO || t->inp[t->index - 1] == S_QUO) \
 		&& !t->heredoc)
 	{
-		if (!ft_bslash_escape_check(t, t->index - 1))
-			ft_quote_flag_reset(t);
+		if (!backslash_escape_check(t, t->index - 1))
+			quote_flag_reset(t);
 	}
 	if (t->inp[t->index - 1] == '<' && !t->heredoc && !t->quote)
 	{
-		ft_heredoc_handling(t);
+		heredoc_handling(t);
 		if (!t->heredoc && t->delim)
 			ft_strdel(&t->delim);
 	}
 	else if (t->inp[t->index - 1] == '\\')
-		ft_quote_flag_check(t, t->index - 1);
+		quote_flag_check(t, t->index - 1);
 }
 
 void	insertion(t_term *t)
 {
 	if (t->ch == ENTER)
-		ft_insertion_enter(t);
+		insertion_enter(t);
 	else
-		ft_insertion_char(t);
+		insertion_char(t);
 	trigger_nl(t);
 	if (t->inp[t->index])
-		ft_print_trail(t);
+		print_trail(t);
 }

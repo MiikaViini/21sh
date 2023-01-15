@@ -6,13 +6,13 @@
 /*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/09 22:49:29 by spuustin          #+#    #+#             */
-/*   Updated: 2023/01/11 20:26:32 by spuustin         ###   ########.fr       */
+/*   Updated: 2023/01/15 17:16:06 by spuustin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
 
-void	ft_copy(t_term *t)
+void	ctrl_copy(t_term *t)
 {
 	ssize_t	i;
 	ssize_t	j;
@@ -20,12 +20,12 @@ void	ft_copy(t_term *t)
 	if (t->bytes)
 	{
 		i = t->index - 1;
-		while (i && ft_sspace(&t->inp[i]))
+		while (i && is_space(&t->inp[i]))
 			i--;
 		j = i;
-		while (j && !ft_sspace(&t->inp[j]))
+		while (j && !is_space(&t->inp[j]))
 			j--;
-		if (ft_sspace(&t->inp[j]))
+		if (is_space(&t->inp[j]))
 			j++;
 		if (t->clipboard.buff)
 			ft_strdel(&t->clipboard.buff);

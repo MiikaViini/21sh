@@ -6,13 +6,13 @@
 /*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 19:39:53 by spuustin          #+#    #+#             */
-/*   Updated: 2023/01/11 20:21:51 by spuustin         ###   ########.fr       */
+/*   Updated: 2023/01/15 17:09:22 by spuustin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
 
-int	ft_bslash_escape_check(t_term *t, ssize_t pos)
+int	backslash_escape_check(t_term *t, ssize_t pos)
 {
 	ssize_t	start;
 	ssize_t	count;

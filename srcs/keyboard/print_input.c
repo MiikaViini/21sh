@@ -6,7 +6,7 @@
 /*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 18:14:38 by spuustin          #+#    #+#             */
-/*   Updated: 2022/12/21 21:32:12 by spuustin         ###   ########.fr       */
+/*   Updated: 2023/01/15 16:44:30 by spuustin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ static void	transfer_changes(t_term *t, ssize_t row, ssize_t col, int mode)
  * @param row the row of the cursor
  * @param mode 0 - normal, 1 - insert, 2 - delete
  */
-void	ft_print_input(t_term *t, ssize_t row, int mode)
+void	print_input(t_term *t, ssize_t row, int mode)
 {
 	int		len;
 	ssize_t	col;
@@ -66,7 +66,7 @@ void	ft_print_input(t_term *t, ssize_t row, int mode)
 	while (t->nl_addr[row])
 	{
 		len = line_len(t, row);
-		if (ft_is_prompt_line(t, row))
+		if (is_prompt_line(t, row))
 		{
 			if (!row)
 				col = write(STDOUT_FILENO, SHELL_PROMPT, t->prompt_len);

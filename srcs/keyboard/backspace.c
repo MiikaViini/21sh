@@ -6,7 +6,7 @@
 /*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/09 22:26:56 by spuustin          #+#    #+#             */
-/*   Updated: 2023/01/11 20:23:46 by spuustin         ###   ########.fr       */
+/*   Updated: 2023/01/15 18:29:51 by spuustin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
  *
  * @param t the term structure
  */
-static void	ft_scroll_up(t_term *t)
+static void	scroll_up(t_term *t)
 {
 	run_capability("ho");
 	run_capability("sr");
@@ -47,14 +47,14 @@ static void	backpace_continue(t_term *t, ssize_t row, ssize_t len)
 	}
 	if (!len)
 	{
-		ft_remove_nl_addr(t, row);
+		remove_nl_addr(t, row);
 		t->total_row--;
 		if (((t->start_row + t->c_row) + 1) >= t->ws_row)
-			ft_scroll_up(t);
+			scroll_up(t);
 	}
 	run_capability("ce");
-	ft_shift_nl_addr(t, -1);
-	ft_deletion_shift(t, --t->index);
+	shift_nl_addr(t, -1);
+	deletion_shift(t, --t->index);
 }
 
 /*
@@ -63,17 +63,17 @@ static void	backpace_continue(t_term *t, ssize_t row, ssize_t len)
  *
  * @param t the term structure
  */
-void	ft_backspace(t_term *t)
+void	backspace(t_term *t)
 {
 	ssize_t	row;
 	ssize_t	len;
 
 	if (&t->inp[t->index] == t->nl_addr[t->c_row] && \
-		ft_is_prompt_line(t, t->c_row))
+		is_prompt_line(t, t->c_row))
 		return ;
-	row = ft_row_lowest_line(t);
-	len = ft_len_lowest_line(t, row);
+	row = row_lowest_line(t);
+	len = len_lowest_line(t, row);
 	backpace_continue(t, row, len);
 	if (t->inp[t->index])
-		ft_print_trail(t);
+		print_trail(t);
 }

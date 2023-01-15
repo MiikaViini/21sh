@@ -6,7 +6,7 @@
 /*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 18:45:23 by spuustin          #+#    #+#             */
-/*   Updated: 2023/01/09 20:24:29 by spuustin         ###   ########.fr       */
+/*   Updated: 2023/01/15 18:42:09 by spuustin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
  * 
  * @param t the term structure
  */
-int	ft_nl_removal_bslash_check(t_term *t, ssize_t pos)
+static int	nl_removal_bslash_check(t_term *t, ssize_t pos)
 {
 	ssize_t	start;
 	ssize_t	count;
@@ -45,7 +45,7 @@ int	ft_nl_removal_bslash_check(t_term *t, ssize_t pos)
  * 
  * @return The position of the last backslash.
  */
-static int	ft_get_bslash_pos(t_term *t, int i)
+static int	get_bslash_pos(t_term *t, int i)
 {
 	int	count;
 
@@ -66,7 +66,7 @@ static int	ft_get_bslash_pos(t_term *t, int i)
 		return (i - 1);
 }
 
-void	ft_nl_removal(t_term *t)
+void	nl_removal(t_term *t)
 {
 	int		k;
 	int		i;
@@ -78,10 +78,10 @@ void	ft_nl_removal(t_term *t)
 	{
 		i = k;
 		if (!quote && t->history_buff[i] == '\n' \
-		&& ft_nl_removal_bslash_check(t, i))
-			k = ft_get_bslash_pos(t, i++);
+		&& nl_removal_bslash_check(t, i))
+			k = get_bslash_pos(t, i++);
 		else if ((t->history_buff[i] == S_QUO || t->history_buff[i] == D_QUO) \
-		&& !ft_nl_removal_bslash_check(t, i))
+		&& !nl_removal_bslash_check(t, i))
 		{
 			if (!quote)
 				quote = t->history_buff[i];

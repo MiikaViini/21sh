@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+         #
+#    By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/07/09 19:07:08 by mviinika          #+#    #+#              #
-#    Updated: 2023/01/15 12:47:40 by mviinika         ###   ########.fr        #
+#    Updated: 2023/01/15 18:52:52 by spuustin         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -82,13 +82,12 @@ KEYBOARD_FILES = tcaps.c \
 				line_down.c \
 				get_input.c \
 				insertion.c \
-				space.c \
+				is_space.c \
 				backspace.c \
 				kb_ctrl.c \
 				ctrl_cut.c \
 				ctrl_copy.c \
 				ctrl_paste.c \
-				trigger_nl.c \
 				history.c \
 				get_history.c \
 				kb_utils.c \

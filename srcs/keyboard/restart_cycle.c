@@ -6,7 +6,7 @@
 /*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 21:37:49 by spuustin          #+#    #+#             */
-/*   Updated: 2023/01/09 21:05:47 by spuustin         ###   ########.fr       */
+/*   Updated: 2023/01/15 17:13:11 by spuustin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,14 @@ static void	heredoc_reset(t_term *t)
 	if (t->delim)
 	{
 		ft_memcpy(t->history_buff, t->inp, t->bytes);
-		ft_nl_removal(t);
+		nl_removal(t);
 		add_command_to_history(t, t->history_buff);
 	}
 	ft_strdel(&t->delim);
 	t->heredoc = 0;
 }
 
-void	ft_restart_cycle(t_term *t)
+void	restart_cycle(t_term *t)
 {
 	heredoc_reset(t);
 	t->ch = 0;

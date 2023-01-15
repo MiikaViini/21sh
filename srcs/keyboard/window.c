@@ -6,7 +6,7 @@
 /*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/18 22:53:41 by spuustin          #+#    #+#             */
-/*   Updated: 2023/01/15 16:30:54 by spuustin         ###   ########.fr       */
+/*   Updated: 2023/01/15 16:53:16 by spuustin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static void	set_new_cur_pos(t_term *t)
 		&& &t->inp[t->index] >= t->nl_addr[t->c_row])
 		t->c_row++;
 	t->c_row--;
-	t->c_col = ft_get_prompt_len(t, t->c_row);
+	t->c_col = get_prompt_len(t, t->c_row);
 	t->c_col += &t->inp[t->index] - t->nl_addr[t->c_row];
 	set_cursor(t->c_col, t->c_row);
 }
@@ -37,8 +37,8 @@ void	get_window_size(t_term *t)
 	{
 		t->start_row = 0;
 		run_capability("cl");
-		ft_reset_nl_addr(t);
-		ft_print_input(t, 0, 0);
+		reset_nl_addr(t);
+		print_input(t, 0, 0);
 		set_new_cur_pos(t);
 	}
 	run_capability("ve");

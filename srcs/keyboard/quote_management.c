@@ -6,13 +6,13 @@
 /*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/14 19:09:28 by spuustin          #+#    #+#             */
-/*   Updated: 2022/12/14 19:10:02 by spuustin         ###   ########.fr       */
+/*   Updated: 2023/01/15 18:50:06 by spuustin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
 
-void	ft_quote_decrement(t_term *t, int num)
+void	quote_decrement(t_term *t, int num)
 {
 	if (!(t->q_qty % 2))
 	{
@@ -26,7 +26,7 @@ void	ft_quote_decrement(t_term *t, int num)
 	}
 }
 
-void	ft_quote_handling(t_term *t, char ch)
+void	quote_handling(t_term *t, char ch)
 {
 	if (!t->q_qty || (t->q_qty % 2 && !t->quote))
 	{

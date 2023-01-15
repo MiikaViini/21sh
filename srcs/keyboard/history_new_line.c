@@ -6,13 +6,13 @@
 /*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 22:08:59 by spuustin          #+#    #+#             */
-/*   Updated: 2023/01/15 16:22:30 by spuustin         ###   ########.fr       */
+/*   Updated: 2023/01/15 17:05:42 by spuustin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
 
-void	ft_history_reset_nl(t_term *t, char *inp)
+void	history_reset_nl(t_term *t, char *inp)
 {
 	ssize_t	i;
 	ssize_t	col;
@@ -24,12 +24,12 @@ void	ft_history_reset_nl(t_term *t, char *inp)
 	while (inp[++i])
 	{
 		col++;
-		if (((col + ft_get_prompt_len(t, row))) == t->ws_col || inp[i] == '\n')
+		if (((col + get_prompt_len(t, row))) == t->ws_col || inp[i] == '\n')
 		{
 			row++;
 			col = 0;
 			t->total_row++;
-			ft_add_nl_last_row(t, inp, i + 1);
+			add_nl_last_row(t, inp, i + 1);
 		}
 	}
 	t->bytes = &inp[i] - t->nl_addr[0];

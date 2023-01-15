@@ -6,13 +6,13 @@
 /*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 19:44:28 by spuustin          #+#    #+#             */
-/*   Updated: 2023/01/02 19:45:17 by spuustin         ###   ########.fr       */
+/*   Updated: 2023/01/15 18:32:38 by spuustin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
 
-static int	ft_isseparator(char c)
+static int	is_separator(char c)
 {
 	if (c == '|' || c == ';' || c == '&' || c == '<' || c == '>')
 		return (1);
@@ -21,7 +21,7 @@ static int	ft_isseparator(char c)
 
 void	delim_fetch_error(t_term *t, char *ptr)
 {
-	if (*ptr && ft_isseparator(*ptr))
+	if (*ptr && is_separator(*ptr))
 	{
 		ft_putstr_fd("\n21sh: syntax error near unexpected token `", 2);
 		write(2, ptr, 1);
@@ -51,7 +51,7 @@ static char	*strdelim(t_term *t)
 	return (ptr);
 }
 
-int	ft_delim_fetch(t_term *t)
+int	delim_fetch(t_term *t)
 {
 	char	*ptr;
 	char	*end_q;
@@ -59,12 +59,12 @@ int	ft_delim_fetch(t_term *t)
 	if (t->heredoc && !t->delim)
 	{
 		ptr = strdelim(t);
-		while (*ptr && ft_sspace(ptr))
+		while (*ptr && is_space(ptr))
 			ptr++;
-		if (*ptr && !ft_isseparator(*ptr))
+		if (*ptr && !is_separator(*ptr))
 		{
 			end_q = ptr;
-			while (*end_q && !ft_sspace(end_q))
+			while (*end_q && !is_space(end_q))
 				end_q++;
 			t->delim = ft_strsub(ptr, 0, end_q - ptr);
 		}

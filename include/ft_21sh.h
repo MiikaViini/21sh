@@ -6,7 +6,7 @@
 /*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 08:59:36 by mviinika          #+#    #+#             */
-/*   Updated: 2023/01/13 20:55:22 by spuustin         ###   ########.fr       */
+/*   Updated: 2023/01/15 18:49:13 by spuustin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,8 +76,6 @@ int			is_valid_char(char c);
 void		add_letter(char *word, char c, t_word *values);
 int			can_be_added(char c, t_quotes *quots);
 int			is_end_of_word(char c, t_quotes *quots, int index);
-
-void	ft_quote_handling(t_term *t, char ch);
 
 // static const t_builtins		g_builtins[7] = {
 // 	do_echo,
