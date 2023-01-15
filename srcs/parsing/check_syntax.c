@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_syntax.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 14:25:27 by mviinika          #+#    #+#             */
-/*   Updated: 2023/01/04 19:36:13 by spuustin         ###   ########.fr       */
+/*   Updated: 2023/01/15 12:55:00 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,12 @@ static int	check_cons_redirs(t_tlist *tokens)
 {
 	while (tokens->next)
 	{
-		if (tokens->type == TOKEN_REDIRECT
-			&& tokens->next->type != TOKEN_WORD)
+		if ((tokens->type == TOKEN_REDIRECT
+				&& tokens->next->type != TOKEN_WORD)
+			|| (tokens->type == TOKEN_SEMICOLON
+				&& tokens->next->type != TOKEN_WORD)
+			|| (tokens->type == TOKEN_PIPE
+				&& tokens->next->type != TOKEN_WORD))
 		{
 			error_print(NULL, tokens->next->str, E_SYNERR);
 			return (1);
@@ -49,4 +53,4 @@ int	check_syntax(t_pars *pars, t_tlist *tokens)
 		error_print("newline", NULL, E_SYNERR);
 	return (err);
 }
-//|| pars->last_token_str[i] == '<'
+

@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 19:07:23 by mviinika          #+#    #+#             */
-/*   Updated: 2023/01/14 10:01:04 by mviinika         ###   ########.fr       */
+/*   Updated: 2023/01/14 19:03:08 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,21 +88,17 @@ char	*ft_lexer(t_term *t)
 
 static void	prompt(t_term *t, t_env *env, char **builtins)
 {
-	int		rb;
-	char 	*new;
+	char	*new;
 
-	rb = 1;
-	
 	while (!input_cycle(t))
 	{
 		new = ft_lexer(t);
 		write_history_to_file(t);
 		if (new)
-			rb = ft_21sh(env, builtins, new);
+			ft_21sh(env, builtins, new);
 		else
 			write(1, "\n", 1);
 		ft_restart_cycle(t);
-		//ft_strdel(&new);
 	}
 }
 

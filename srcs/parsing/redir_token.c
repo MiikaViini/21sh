@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/08 20:51:44 by mviinika          #+#    #+#             */
-/*   Updated: 2023/01/13 15:54:20 by mviinika         ###   ########.fr       */
+/*   Updated: 2023/01/14 14:31:43 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,16 +51,6 @@ int	add_redir_out(char *trimmed, char *word, t_word *ints)
 	return (1);
 }
 
-int set_here_doc(char **trimmed, char *word, t_word *ints)
-{
-	(void)word;
-	(void)ints;
-	(void)trimmed;
-	ints->total += 2;
-	ints->i += 10;
-	return (2);
-}
-
 int	add_redir_in(char **trimmed, char *word, t_word *ints)
 {
 	ints->total += 1;
@@ -71,7 +61,7 @@ int	add_redir_in(char **trimmed, char *word, t_word *ints)
 		ints->total += 1;
 		*word = **trimmed;
 		ints->redir = REDIR_HERED;
-		return (set_here_doc(trimmed, word, ints));
+		return (2);
 	}
 	ints->redir = REDIR_IN;
 	return (1);

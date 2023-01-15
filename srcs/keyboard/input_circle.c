@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input_circle.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/25 19:41:32 by spuustin          #+#    #+#             */
-/*   Updated: 2023/01/13 20:34:46 by spuustin         ###   ########.fr       */
+/*   Updated: 2023/01/14 19:02:47 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ int	input_cycle(t_term *t)
 {
 	int		ctrl_d_ret;
 
+	set_signal_handling();
 	ft_add_nl_last_row(t, t->inp, 0);
 	t->c_col = write(1, SHELL_PROMPT, (size_t)t->prompt_len);
 	while (t->ch != -1)
