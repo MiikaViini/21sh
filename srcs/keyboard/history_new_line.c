@@ -3,14 +3,38 @@
 /*                                                        :::      ::::::::   */
 /*   history_new_line.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 22:08:59 by spuustin          #+#    #+#             */
-/*   Updated: 2023/01/14 09:43:39 by mviinika         ###   ########.fr       */
+/*   Updated: 2023/01/15 16:22:30 by spuustin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
+
+void	ft_history_reset_nl(t_term *t, char *inp)
+{
+	ssize_t	i;
+	ssize_t	col;
+	ssize_t	row;
+
+	i = -1;
+	col = 0;
+	row = t->c_row;
+	while (inp[++i])
+	{
+		col++;
+		if (((col + ft_get_prompt_len(t, row))) == t->ws_col || inp[i] == '\n')
+		{
+			row++;
+			col = 0;
+			t->total_row++;
+			ft_add_nl_last_row(t, inp, i + 1);
+		}
+	}
+	t->bytes = &inp[i] - t->nl_addr[0];
+	t->index = t->bytes;
+}
 
 /*
 	this could be replaced with memmove to add effeciency.

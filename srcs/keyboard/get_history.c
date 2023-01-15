@@ -6,35 +6,11 @@
 /*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 22:29:47 by spuustin          #+#    #+#             */
-/*   Updated: 2023/01/09 20:25:53 by spuustin         ###   ########.fr       */
+/*   Updated: 2023/01/15 16:22:19 by spuustin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
-
-static void	ft_history_reset_nl(t_term *t, char *inp)
-{
-	ssize_t	i;
-	ssize_t	col;
-	ssize_t	row;
-
-	i = -1;
-	col = 0;
-	row = t->c_row;
-	while (inp[++i])
-	{
-		col++;
-		if (((col + ft_get_prompt_len(t, row))) == t->ws_col || inp[i] == '\n')
-		{
-			row++;
-			col = 0;
-			t->total_row++;
-			ft_add_nl_last_row(t, inp, i + 1);
-		}
-	}
-	t->bytes = &inp[i] - t->nl_addr[0];
-	t->index = t->bytes;
-}
 
 static void	ft_historycpy(t_term *t, char *dst, char *src)
 {
@@ -59,14 +35,11 @@ static void	ft_history_inp_update(t_term *t, char *history)
 static void	ft_history_clear_line(t_term *t, ssize_t row)
 {
 	set_cursor(0, (t->start_row + t->history_row));
-	if (row > t->history_row) //unneeded
+	while (row > t->history_row)
 	{
-		while (row > t->history_row)
-		{
-			ft_remove_nl_addr(t, row);
-			t->total_row--;
-			row--;
-		}
+		ft_remove_nl_addr(t, row);
+		t->total_row--;
+		row--;
 	}
 	run_capability("cd");
 }

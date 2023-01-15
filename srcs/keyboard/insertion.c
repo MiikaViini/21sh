@@ -6,7 +6,7 @@
 /*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/02 15:40:13 by spuustin          #+#    #+#             */
-/*   Updated: 2023/01/11 20:58:02 by spuustin         ###   ########.fr       */
+/*   Updated: 2023/01/15 16:29:19 by spuustin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static void	ft_insertion_enter(t_term *t)
 }
 
 void	ft_heredoc_handling(t_term *t)
-	{
+{
 	ssize_t	count;
 	ssize_t	start;
 
@@ -53,7 +53,7 @@ void	ft_heredoc_handling(t_term *t)
 		t->heredoc = 1;
 	else
 		t->heredoc = 0;
-	}
+}
 
 /*
  * It shifts all the characters in the input buffer to the right of the
