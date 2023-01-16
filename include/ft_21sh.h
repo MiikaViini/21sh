@@ -6,7 +6,7 @@
 /*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 08:59:36 by mviinika          #+#    #+#             */
-/*   Updated: 2023/01/15 18:49:13 by spuustin         ###   ########.fr       */
+/*   Updated: 2023/01/16 18:56:02 by spuustin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@
 
 # include <sys/stat.h>
 # include <dirent.h>
-# include <fcntl.h>
 # include <pwd.h>
 # include "tcaps.h"
 
@@ -49,7 +48,7 @@
 # define SHELL "21sh"
 # define MAX_TREES 50
 
-void		free_parsed_input(char **p_input);
+void	free_parsed_input(char **p_input);
 # define SHELL_PROMPT "21sh> "
 # define OPEN_QUOTE ">"
 

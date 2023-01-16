@@ -6,7 +6,7 @@
 /*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/18 22:41:19 by spuustin          #+#    #+#             */
-/*   Updated: 2023/01/11 20:51:04 by spuustin         ###   ########.fr       */
+/*   Updated: 2023/01/16 19:26:54 by spuustin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,29 +53,25 @@ void	init_term(t_term *t)
 	t->clipboard.buff = NULL;
 }
 
-static struct termios	init_termios(void)
+static void	init_termios(t_term *t)
 {
-	struct termios	ret;
-	struct termios	raw;
-
-	if (tcgetattr(STDIN_FILENO, &ret) == -1)
+	if (tcgetattr(STDIN_FILENO, &t->orig_termios) == -1)
 		exit(1);
-	raw = ret;
-	raw.c_lflag &= ~(ICANON | ECHO | IEXTEN);
-	raw.c_iflag &= ~(IXON | BRKINT);
-	raw.c_cc[VMIN] = 1;
-	raw.c_cc[VTIME] = 0;
-	if (tcsetattr(STDIN_FILENO, TCSAFLUSH, &raw) == -1)
+	t->raw = t->orig_termios;
+	t->raw.c_lflag &= ~(ICANON | ECHO | IEXTEN);
+	t->raw.c_iflag &= ~(IXON | BRKINT);
+	t->raw.c_cc[VMIN] = 1;
+	t->raw.c_cc[VTIME] = 0;
+	if (tcsetattr(STDIN_FILENO, TCSAFLUSH, &t->raw) == -1)
 	{
 		write(2, "error tcsetattr\n", 16);
 		exit(1);
 	}
-	return (ret);
 }
 
 void	init_tcaps(t_term *t)
 {
 	ft_getent();
-	t->orig_termios = init_termios();
+	init_termios(t);
 	init_term(t);
 }

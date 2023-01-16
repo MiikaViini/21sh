@@ -3,14 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   execute_all.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 11:42:03 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/20 14:32:00 by mviinika         ###   ########.fr       */
+/*   Updated: 2023/01/16 19:23:22 by spuustin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
+
+void	disable_raw_mode(t_term *t)
+{
+	tcsetattr(STDIN_FILENO, TCSAFLUSH, &t->orig_termios);
+}
 
 static void	delete_node(t_ast *node)
 {
@@ -44,10 +49,11 @@ static int	is_pipe_sequence(t_ast *tree)
 	return (0);
 }
 
-void	execute_all(t_env *env, char **builtins, t_ast **tree)
+void	execute_all(t_env *env, char **builtins, t_ast **tree, t_term *t)
 {
 	int	i;
 
+	disable_raw_mode(t);
 	i = 0;
 	if (tree == NULL)
 		return ;
@@ -65,4 +71,5 @@ void	execute_all(t_env *env, char **builtins, t_ast **tree)
 		reset_fds_to_default(env->terminal);
 		i++;
 	}
+	tcsetattr(STDIN_FILENO, TCSAFLUSH, &t->raw);
 }

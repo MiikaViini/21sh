@@ -7,7 +7,6 @@
 # include <curses.h>
 # include <termios.h>
 # include <string.h>
-# include <signal.h>
 # include <limits.h>
 # include <ctype.h>
 # include <stdlib.h>
@@ -56,7 +55,7 @@ typedef struct clipboard
 typedef struct s_term
 {
 	struct termios	orig_termios;
-	//struct termios	raw;
+	struct termios	raw;
 
 	char			inp[BUFFSIZE];
 	char			history_buff[BUFFSIZE];

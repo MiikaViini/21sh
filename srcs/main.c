@@ -6,7 +6,7 @@
 /*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 19:07:23 by mviinika          #+#    #+#             */
-/*   Updated: 2023/01/15 17:13:11 by spuustin         ###   ########.fr       */
+/*   Updated: 2023/01/16 19:00:57 by spuustin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	check_read_bytes(int rb, t_env *env)
 	(void)env;
 }
 
-static int	ft_21sh(t_env *env, char **builtins, char *input)
+static int	ft_21sh(t_env *env, char **builtins, char *input, t_term *t)
 {
 	int		rb;
 	t_ast	**tree;
@@ -62,7 +62,7 @@ static int	ft_21sh(t_env *env, char **builtins, char *input)
 			free_all(&parsed, tree, input);
 			return (rb);
 		}
-		execute_all(env, builtins, tree);
+		execute_all(env, builtins, tree, t);
 		free_all(&parsed, tree, input);
 	}
 	return (rb);
@@ -95,7 +95,7 @@ static void	prompt(t_term *t, t_env *env, char **builtins)
 		new = ft_lexer(t);
 		write_history_to_file(t);
 		if (new)
-			ft_21sh(env, builtins, new);
+			ft_21sh(env, builtins, new, t);
 		else
 			write(1, "\n", 1);
 		restart_cycle(t);
