@@ -1,15 +1,26 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   tcaps.h                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/01/17 23:00:51 by mviinika          #+#    #+#             */
+/*   Updated: 2023/01/17 23:07:23 by mviinika         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #ifndef TCAPS_H
-#define TCAPS_H
+# define TCAPS_H
 
-# include <termcap.h>
+//# include <termcap.h>
 # include <term.h>
 # include <curses.h>
-# include <termios.h>
-# include <string.h>
-# include <limits.h>
-# include <ctype.h>
-# include <stdlib.h>
+//# include <termios.h>
+//# include <string.h>
+//# include <limits.h>
+//# include <ctype.h>
+//# include <stdlib.h>
 # include <fcntl.h>
 # include <sys/ioctl.h>
 
@@ -110,7 +121,6 @@ void	cursor_end(t_term *t);
 void	move_cursor_left(t_term *t);
 void	move_cursor_right(t_term *t);
 
-
 void	delete_char(t_term *t);
 
 void	esc_parse(t_term *t);
@@ -130,7 +140,6 @@ void	backspace(t_term *t);
 void	deletion_shift(t_term *t, ssize_t index);
 int		ft_putc(int c);
 void	shift_insert(t_term *t);
-
 
 // prompt and nl management
 ssize_t	row_lowest_line(t_term *t);

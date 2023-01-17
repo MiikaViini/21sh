@@ -6,13 +6,13 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/20 12:22:36 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/20 12:32:18 by mviinika         ###   ########.fr       */
+/*   Updated: 2023/01/17 23:08:50 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef BUILTINS_H
 # define BUILTINS_H
-# include "ft_21sh.h"
+//# include "ft_21sh.h"
 
 typedef struct s_env
 {

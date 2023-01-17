@@ -6,13 +6,13 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/20 12:54:41 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/20 12:58:33 by mviinika         ###   ########.fr       */
+/*   Updated: 2023/01/17 23:08:01 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef UTILS_H
 # define UTILS_H
-# include "ft_21sh.h"
+//# include "ft_21sh.h"
 
 int			check_quotes(char *input);
 void		error_print(char *word, char *command, char *e_msg);

@@ -6,13 +6,13 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/20 12:47:03 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/20 12:52:40 by mviinika         ###   ########.fr       */
+/*   Updated: 2023/01/17 23:12:16 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PARSING_H
 # define PARSING_H
-# include "ft_21sh.h"
+//# include "ft_21sh.h"
 
 int		check_syntax(t_pars *pars, t_tlist *tokens);
 int		is_redirect(char c, t_quotes *quots);

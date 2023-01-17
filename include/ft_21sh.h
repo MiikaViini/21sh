@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_21sh.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 08:59:36 by mviinika          #+#    #+#             */
-/*   Updated: 2023/01/16 18:56:02 by spuustin         ###   ########.fr       */
+/*   Updated: 2023/01/17 23:02:46 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@
 
 # include "../libft/include/libft.h"
 # include "ast.h"
-# include "tokens.h"
 # include "error.h"
 # include "builtins.h"
 # include "execution.h"
@@ -35,29 +34,23 @@
 # include "parsing.h"
 # include "signals.h"
 # include "utils.h"
+# include "tcaps.h"
 
 # include <sys/stat.h>
 # include <dirent.h>
 # include <pwd.h>
-# include "tcaps.h"
 
 # define MAX_PATH 1024
 # define MAX_HISTORY 1024
 # define MAX_LINE 4096
 
 # define SHELL "21sh"
-# define MAX_TREES 50
 
-void	free_parsed_input(char **p_input);
 # define SHELL_PROMPT "21sh> "
 # define OPEN_QUOTE ">"
 
-# define DB ft_putendl("tassa\n");
-# define DB1 ft_putendl("there\n");
-
-void	free_parsed_input(char **p_input);
-char	*ft_heredoc(t_term *t, char *str);
-
+void		free_parsed_input(char **p_input);
+char		*ft_heredoc(t_term *t, char *str);
 /***********\
 ** utils.c **
 \***********/
@@ -76,13 +69,4 @@ void		add_letter(char *word, char c, t_word *values);
 int			can_be_added(char c, t_quotes *quots);
 int			is_end_of_word(char c, t_quotes *quots, int index);
 
-// static const t_builtins		g_builtins[7] = {
-// 	do_echo,
-// 	do_cd,
-// 	do_setenv,
-// 	do_unsetenv,
-// 	do_env,
-// 	do_exit,
-// 	NULL
-// };
 #endif

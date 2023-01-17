@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   initialising.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/20 12:41:48 by mviinika          #+#    #+#             */
-/*   Updated: 2023/01/04 15:39:53 by spuustin         ###   ########.fr       */
+/*   Updated: 2023/01/17 23:10:02 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef INITIALISING_H
 # define INITIALISING_H
-# include "ast.h"
+//# include "ast.h"
 
 typedef struct s_quotes
 {

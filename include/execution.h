@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   execution.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/20 12:33:09 by mviinika          #+#    #+#             */
-/*   Updated: 2023/01/16 19:04:25 by spuustin         ###   ########.fr       */
+/*   Updated: 2023/01/17 23:09:33 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef EXECUTION_H
 # define EXECUTION_H
-# include "ft_21sh.h"
+//# include "ft_21sh.h"
 # include "tcaps.h"
 
 int			check_builtins(char **input, char **builtins, t_env *env);
