@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   set_signal_handling.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 16:28:37 by mviinika          #+#    #+#             */
-/*   Updated: 2023/01/14 16:03:19 by mviinika         ###   ########.fr       */
+/*   Updated: 2023/01/18 20:08:45 by spuustin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

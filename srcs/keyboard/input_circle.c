@@ -6,7 +6,7 @@
 /*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/25 19:41:32 by spuustin          #+#    #+#             */
-/*   Updated: 2023/01/15 18:34:27 by spuustin         ###   ########.fr       */
+/*   Updated: 2023/01/18 20:23:26 by spuustin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ int	input_cycle(t_term *t)
 {
 	int		ctrl_d_ret;
 
-	set_signal_handling();
+	init_signals();
 	add_nl_last_row(t, t->inp, 0);
 	t->c_col = write(1, SHELL_PROMPT, (size_t)t->prompt_len);
 	while (t->ch != -1)

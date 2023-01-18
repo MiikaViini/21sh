@@ -6,7 +6,7 @@
 /*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/18 22:41:19 by spuustin          #+#    #+#             */
-/*   Updated: 2023/01/16 19:26:54 by spuustin         ###   ########.fr       */
+/*   Updated: 2023/01/18 20:29:36 by spuustin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ void	init_helper(t_term *t)
 void	init_term(t_term *t)
 {
 	g_t = t;
-	init_signals();
 	ft_memset(t->inp, '\0', BUFFSIZE);
 	ft_memset(t->history_buff, '\0', BUFFSIZE);
 	init_helper(t);
