@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   nl_utils.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/14 19:12:47 by spuustin          #+#    #+#             */
-/*   Updated: 2023/01/15 17:09:51 by spuustin         ###   ########.fr       */
+/*   Updated: 2023/01/19 12:21:10 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ void	trigger_nl(t_term *t)
 		if ((t->start_row + t->total_row) >= t->ws_row)
 		{
 			t->start_row--;
-			scroll_down();
+			//scroll_down();
 		}
 		if (t->nl_addr[t->c_row + 1])
 			reset_nl_addr(t);

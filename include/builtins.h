@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/20 12:22:36 by mviinika          #+#    #+#             */
-/*   Updated: 2023/01/17 23:08:50 by mviinika         ###   ########.fr       */
+/*   Updated: 2023/01/19 15:15:52 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ int			do_env(char **input, t_env *env);
 int			do_exit(char **input, t_env *env);
 int			do_setenv(char **input, t_env *env);
 int			do_unsetenv(char **input, t_env *env);
+char		**initialize_and_set_builtins(void);
 
 static const t_builtins		g_builtins[7] = {
 	do_echo,

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_syntax.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 14:25:27 by mviinika          #+#    #+#             */
-/*   Updated: 2023/01/15 18:55:03 by spuustin         ###   ########.fr       */
+/*   Updated: 2023/01/19 14:38:33 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,11 @@ static int	check_cons_redirs(t_tlist *tokens)
 		if ((tokens->type == TOKEN_REDIRECT
 				&& tokens->next->type != TOKEN_WORD)
 			|| (tokens->type == TOKEN_SEMICOLON
-				&& tokens->next->type != TOKEN_WORD)
+				&& tokens->next->type == TOKEN_SEMICOLON)
+			|| (tokens->type == TOKEN_SEMICOLON
+				&& tokens->next->type == TOKEN_PIPE)
 			|| (tokens->type == TOKEN_PIPE
-				&& tokens->next->type != TOKEN_WORD))
+				&& tokens->next->type == TOKEN_PIPE))
 		{
 			error_print(NULL, tokens->next->str, E_SYNERR);
 			return (1);

@@ -3,18 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   execute_all.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 11:42:03 by mviinika          #+#    #+#             */
-/*   Updated: 2023/01/16 19:23:22 by spuustin         ###   ########.fr       */
+/*   Updated: 2023/01/19 14:59:00 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
 
-void	disable_raw_mode(t_term *t)
+void	close_aggregations(t_tlist *redirs)
 {
-	tcsetattr(STDIN_FILENO, TCSAFLUSH, &t->orig_termios);
+	while (redirs)
+	{
+		close(redirs->to_fd);
+		close(redirs->from_fd);
+		close(redirs->file_fd);
+		redirs = redirs->next;
+	}
 }
 
 static void	delete_node(t_ast *node)
@@ -27,7 +33,10 @@ static void	delete_node(t_ast *node)
 	if (node->file)
 		ft_strdel(&node->file);
 	if (node->redirs)
+	{
+		close_aggregations(node->redirs);
 		tokens_del(&node->redirs);
+	}
 	delete_node(node->right);
 	free(node);
 }
@@ -51,7 +60,7 @@ static int	is_pipe_sequence(t_ast *tree)
 
 void	execute_all(t_env *env, char **builtins, t_ast **tree, t_term *t)
 {
-	int	i;
+	int		i;
 
 	disable_raw_mode(t);
 	i = 0;

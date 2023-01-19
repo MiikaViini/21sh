@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 11:36:25 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/16 12:53:22 by mviinika         ###   ########.fr       */
+/*   Updated: 2023/01/19 13:49:40 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,13 @@
 int	check_redirs(t_ast *tree, t_env *env)
 {
 	int	ret;
+	t_tlist *temp;
 
 	ret = 0;
+	temp = tree->redirs;
 	if (tree->type == NODE_REDIR)
 	{
-		if (redirection(tree->redirs, &ret, env) == -1)
+		if (redirection(temp, &ret, env) == -1)
 		{
 			free_strarr(env->path);
 			return (1);

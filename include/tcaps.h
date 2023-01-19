@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 23:00:51 by mviinika          #+#    #+#             */
-/*   Updated: 2023/01/17 23:07:23 by mviinika         ###   ########.fr       */
+/*   Updated: 2023/01/19 15:15:14 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,6 +113,7 @@ void	end_cycle(t_term *t);
 int		get_input(void);
 void	insertion(t_term *t);
 void	add_new_line(t_term *t, char *array, ssize_t pos);
+void	disable_raw_mode(t_term *t);
 
 // cursor
 void	set_cursor(ssize_t col, ssize_t row);
@@ -182,6 +183,7 @@ void	quote_flag_check(t_term *t, ssize_t index);
 void	quote_decrement(t_term *t, int num);
 
 void	heredoc_handling(t_term *t);
+char	*heredoc(t_term *t, char *str);
 
 //ctrl_d
 int		ctrl_d_exit(t_term *t);

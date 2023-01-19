@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+         #
+#    By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/07/09 19:07:08 by mviinika          #+#    #+#              #
-#    Updated: 2023/01/15 18:52:52 by spuustin         ###   ########.fr        #
+#    Updated: 2023/01/19 15:17:09 by mviinika         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ LIBFT = ./libft/libft.a
 LIBFT_DIR = ./libft/
 LIB_INCLUDE_DIR = ./libft/include
 
-FLAGS = -Wall -Wextra -Werror -pedantic -g -fsanitize=address
+FLAGS = -Wall -Wextra -Werror -pedantic -g #-fsanitize=address
 
 UNAME :=$(shell uname)
 
@@ -102,7 +102,9 @@ KEYBOARD_FILES = tcaps.c \
 				backslash.c \
 				quote_utils.c \
 				delim_utils.c \
-				ctrl_d.c
+				ctrl_d.c \
+				disable_raw_mode.c \
+				heredocs.c
 
 PARSING_DIR = parsing
 PARSING_FILES = parse_input.c \
@@ -132,7 +134,6 @@ UTILS_FILES = check_quotes.c \
 			remove_quotes.c
 
 SRC_FILES = main.c \
-			heredocs.c \
 			$(patsubst %, $(AST_DIR)/%, $(AST_FILES)) \
 			$(patsubst %, $(BUILT_INS_DIR)/%, $(BUILT_INS_FILES)) \
 			$(patsubst %, $(EXECUTION_DIR)/%, $(EXECUTION_FILES)) \

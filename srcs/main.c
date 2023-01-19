@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 19:07:23 by mviinika          #+#    #+#             */
-/*   Updated: 2023/01/18 20:20:20 by spuustin         ###   ########.fr       */
+/*   Updated: 2023/01/19 15:14:18 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,22 +68,15 @@ static int	ft_21sh(t_env *env, char **builtins, char *input, t_term *t)
 	return (rb);
 }
 
-static char	**initialize_and_set_builtins(void)
-{
-	static char	*builtins[7] = {"echo", "cd", "setenv", "unsetenv", "env", "exit"};
-
-	return (builtins);
-}
-
 char	*ft_lexer(t_term *t)
 {
-	char	*new;
+	char	*trimmed;
 
-	new = ft_strtrim(t->inp);
-	if (!*new)
-		ft_strdel(&new);
-	new = ft_heredoc(t, new);
-	return (new);
+	trimmed = ft_strtrim(t->inp);
+	if (!*trimmed)
+		ft_strdel(&trimmed);
+	trimmed = heredoc(t, trimmed);
+	return (trimmed);
 }
 
 static void	prompt(t_term *t, t_env *env, char **builtins)
