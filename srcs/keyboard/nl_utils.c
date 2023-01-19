@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/14 19:12:47 by spuustin          #+#    #+#             */
-/*   Updated: 2023/01/19 12:21:10 by mviinika         ###   ########.fr       */
+/*   Updated: 2023/01/19 15:23:32 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,10 +92,7 @@ void	trigger_nl(t_term *t)
 	{
 		t->total_row++;
 		if ((t->start_row + t->total_row) >= t->ws_row)
-		{
 			t->start_row--;
-			//scroll_down();
-		}
 		if (t->nl_addr[t->c_row + 1])
 			reset_nl_addr(t);
 		else

@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/03 12:11:30 by mviinika          #+#    #+#             */
-/*   Updated: 2023/01/17 23:08:40 by mviinika         ###   ########.fr       */
+/*   Updated: 2023/01/19 15:22:51 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,6 @@ void	build_all_asts(t_ast **tree, t_tlist *tokens);
 t_ast	*simple_command(t_ast *node, t_tlist ***tokens);
 t_tlist	*new_redir(char *content, char *file, int from, int redir_type);
 int		set_aggr_values(t_tlist **redirs, t_tlist **tokens);
-void 	apply_hered_attrs(t_ast *node, t_tlist ***tokens);
+void	apply_hered_attrs(t_ast *node, t_tlist ***tokens);
 
 #endif

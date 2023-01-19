@@ -6,7 +6,7 @@
 #    By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/07/09 19:07:08 by mviinika          #+#    #+#              #
-#    Updated: 2023/01/19 15:17:09 by mviinika         ###   ########.fr        #
+#    Updated: 2023/01/19 15:21:18 by mviinika         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -131,7 +131,9 @@ UTILS_FILES = check_quotes.c \
 			utils.c \
 			utils2.c \
 			see_quote.c \
-			remove_quotes.c
+			remove_quotes.c \
+			free_all.c \
+			free_parsed_input.c
 
 SRC_FILES = main.c \
 			$(patsubst %, $(AST_DIR)/%, $(AST_FILES)) \

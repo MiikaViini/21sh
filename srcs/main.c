@@ -6,32 +6,11 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 19:07:23 by mviinika          #+#    #+#             */
-/*   Updated: 2023/01/19 15:14:18 by mviinika         ###   ########.fr       */
+/*   Updated: 2023/01/19 15:20:17 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
-
-void	free_parsed_input(char **p_input)
-{
-	int	i;
-
-	i = -1;
-	if (!p_input || !p_input[0])
-		return ;
-	while (p_input[++i])
-		ft_strdel(&p_input[i]);
-}
-
-void	free_all(t_pars *pars, t_ast **tree, char *buf)
-{
-	if (tree)
-		free(tree);
-	free_parsed_input(pars->parsed);
-	ft_strdel(&pars->trimmed);
-	free(pars->parsed);
-	ft_strdel(&buf);
-}
 
 void	check_read_bytes(int rb, t_env *env)
 {

@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 09:14:23 by mviinika          #+#    #+#             */
-/*   Updated: 2023/01/15 12:46:00 by mviinika         ###   ########.fr       */
+/*   Updated: 2023/01/19 15:19:59 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,6 @@ static t_tlist	*get_token(t_pars *pars, t_word *values)
 			break ;
 		}
 	}
-	ft_printf("%s %d\n", word, values->type);
 	return (create_token(&word, pars, values));
 }
 

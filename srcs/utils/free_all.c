@@ -1,29 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   check_redirs.c                                     :+:      :+:    :+:   */
+/*   free_all.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/15 11:36:25 by mviinika          #+#    #+#             */
-/*   Updated: 2023/01/19 15:24:10 by mviinika         ###   ########.fr       */
+/*   Created: 2023/01/19 15:20:27 by mviinika          #+#    #+#             */
+/*   Updated: 2023/01/19 15:23:12 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
 
-int	check_redirs(t_ast *tree, t_env *env)
+void	free_all(t_pars *pars, t_ast **tree, char *buf)
 {
-	int		ret;
-
-	ret = 0;
-	if (tree->type == NODE_REDIR)
-	{
-		if (redirection(tree->redirs, &ret, env) == -1)
-		{
-			free_strarr(env->path);
-			return (1);
-		}	
-	}
-	return (0);
+	if (tree)
+		free(tree);
+	free_parsed_input(pars->parsed);
+	ft_strdel(&pars->trimmed);
+	free(pars->parsed);
+	ft_strdel(&buf);
 }
