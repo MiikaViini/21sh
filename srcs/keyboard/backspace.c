@@ -3,20 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   backspace.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/09 22:26:56 by spuustin          #+#    #+#             */
-/*   Updated: 2023/01/15 18:29:51 by spuustin         ###   ########.fr       */
+/*   Updated: 2023/01/19 15:44:05 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
 
-/*
- * It scrolls the terminal up one line
- *
- * @param t the term structure
- */
 static void	scroll_up(t_term *t)
 {
 	run_capability("ho");
@@ -24,14 +19,6 @@ static void	scroll_up(t_term *t)
 	set_cursor(t->c_col, (t->start_row + t->c_row));
 }
 
-/*
- * It handles the backspace key
- * when the cursor is not at the beginning of the line
- *
- * @param t the term structure
- * @param row the row of the cursor
- * @param len the length of the line that is being deleted
- */
 static void	backpace_continue(t_term *t, ssize_t row, ssize_t len)
 {
 	if (!t->c_col)
@@ -57,12 +44,6 @@ static void	backpace_continue(t_term *t, ssize_t row, ssize_t len)
 	deletion_shift(t, --t->index);
 }
 
-/*
- * It deletes the character
- * before the cursor
- *
- * @param t the term structure
- */
 void	backspace(t_term *t)
 {
 	ssize_t	row;

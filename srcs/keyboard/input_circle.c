@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input_circle.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/25 19:41:32 by spuustin          #+#    #+#             */
-/*   Updated: 2023/01/18 20:23:26 by spuustin         ###   ########.fr       */
+/*   Updated: 2023/01/19 15:47:29 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ int	input_cycle(t_term *t)
 		clipboard(t);
 		backspace_or_escape(t);
 		if (t->ch == -1)
-			ft_putstr_fd("error, ft_get_input()\n", STDERR_FILENO);
+			error_print(NULL, NULL, E_INP);
 	}
 	return (0);
 }

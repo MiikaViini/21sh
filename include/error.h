@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/03 12:16:42 by mviinika          #+#    #+#             */
-/*   Updated: 2023/01/04 19:33:21 by spuustin         ###   ########.fr       */
+/*   Updated: 2023/01/19 15:53:25 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,4 +31,9 @@
 # define E_AMB "ambigous redirect"
 # define E_BFD "Bad file descriptor"
 # define E_SYNERR "syntax error near unexpected token"
+# define E_INP "unexpected error with input"
+# define E_NOTERM "could not get TERM value"
+# define E_TDB "could not access termcap database"
+# define E_UKNTERM "uknwown TERM"
+# define E_CAP "cannot run capability"
 #endif

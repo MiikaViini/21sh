@@ -1,0 +1,33 @@
+total 2856
+drwxr-xr-x  15 mviinika  2020      510 Jan 19 15:37 .
+drwxr-xr-x  35 mviinika  2020     1190 Jan 19 15:18 ..
+drwxr-xr-x  13 mviinika  2020      442 Jan 19 15:25 .git
+-rw-r--r--   1 mviinika  2020       27 Jan 19 12:14 .gitignore
+-rwxr-xr-x   1 mviinika  2020   137228 Jan 19 15:37 21sh
+-rw-r--r--   1 mviinika  2020  1300693 Jan 19 12:14 21sh.en.pdf
+-rw-r--r--   1 mviinika  2020     4664 Jan 19 15:21 Makefile
+-rw-r--r--   1 mviinika  2020      809 Jan 19 12:14 README.md
+-rw-r--r--   1 mviinika  2020       19 Jan 19 12:14 author
+drwxr-xr-x   4 mviinika  2020      136 Jan 19 12:14 eval_tests
+drwxr-xr-x  14 mviinika  2020      476 Jan 19 12:14 include
+-rw-r--r--   1 mviinika  2020        0 Jan 19 15:37 jee
+drwxr-xr-x   9 mviinika  2020      306 Jan 19 15:37 libft
+drwxr-xr-x  12 mviinika  2020      408 Jan 19 15:37 objs
+drwxr-xr-x  12 mviinika  2020      408 Jan 19 15:12 srcs
+.:
+total 2864
+drwxr-xr-x  15 mviinika  2020      510 Jan 19 15:37 .
+drwxr-xr-x  35 mviinika  2020     1190 Jan 19 15:18 ..
+drwxr-xr-x  13 mviinika  2020      442 Jan 19 15:25 .git
+-rw-r--r--   1 mviinika  2020       27 Jan 19 12:14 .gitignore
+-rwxr-xr-x   1 mviinika  2020   137228 Jan 19 15:37 21sh
+-rw-r--r--   1 mviinika  2020  1300693 Jan 19 12:14 21sh.en.pdf
+-rw-r--r--   1 mviinika  2020     4664 Jan 19 15:21 Makefile
+-rw-r--r--   1 mviinika  2020      809 Jan 19 12:14 README.md
+-rw-r--r--   1 mviinika  2020       19 Jan 19 12:14 author
+drwxr-xr-x   4 mviinika  2020      136 Jan 19 12:14 eval_tests
+drwxr-xr-x  14 mviinika  2020      476 Jan 19 12:14 include
+-rw-r--r--   1 mviinika  2020      894 Jan 19 15:37 jee
+drwxr-xr-x   9 mviinika  2020      306 Jan 19 15:37 libft
+drwxr-xr-x  12 mviinika  2020      408 Jan 19 15:37 objs
+drwxr-xr-x  12 mviinika  2020      408 Jan 19 15:12 srcs

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tcaps.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/18 20:35:34 by spuustin          #+#    #+#             */
-/*   Updated: 2022/12/19 20:18:47 by spuustin         ###   ########.fr       */
+/*   Updated: 2023/01/19 15:53:40 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,18 +21,18 @@ int	ft_getent(void)
 	termtype = getenv("TERM");
 	if (termtype == NULL)
 	{
-		write(2, "could not get TERM env value\n", 30);
+		error_print(NULL, NULL, E_NOTERM);
 		exit(1);
 	}
 	status = tgetent(term_buffer, termtype);
 	if (status < 0)
 	{
-		ft_printf("could not access the termcap database\n");
+		error_print(NULL, NULL, E_TDB);
 		exit(1);
 	}
 	else if (status == 0)
 	{
-		ft_printf("could not find the termtype\n");
+		error_print(NULL, NULL, E_UKNTERM);
 		exit(1);
 	}
 	return (status);
@@ -49,11 +49,7 @@ void	run_capability(char *cap)
 
 	p = tgetstr(cap, NULL);
 	if (p == NULL)
-	{
-		ft_putstr_fd("error: ", 2);
-		ft_putstr_fd(cap, 2);
-		ft_putstr_fd(" : cannot ft_run_capability()\n", 2);
-	}
+		error_print(NULL, cap, E_CAP);
 	else
 		tputs(p, 1, ft_putc);
 }

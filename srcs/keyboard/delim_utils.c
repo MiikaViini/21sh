@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   delim_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 19:44:28 by spuustin          #+#    #+#             */
-/*   Updated: 2023/01/15 18:32:38 by spuustin         ###   ########.fr       */
+/*   Updated: 2023/01/19 15:45:59 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,9 @@ static int	is_separator(char c)
 void	delim_fetch_error(t_term *t, char *ptr)
 {
 	if (*ptr && is_separator(*ptr))
-	{
-		ft_putstr_fd("\n21sh: syntax error near unexpected token `", 2);
-		write(2, ptr, 1);
-		ft_putstr_fd("'", 2);
-	}
+		error_print(NULL, ptr, E_SYNERR);
 	else
-		ft_putstr_fd("\n21sh: syntax error near unexpected token `newline'", 2);
+		error_print(NULL, "newline", E_SYNERR);
 	ft_strclr(t->inp);
 	t->heredoc = 0;
 }
