@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 15:04:44 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/16 14:46:26 by mviinika         ###   ########.fr       */
+/*   Updated: 2023/01/20 19:04:17 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,11 +73,13 @@ static int	check_fd_validity(t_tlist **redirs, t_tlist **tokens, int *ret)
 {
 	struct stat	buf;
 
+	(void)tokens;
 	if ((*redirs)->to_fd >= 0 && fstat((*redirs)->to_fd, &buf) == -1)
 	{
-		(*tokens)->file = ft_itoa((*redirs)->to_fd);
-		(*redirs)->to_fd = -2;
-		*ret = -1;
+		ft_printf("no such[%d]\n", (*redirs)->to_fd);
+		//(*tokens)->file = ft_itoa((*redirs)->to_fd);
+		// (*redirs)->to_fd = -2;
+		// *ret = -1;
 	}
 	return (*ret);
 }
@@ -107,3 +109,4 @@ int	set_aggr_values(t_tlist **redirs, t_tlist **tokens)
 	check_fd_validity(redirs, tokens, &ret);
 	return (ret);
 }
+

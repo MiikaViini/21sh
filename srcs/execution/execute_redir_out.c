@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 15:07:42 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/20 10:29:30 by mviinika         ###   ########.fr       */
+/*   Updated: 2023/01/20 19:06:01 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,18 @@
 
 void	execute_redir_out(t_tlist *redirs)
 {
+	int fd = open(redirs->file, O_CREAT | O_WRONLY | O_TRUNC, 0664);
 	if (ft_strcmp(redirs->file, "/dev/fd/1")
 		&& ft_strcmp(redirs->file, "/dev/stdout"))
 	{
 		close(redirs->from_fd);
-		if (redirs->redir_type == REDIR_TRUNC
-			&& open(redirs->file, O_CREAT | O_WRONLY | O_TRUNC, 0664) >= 0)
+		if (redirs->redir_type == REDIR_TRUNC)
+		{
+			ft_printf("form %d fd %d\n", redirs->from_fd, fd);
+			dup2(fd,redirs->from_fd);
+			close(fd);
 			return ;
+		}
 		else if (redirs->redir_type == REDIR_APPEND
 			&& open(redirs->file, O_CREAT | O_WRONLY | O_APPEND, 0664) >= 0)
 			return ;

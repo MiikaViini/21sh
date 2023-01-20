@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 12:12:58 by mviinika          #+#    #+#             */
-/*   Updated: 2023/01/19 13:39:02 by mviinika         ###   ########.fr       */
+/*   Updated: 2023/01/20 19:05:28 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,9 +54,15 @@ static int	file_access(t_tlist *redirs)
 
 static void	redir_out(t_tlist *redirs, int *ret)
 {
+	char			*num;
+	//struct stat		buf;
+
+	num = NULL;
 	if (redirs->from_fd == -1)
 	{
-		error_print(NULL, ft_itoa(redirs->from_fd), E_BFD);
+		num = ft_itoa(redirs->from_fd);
+		error_print(NULL, num, E_BFD);
+		ft_strdel(&num);
 		*ret = -1;
 	}
 	else if (!file_access(redirs))

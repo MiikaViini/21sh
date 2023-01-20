@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 15:00:27 by mviinika          #+#    #+#             */
-/*   Updated: 2023/01/13 16:14:29 by mviinika         ###   ########.fr       */
+/*   Updated: 2023/01/20 19:04:00 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,13 @@
 
 static void	apply_redir_attrs(t_ast *node, t_tlist ***tokens)
 {
-	struct stat	buf;
+	//struct stat	buf;
 
 	if (ft_isdigit((**tokens)->str[0]))
 	{
 		node->redirs->from_fd = ft_atoi((**tokens)->str);
-		if (fstat(node->redirs->from_fd, &buf) == -1)
-			node->redirs->from_fd = -1;
+		// if (fstat(node->redirs->from_fd, &buf) == -1)
+		// 	node->redirs->from_fd = -1;
 	}
 	else
 		node->redirs->from_fd = 1;
