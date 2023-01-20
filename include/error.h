@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/03 12:16:42 by mviinika          #+#    #+#             */
-/*   Updated: 2023/01/19 15:53:25 by mviinika         ###   ########.fr       */
+/*   Updated: 2023/01/20 09:33:32 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,4 +36,5 @@
 # define E_TDB "could not access termcap database"
 # define E_UKNTERM "uknwown TERM"
 # define E_CAP "cannot run capability"
+# define E_TCATTR "cannot set terminal parameters"
 #endif

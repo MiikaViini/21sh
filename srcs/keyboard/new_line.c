@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   new_line.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/26 16:23:16 by spuustin          #+#    #+#             */
-/*   Updated: 2023/01/15 17:09:51 by spuustin         ###   ########.fr       */
+/*   Updated: 2023/01/20 10:48:22 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,11 +57,4 @@ void	add_nl_mid_row(t_term *t, ssize_t row, ssize_t pos)
 	new_arr[i] = NULL;
 	ft_memdel((void **)&t->nl_addr);
 	t->nl_addr = new_arr;
-}
-
-void	scroll_down(void)
-{
-	run_capability("sc");
-	run_capability("sf");
-	run_capability("rc");
 }

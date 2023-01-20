@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/08 20:51:44 by mviinika          #+#    #+#             */
-/*   Updated: 2023/01/14 14:31:43 by mviinika         ###   ########.fr       */
+/*   Updated: 2023/01/20 10:59:50 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ int	add_redir_in(char **trimmed, char *word, t_word *ints)
 	ints->total += 1;
 	*word = **trimmed;
 	(*trimmed)++;
+	ints->redir = REDIR_IN;
 	if (**trimmed == '<')
 	{
 		ints->total += 1;
@@ -63,7 +64,6 @@ int	add_redir_in(char **trimmed, char *word, t_word *ints)
 		ints->redir = REDIR_HERED;
 		return (2);
 	}
-	ints->redir = REDIR_IN;
 	return (1);
 }
 

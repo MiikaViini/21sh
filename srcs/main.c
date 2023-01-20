@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 19:07:23 by mviinika          #+#    #+#             */
-/*   Updated: 2023/01/19 15:20:17 by mviinika         ###   ########.fr       */
+/*   Updated: 2023/01/20 11:48:41 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,9 @@ static void	prompt(t_term *t, t_env *env, char **builtins)
 
 	while (!input_cycle(t))
 	{
+		
 		new = ft_lexer(t);
+	
 		write_history_to_file(t);
 		if (new)
 			ft_21sh(env, builtins, new, t);

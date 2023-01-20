@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 14:25:27 by mviinika          #+#    #+#             */
-/*   Updated: 2023/01/19 14:38:33 by mviinika         ###   ########.fr       */
+/*   Updated: 2023/01/20 11:21:35 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,12 @@
 
 static int	check_cons_redirs(t_tlist *tokens)
 {
+	if (tokens->type == TOKEN_PIPE 
+		|| tokens->type == TOKEN_SEMICOLON)
+	{
+		error_print(NULL, tokens->str, E_SYNERR);
+		return (1);
+	}
 	while (tokens->next)
 	{
 		if ((tokens->type == TOKEN_REDIRECT
@@ -25,7 +31,7 @@ static int	check_cons_redirs(t_tlist *tokens)
 			|| (tokens->type == TOKEN_PIPE
 				&& tokens->next->type == TOKEN_PIPE))
 		{
-			error_print(NULL, tokens->next->str, E_SYNERR);
+			error_print(NULL, tokens->str, E_SYNERR);
 			return (1);
 		}
 		tokens = tokens->next;
@@ -42,14 +48,13 @@ int	check_syntax(t_pars *pars, t_tlist *tokens)
 	temp = tokens;
 	err = 0;
 	if (check_cons_redirs(temp))
-	{
 		return (1);
-	}
 	i = ft_strlen(pars->last_token_str) - 1;
 	if (pars->last_token_str[i] == '&'
 		|| pars->last_token_str[i] == '|'
 		|| pars->last_token_str[i] == ';'
-		|| pars->last_token_str[i] == '>')
+		|| pars->last_token_str[i] == '>'
+		|| pars->last_token_str[i] == '<')
 		err = 1;
 	if (err)
 		error_print("newline", NULL, E_SYNERR);

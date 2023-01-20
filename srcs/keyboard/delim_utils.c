@@ -6,11 +6,21 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 19:44:28 by spuustin          #+#    #+#             */
-/*   Updated: 2023/01/19 15:45:59 by mviinika         ###   ########.fr       */
+/*   Updated: 2023/01/20 11:18:42 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
+
+static void	error_print_hered(char *ptr)
+{
+	ft_putchar_fd('\n', 2);
+	ft_putstr_fd(SHELL, 2);
+	ft_putstr_fd(": ", 2);
+	ft_putstr(ptr);
+	ft_putstr_fd(": ", 2);
+	ft_putstr_fd(E_SYNERR, 2);
+}
 
 static int	is_separator(char c)
 {
@@ -22,9 +32,9 @@ static int	is_separator(char c)
 void	delim_fetch_error(t_term *t, char *ptr)
 {
 	if (*ptr && is_separator(*ptr))
-		error_print(NULL, ptr, E_SYNERR);
+		error_print_hered(ptr);
 	else
-		error_print(NULL, "newline", E_SYNERR);
+		error_print_hered("newline");
 	ft_strclr(t->inp);
 	t->heredoc = 0;
 }
