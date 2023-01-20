@@ -3,7 +3,7 @@
 
 while true
 do
-	leaks 21sh;
+	leaks 21sh ;
 		sleep 1;
 	# echo
 done

@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 14:25:27 by mviinika          #+#    #+#             */
-/*   Updated: 2023/01/20 11:21:35 by mviinika         ###   ########.fr       */
+/*   Updated: 2023/01/20 12:31:26 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static int	check_cons_redirs(t_tlist *tokens)
 {
-	if (tokens->type == TOKEN_PIPE 
+	if (tokens->type == TOKEN_PIPE
 		|| tokens->type == TOKEN_SEMICOLON)
 	{
 		error_print(NULL, tokens->str, E_SYNERR);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   esc_parse.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 23:14:16 by spuustin          #+#    #+#             */
-/*   Updated: 2023/01/15 18:33:18 by spuustin         ###   ########.fr       */
+/*   Updated: 2023/01/20 12:51:05 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,35 +16,6 @@
  * It parses the escape sequence and calls the appropriate function
  *
  * @param t the term structure
- */
-
-void	ft_line_mv(t_term *t)
-{
-	t->ch = get_input();
-	if (t->ch == ';')
-	{
-		t->ch = get_input();
-		if (t->ch == '3')
-		{
-			t->ch = get_input();
-			{
-				if (t->ch == ARROW_UP && t->c_row)
-					line_up(t);
-			}
-			if (t->ch == ARROW_DOWN && t->c_row < t->total_row)
-				line_down(t);
-			t->ch = 0;
-		}
-	}
-}
-
-/*
- * It moves the cursor to the left
- *
- * @param t the term structure
- *
- * @return the number of lines that the input string
- * 		occupies.
  */
 
 static void	arrow_input(t_term *t)
@@ -64,7 +35,7 @@ static void	alt_mv(t_term *t)
 	if (t->ch == ALT_LFT || t->ch == ALT_RGHT)
 		word_mv(t);
 	else if (t->ch == LINE_MV)
-		ft_line_mv(t);
+		line_mv(t);
 }
 
 static void	shift_arrow(t_term *t)

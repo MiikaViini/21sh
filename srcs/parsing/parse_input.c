@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 09:14:23 by mviinika          #+#    #+#             */
-/*   Updated: 2023/01/20 11:54:00 by mviinika         ###   ########.fr       */
+/*   Updated: 2023/01/20 12:29:36 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ static t_tlist	*create_token(char **word, t_pars *pars, t_word *values)
 	token = new_token(*word, values);
 	ft_strdel(&pars->last_token_str);
 	pars->last_token_str = ft_strdup(token->str);
-	ft_printf("[%s]\n", *word);
 	ft_strdel(word);
 	return (token);
 }

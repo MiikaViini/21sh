@@ -6,7 +6,7 @@
 #    By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/07/09 19:07:08 by mviinika          #+#    #+#              #
-#    Updated: 2023/01/20 11:27:30 by mviinika         ###   ########.fr        #
+#    Updated: 2023/01/20 12:49:49 by mviinika         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -104,7 +104,8 @@ KEYBOARD_FILES = tcaps.c \
 				delim_utils.c \
 				ctrl_d.c \
 				disable_raw_mode.c \
-				heredocs.c
+				heredocs.c \
+				line_mv.c 
 
 PARSING_DIR = parsing
 PARSING_FILES = parse_input.c \

@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 13:33:07 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/16 12:00:51 by mviinika         ###   ########.fr       */
+/*   Updated: 2023/01/20 12:28:04 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	free_strarr(char **strarr)
 	i = 0;
 	if (!strarr && !strarr[i])
 		return ;
-	while (strarr[i] && strarr[i][0])
+	while (strarr[i])
 		ft_strdel(&strarr[i++]);
 	free(strarr);
 }

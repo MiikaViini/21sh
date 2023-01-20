@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 23:00:51 by mviinika          #+#    #+#             */
-/*   Updated: 2023/01/19 15:15:14 by mviinika         ###   ########.fr       */
+/*   Updated: 2023/01/20 12:50:23 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,6 +121,7 @@ void	cursor_beginning(t_term *t);
 void	cursor_end(t_term *t);
 void	move_cursor_left(t_term *t);
 void	move_cursor_right(t_term *t);
+void	line_mv(t_term *t);
 
 void	delete_char(t_term *t);
 
