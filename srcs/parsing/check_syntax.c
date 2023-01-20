@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 14:25:27 by mviinika          #+#    #+#             */
-/*   Updated: 2023/01/20 12:31:26 by mviinika         ###   ########.fr       */
+/*   Updated: 2023/01/20 19:13:55 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,7 @@ int	check_syntax(t_pars *pars, t_tlist *tokens)
 	if (check_cons_redirs(temp))
 		return (1);
 	i = ft_strlen(pars->last_token_str) - 1;
-	if (pars->last_token_str[i] == '&'
-		|| pars->last_token_str[i] == '|'
+	if (pars->last_token_str[i] == '|'
 		|| pars->last_token_str[i] == ';'
 		|| pars->last_token_str[i] == '>'
 		|| pars->last_token_str[i] == '<')

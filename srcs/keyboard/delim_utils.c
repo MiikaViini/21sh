@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 19:44:28 by spuustin          #+#    #+#             */
-/*   Updated: 2023/01/20 11:18:42 by mviinika         ###   ########.fr       */
+/*   Updated: 2023/01/20 19:14:49 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static void	error_print_hered(char *ptr)
 
 static int	is_separator(char c)
 {
-	if (c == '|' || c == ';' || c == '&' || c == '<' || c == '>')
+	if (c == '|' || c == ';' || c == '<' || c == '>')
 		return (1);
 	return (0);
 }
