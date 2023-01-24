@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 08:59:36 by mviinika          #+#    #+#             */
-/*   Updated: 2023/01/17 23:02:46 by mviinika         ###   ########.fr       */
+/*   Updated: 2023/01/24 20:32:42 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@
 # include "expansions.h"
 # include "initialising.h"
 # include "parsing.h"
-# include "signals.h"
 # include "utils.h"
 # include "tcaps.h"
 

@@ -6,18 +6,21 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 19:07:23 by mviinika          #+#    #+#             */
-/*   Updated: 2023/01/20 12:16:00 by mviinika         ###   ########.fr       */
+/*   Updated: 2023/01/24 21:01:40 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
 
-void	check_read_bytes(int rb, t_env *env)
-{
-	if (rb == -1)
-		exit(1);
-	(void)env;
-}
+// void	check_read_bytes(int rb, t_env *env)
+// {
+// 	if (rb == -1)
+// 	{
+// 		ft_putendl("exit");
+// 		exit(0);
+// 	}
+// 	(void)env;
+// }
 
 static int	ft_21sh(t_env *env, char **builtins, char *input, t_term *t)
 {
@@ -28,7 +31,7 @@ static int	ft_21sh(t_env *env, char **builtins, char *input, t_term *t)
 	rb = ft_strlen(input);
 	tree = NULL;
 	write(1, "\n", 1);
-	check_read_bytes(rb, env);
+	// check_read_bytes(rb, env);
 	set_pars_struct(&parsed, input);
 	if (check_quotes(input))
 		error_print(NULL, NULL, E_QUOT);

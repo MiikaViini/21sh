@@ -6,11 +6,20 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 11:59:22 by mviinika          #+#    #+#             */
-/*   Updated: 2023/01/04 13:19:44 by mviinika         ###   ########.fr       */
+/*   Updated: 2023/01/24 20:31:19 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
+
+static void	set_signal_fork(int signal)
+{
+	if (signal == SIGINT)
+	{
+		ft_putchar('\n');
+	}
+	signal = 0;
+}
 
 int	fork_wrapper(void)
 {

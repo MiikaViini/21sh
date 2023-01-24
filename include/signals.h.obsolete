@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/20 12:53:19 by mviinika          #+#    #+#             */
-/*   Updated: 2023/01/04 13:21:06 by mviinika         ###   ########.fr       */
+/*   Updated: 2023/01/24 20:31:49 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,6 @@
 # define SIGNALS_H
 
 void		set_signal_handling(void);
-void		set_signal_fork(int signal);
+//void		set_signal_fork(int signal);
 
 #endif

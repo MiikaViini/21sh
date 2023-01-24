@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 13:27:39 by mviinika          #+#    #+#             */
-/*   Updated: 2023/01/20 19:05:13 by mviinika         ###   ########.fr       */
+/*   Updated: 2023/01/24 20:50:30 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,10 @@ static void	is_error(t_tlist *redirs, int *ret)
 {
 	struct stat buf;
 
-	ft_printf("%d\n", redirs->to_fd);
+	ft_printf("toi %d\n", redirs->to_fd);
 	if (fstat(redirs->to_fd, &buf) == -1)
 	{
-		error_print(NULL, "redirs->file", E_BFD);
+		error_print(NULL, "fsdfsdredirs->file", E_BFD);
 		*ret = -1;
 	}
 	if (redirs->to_fd < 0 || redirs->from_fd < 0

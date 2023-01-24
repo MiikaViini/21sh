@@ -6,21 +6,19 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 11:42:03 by mviinika          #+#    #+#             */
-/*   Updated: 2023/01/20 12:31:39 by mviinika         ###   ########.fr       */
+/*   Updated: 2023/01/24 21:14:34 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
 
-void	close_aggregations(t_tlist *redirs)
+static void	close_fds()
 {
-	while (redirs)
-	{
-		close(redirs->to_fd);
-		close(redirs->from_fd);
-		close(redirs->file_fd);
-		redirs = redirs->next;
-	}
+	int	i;
+
+	i = 0;
+	while (i < SHELL_MAX_FD)
+		close(i++);
 }
 
 static void	delete_node(t_ast *node)
@@ -33,10 +31,7 @@ static void	delete_node(t_ast *node)
 	if (node->file)
 		ft_strdel(&node->file);
 	if (node->redirs)
-	{
-		close_aggregations(node->redirs);
 		tokens_del(&node->redirs);
-	}
 	delete_node(node->right);
 	free(node);
 }
@@ -77,6 +72,7 @@ void	execute_all(t_env *env, char **builtins, t_ast **tree, t_term *t)
 		else
 			exec_single_command(tree[i]->left, builtins, env);
 		delete_node(tree[i]);
+		close_fds();
 		reset_fds_to_default(env->terminal);
 		i++;
 	}

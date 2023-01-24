@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ctrl_d.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: spuustin <spuustin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 19:52:08 by spuustin          #+#    #+#             */
-/*   Updated: 2023/01/15 18:25:56 by spuustin         ###   ########.fr       */
+/*   Updated: 2023/01/16 19:50:13 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ int	ctrl_d(t_term *t)
 int	ctrl_d_exit(t_term *t)
 {
 	t = NULL;
+	(void)t;
 	write(1, "\n", 1);
 	exit(0);
 }

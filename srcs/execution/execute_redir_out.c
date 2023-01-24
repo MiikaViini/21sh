@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 15:07:42 by mviinika          #+#    #+#             */
-/*   Updated: 2023/01/20 19:06:01 by mviinika         ###   ########.fr       */
+/*   Updated: 2023/01/24 21:19:47 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,12 @@ void	execute_redir_out(t_tlist *redirs)
 	if (ft_strcmp(redirs->file, "/dev/fd/1")
 		&& ft_strcmp(redirs->file, "/dev/stdout"))
 	{
-		close(redirs->from_fd);
+		
 		if (redirs->redir_type == REDIR_TRUNC)
 		{
 			ft_printf("form %d fd %d\n", redirs->from_fd, fd);
 			dup2(fd,redirs->from_fd);
+			ft_printf("form %d fd %d\n", redirs->from_fd, fd);
 			close(fd);
 			return ;
 		}

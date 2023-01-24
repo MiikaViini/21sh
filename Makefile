@@ -6,7 +6,7 @@
 #    By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/07/09 19:07:08 by mviinika          #+#    #+#              #
-#    Updated: 2023/01/20 12:49:49 by mviinika         ###   ########.fr        #
+#    Updated: 2023/01/24 20:31:34 by mviinika         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -118,9 +118,9 @@ PARSING_FILES = parse_input.c \
 			is_redirect.c \
 			tokens_del.c \
 
-SIGNALS_DIR = signals
-SIGNALS_FILES = set_signal_handling.c \
-				set_signal_fork.c
+# SIGNALS_DIR = signals
+# SIGNALS_FILES = set_signal_handling.c \
+# 				set_signal_fork.c
 
 UTILS_DIR = utils
 UTILS_FILES = check_quotes.c \
@@ -142,10 +142,10 @@ SRC_FILES = main.c \
 			$(patsubst %, $(EXECUTION_DIR)/%, $(EXECUTION_FILES)) \
 			$(patsubst %, $(EXPANSIONS_DIR)/%, $(EXPANSIONS_FILES)) \
 			$(patsubst %, $(INITIALISING_DIR)/%, $(INITIALISING_FILES)) \
-			$(patsubst %, $(SIGNALS_DIR)/%, $(SIGNALS_FILES)) \
 			$(patsubst %, $(PARSING_DIR)/%, $(PARSING_FILES)) \
 			$(patsubst %, $(UTILS_DIR)/%, $(UTILS_FILES)) \
-			$(patsubst %, $(KEYBOARD_DIR)/%, $(KEYBOARD_FILES))
+			$(patsubst %, $(KEYBOARD_DIR)/%, $(KEYBOARD_FILES)) \
+			# $(patsubst %, $(SIGNALS_DIR)/%, $(SIGNALS_FILES))
 
 DIR_O = ./objs
 DIR_S = ./srcs
