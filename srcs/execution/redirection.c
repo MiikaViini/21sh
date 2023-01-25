@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 12:12:58 by mviinika          #+#    #+#             */
-/*   Updated: 2023/01/20 19:05:28 by mviinika         ###   ########.fr       */
+/*   Updated: 2023/01/25 12:02:28 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,8 +85,8 @@ static void	redir_in(t_tlist *redirs, int *ret)
 	int			status;
 
 	status = stat(redirs->file, &buf);
-	close(STDIN_FILENO);
 	redirs->file_fd = open(redirs->file, O_RDONLY);
+	ft_printf("frm %d fd %d\n", redirs->from_fd, redirs->file_fd);
 	if (redirs->file_fd == -1)
 	{
 		if (status == 0 && access(redirs->file, R_OK) == -1)
@@ -97,6 +97,8 @@ static void	redir_in(t_tlist *redirs, int *ret)
 			error_print(redirs->file, NULL, E_ISDIR);
 		*ret = -1;
 	}
+	dup2(redirs->file_fd, redirs->from_fd);
+	//close(redirs->from_fd);
 }
 
 int	redirection(t_tlist *redirs, int *ret, t_env *env)

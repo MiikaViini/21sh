@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/03 11:22:36 by mviinika          #+#    #+#             */
-/*   Updated: 2023/01/24 20:56:52 by mviinika         ###   ########.fr       */
+/*   Updated: 2023/01/25 10:28:14 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ typedef enum e_tokens
 	TOKEN_REDI_APPEND,
 	TOKEN_AGGR,
 	TOKEN_TILDE,
+	TOKEN_AMPERSAND,
 	TOKEN_ELSE
 }			t_tokens;
 

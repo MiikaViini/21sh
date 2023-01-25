@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 09:14:23 by mviinika          #+#    #+#             */
-/*   Updated: 2023/01/20 12:29:36 by mviinika         ###   ########.fr       */
+/*   Updated: 2023/01/25 10:28:03 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ static void	set_operator_sign(t_word *values, char **word)
 		values->type = TOKEN_PIPE;
 	else if (*word[0] == ';')
 		values->type = TOKEN_SEMICOLON;
+	else if (*word[0] == '&')
+		values->type = TOKEN_AMPERSAND;
 	else
 		values->type = TOKEN_ELSE;
 }

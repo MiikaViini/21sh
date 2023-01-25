@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 15:00:27 by mviinika          #+#    #+#             */
-/*   Updated: 2023/01/20 19:04:00 by mviinika         ###   ########.fr       */
+/*   Updated: 2023/01/25 13:25:43 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,15 +16,27 @@ static void	apply_redir_attrs(t_ast *node, t_tlist ***tokens)
 {
 	//struct stat	buf;
 
+	ft_printf("[%s]\n", (**tokens)->str);
 	if (ft_isdigit((**tokens)->str[0]))
 	{
 		node->redirs->from_fd = ft_atoi((**tokens)->str);
+		//(**tokens) = (**tokens)->next;
+		//node->redirs->from_fd = 1;
+		
+		
 		// if (fstat(node->redirs->from_fd, &buf) == -1)
 		// 	node->redirs->from_fd = -1;
 	}
-	else
-		node->redirs->from_fd = 1;
-	(**tokens) = (**tokens)->next;
+	if (node->redir_type == REDIR_TRUNC)
+	{
+		(**tokens) = (**tokens)->next;
+		node->redirs->file_fd = open((**tokens)->str, O_CREAT | O_WRONLY | O_TRUNC, 0664);
+		//node->redirs->from_fd = 1;
+	}
+	else if (node->redir_type == REDIR_IN)
+		node->redirs->from_fd = 0;
+
+	//(**tokens) = (**tokens)->next;
 	node->redirs->file = ft_strdup((**tokens)->str);
 }
 

@@ -5,9 +5,9 @@
 21sh.en.pdf
 3
 4
-42sh
 5
-a.out
+Makefile
+README.md
 author
 eval_tests
 file
@@ -16,9 +16,6 @@ include
 jaa
 jee
 libft
-Makefile
 objs
-prem
-README.md
 srcs
 word
