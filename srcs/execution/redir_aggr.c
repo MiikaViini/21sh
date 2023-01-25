@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 13:27:39 by mviinika          #+#    #+#             */
-/*   Updated: 2023/01/25 12:59:54 by mviinika         ###   ########.fr       */
+/*   Updated: 2023/01/25 14:33:43 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,9 @@
 
 static void	is_error(t_tlist *redirs, int *ret)
 {
-	struct stat buf;
+	struct stat	buf;
 	char		*num;
 
-	ft_printf("toi %d\n", redirs->to_fd);
 	if (fstat(redirs->to_fd, &buf) == -1)
 	{
 		num = ft_itoa(redirs->to_fd);
@@ -34,10 +33,7 @@ static void	is_error(t_tlist *redirs, int *ret)
 void	redir_aggr(t_tlist *redirs, int *ret)
 {
 	if (redirs->fd_close || ft_strcmp("-", redirs->file) == 0)
-	{
-		ft_printf("closinf %d\n", redirs->from_fd);
 		close(redirs->from_fd);
-	}
 	else
 	{
 		is_error(redirs, ret);
@@ -51,4 +47,3 @@ void	redir_aggr(t_tlist *redirs, int *ret)
 			dup2(redirs->to_fd, redirs->from_fd);
 	}
 }
-
