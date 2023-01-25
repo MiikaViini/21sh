@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 12:12:58 by mviinika          #+#    #+#             */
-/*   Updated: 2023/01/25 12:02:28 by mviinika         ###   ########.fr       */
+/*   Updated: 2023/01/25 21:07:09 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,6 @@ static void	redir_in(t_tlist *redirs, int *ret)
 		*ret = -1;
 	}
 	dup2(redirs->file_fd, redirs->from_fd);
-	//close(redirs->from_fd);
 }
 
 int	redirection(t_tlist *redirs, int *ret, t_env *env)

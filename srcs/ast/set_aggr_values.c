@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 15:04:44 by mviinika          #+#    #+#             */
-/*   Updated: 2023/01/25 11:22:39 by mviinika         ###   ########.fr       */
+/*   Updated: 2023/01/25 20:34:47 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,29 +27,34 @@ static int	aggr_way(t_tlist *tokens)
 static void	set_error(t_tlist **redirs,
 					t_tlist **tokens, t_tlist *temp, int *ret)
 {
-	if (aggr_way(temp) == 1 && (*redirs)->from_fd > 1
-		&& (*tokens)->str[0] != '-')
+	if (aggr_way(temp) == 1 && ((*redirs)->from_fd) <= 1 &&
+		 (*tokens)->str[0] != '-')
+	{
+		(*tokens)->file = ft_strdup((*tokens)->str);
+		(*tokens)->redir_type = REDIR_AGGR_STERR_STOUT;
+		*ret = 0;
+	}
+	else if (aggr_way(temp) == 1 && (*redirs)->from_fd > 1 &&
+		 (*tokens)->str[0] != '-')
 	{
 		(*redirs)->from_fd = -1;
-		(*tokens)->file = ft_strdup((*tokens)->str);
 		*ret = -1;
 	}
 	else if ((*tokens)->str[0] == '-')
 	{
 		(*tokens)->fd_close = 1;
 		(*redirs)->file = ft_strdup((*tokens)->str);
-		*ret = 1;
 	}
 	else if (aggr_way(temp) == 0)
 	{
 		(*redirs)->to_fd = -3;
 		*ret = -1;
 	}
-	else
-	{
-		(*tokens)->file = ft_strdup((*tokens)->str);
-		(*tokens)->redir_type = REDIR_TRUNC;
-	}
+	// else
+	// {
+	// 	(*tokens)->file = ft_strdup((*tokens)->str);
+	// 	(*tokens)->redir_type = REDIR_TRUNC;
+	// }
 }
 
 static int	set_fds(t_tlist **redirs, t_tlist **tokens,
@@ -60,6 +65,7 @@ static int	set_fds(t_tlist **redirs, t_tlist **tokens,
 	ret = 1;
 	if (!ft_only_digits((*tokens)->str))
 	{
+		// ft_printf("%s\n", (*tokens)->str);
 		set_error(redirs, tokens, temp, &ret);
 		return (ret);
 	}
@@ -68,21 +74,6 @@ static int	set_fds(t_tlist **redirs, t_tlist **tokens,
 	ft_strdel(&num);
 	return (ret);
 }
-
-// static int	check_fd_validity(t_tlist **redirs, t_tlist **tokens, int *ret)
-// {
-// 	struct stat	buf;
-
-// 	(void)tokens;
-// 	if ((*redirs)->to_fd >= 0 && fstat((*redirs)->to_fd, &buf) == -1)
-// 	{
-// 		ft_printf("no such[%d]\n", (*redirs)->to_fd);
-// 		//(*tokens)->file = ft_itoa((*redirs)->to_fd);
-// 		// (*redirs)->to_fd = -2;
-// 		// *ret = -1;
-// 	}
-// 	return (*ret);
-// }
 
 int	set_aggr_values(t_tlist **redirs, t_tlist **tokens)
 {
@@ -106,7 +97,6 @@ int	set_aggr_values(t_tlist **redirs, t_tlist **tokens)
 	}
 	else
 		ret = set_fds(redirs, tokens, temp, num);
-	//check_fd_validity(redirs, tokens, &ret);
 	return (ret);
 }
 

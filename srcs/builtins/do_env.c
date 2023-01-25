@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/29 21:50:13 by mviinika          #+#    #+#             */
-/*   Updated: 2022/12/15 11:14:01 by mviinika         ###   ########.fr       */
+/*   Updated: 2023/01/25 19:42:56 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,9 +52,15 @@ int	do_env(char **input, t_env *env)
 {
 	int	i;
 	int	k;
+	struct stat	buf;
 
 	i = 0;
 	k = -1;
+	if (fstat(STDOUT_FILENO, &buf) == -1)
+	{
+		error_print("write error", input[0], E_BFD);
+		return (-1);
+	}
 	if (!input[1])
 		while (env->env[++k])
 			ft_putendl(env->env[k]);
