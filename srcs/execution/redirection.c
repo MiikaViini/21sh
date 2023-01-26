@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 12:12:58 by mviinika          #+#    #+#             */
-/*   Updated: 2023/01/25 21:07:09 by mviinika         ###   ########.fr       */
+/*   Updated: 2023/01/26 09:37:46 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,6 @@ static int	file_access(t_tlist *redirs)
 static void	redir_out(t_tlist *redirs, int *ret)
 {
 	char			*num;
-	//struct stat		buf;
 
 	num = NULL;
 	if (redirs->from_fd == -1)
@@ -86,7 +85,6 @@ static void	redir_in(t_tlist *redirs, int *ret)
 
 	status = stat(redirs->file, &buf);
 	redirs->file_fd = open(redirs->file, O_RDONLY);
-	ft_printf("frm %d fd %d\n", redirs->from_fd, redirs->file_fd);
 	if (redirs->file_fd == -1)
 	{
 		if (status == 0 && access(redirs->file, R_OK) == -1)

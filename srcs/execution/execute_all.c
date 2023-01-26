@@ -6,13 +6,13 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 11:42:03 by mviinika          #+#    #+#             */
-/*   Updated: 2023/01/24 21:14:34 by mviinika         ###   ########.fr       */
+/*   Updated: 2023/01/26 09:38:27 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
 
-static void	close_fds()
+static void	close_fds(void)
 {
 	int	i;
 

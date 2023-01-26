@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/03 12:16:42 by mviinika          #+#    #+#             */
-/*   Updated: 2023/01/20 09:33:32 by mviinika         ###   ########.fr       */
+/*   Updated: 2023/01/26 09:55:05 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@
 # define E_PIPEFAIL "failed to open with pipe()"
 # define E_NOFORK "failed to to fork process"
 # define E_AMB "ambigous redirect"
-# define E_BFD "Bad file descriptor"
+# define E_BFD "bad file descriptor"
 # define E_SYNERR "syntax error near unexpected token"
 # define E_INP "unexpected error with input"
 # define E_NOTERM "could not get TERM value"
@@ -37,4 +37,5 @@
 # define E_UKNTERM "uknwown TERM"
 # define E_CAP "cannot run capability"
 # define E_TCATTR "cannot set terminal parameters"
+# define E_FOP "failed to open a file"
 #endif

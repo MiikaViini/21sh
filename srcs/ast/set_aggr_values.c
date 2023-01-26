@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 15:04:44 by mviinika          #+#    #+#             */
-/*   Updated: 2023/01/25 20:34:47 by mviinika         ###   ########.fr       */
+/*   Updated: 2023/01/26 09:34:22 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,15 +27,15 @@ static int	aggr_way(t_tlist *tokens)
 static void	set_error(t_tlist **redirs,
 					t_tlist **tokens, t_tlist *temp, int *ret)
 {
-	if (aggr_way(temp) == 1 && ((*redirs)->from_fd) <= 1 &&
-		 (*tokens)->str[0] != '-')
+	if (aggr_way(temp) == 1 && ((*redirs)->from_fd) <= 1
+		&& (*tokens)->str[0] != '-')
 	{
 		(*tokens)->file = ft_strdup((*tokens)->str);
 		(*tokens)->redir_type = REDIR_AGGR_STERR_STOUT;
 		*ret = 0;
 	}
-	else if (aggr_way(temp) == 1 && (*redirs)->from_fd > 1 &&
-		 (*tokens)->str[0] != '-')
+	else if (aggr_way(temp) == 1 && (*redirs)->from_fd > 1
+		&& (*tokens)->str[0] != '-')
 	{
 		(*redirs)->from_fd = -1;
 		*ret = -1;
@@ -50,11 +50,6 @@ static void	set_error(t_tlist **redirs,
 		(*redirs)->to_fd = -3;
 		*ret = -1;
 	}
-	// else
-	// {
-	// 	(*tokens)->file = ft_strdup((*tokens)->str);
-	// 	(*tokens)->redir_type = REDIR_TRUNC;
-	// }
 }
 
 static int	set_fds(t_tlist **redirs, t_tlist **tokens,
@@ -65,7 +60,6 @@ static int	set_fds(t_tlist **redirs, t_tlist **tokens,
 	ret = 1;
 	if (!ft_only_digits((*tokens)->str))
 	{
-		// ft_printf("%s\n", (*tokens)->str);
 		set_error(redirs, tokens, temp, &ret);
 		return (ret);
 	}
@@ -99,4 +93,3 @@ int	set_aggr_values(t_tlist **redirs, t_tlist **tokens)
 		ret = set_fds(redirs, tokens, temp, num);
 	return (ret);
 }
-

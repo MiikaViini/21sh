@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/29 21:50:13 by mviinika          #+#    #+#             */
-/*   Updated: 2023/01/25 19:42:56 by mviinika         ###   ########.fr       */
+/*   Updated: 2023/01/26 09:39:39 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,8 @@ static void	exec_w_env(char **input, t_env *env, int i, int k)
 
 int	do_env(char **input, t_env *env)
 {
-	int	i;
-	int	k;
+	int			i;
+	int			k;
 	struct stat	buf;
 
 	i = 0;

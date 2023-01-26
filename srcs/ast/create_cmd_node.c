@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 15:00:27 by mviinika          #+#    #+#             */
-/*   Updated: 2023/01/25 14:32:56 by mviinika         ###   ########.fr       */
+/*   Updated: 2023/01/26 09:39:54 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static void	apply_redir_attrs(t_ast *node, t_tlist ***tokens)
 	if (node->redir_type == REDIR_TRUNC || node->redir_type == REDIR_APPEND)
 		node->redirs->from_fd = 1;
 	else if (node->redir_type == REDIR_IN)
-		node->redirs->from_fd = 0; 
+		node->redirs->from_fd = 0;
 	if (ft_isdigit((**tokens)->str[0]))
 		node->redirs->from_fd = ft_atoi((**tokens)->str);
 	(**tokens) = (**tokens)->next;
