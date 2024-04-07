@@ -6,7 +6,7 @@
 /*   By: mviinika <mviinika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 19:07:23 by mviinika          #+#    #+#             */
-/*   Updated: 2023/01/26 09:40:21 by mviinika         ###   ########.fr       */
+/*   Updated: 2023/02/26 09:59:53 by mviinika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,20 +22,15 @@ static int	ft_21sh(t_env *env, char **builtins, char *input, t_term *t)
 	tree = NULL;
 	write(1, "\n", 1);
 	set_pars_struct(&parsed, input);
-	if (check_quotes(input))
-		error_print(NULL, NULL, E_QUOT);
+	if (*parsed.trimmed)
+		tree = parse_input(&parsed);
 	else
 	{
-		if (*parsed.trimmed)
-			tree = parse_input(&parsed);
-		else
-		{
-			free_all(&parsed, tree, input);
-			return (rb);
-		}
-		execute_all(env, builtins, tree, t);
 		free_all(&parsed, tree, input);
+		return (rb);
 	}
+	execute_all(env, builtins, tree, t);
+	free_all(&parsed, tree, input);
 	return (rb);
 }
 
