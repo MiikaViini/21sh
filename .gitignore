@@ -1,3 +1,5 @@
 .vscode
 abandoned_funcs.txt
-	21sh.dSYM/
+21sh.dSYM/
+21sh.dSYM/*
+
