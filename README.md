@@ -30,12 +30,18 @@ The successful completion of this project wouldn't have been possible without th
 ## Usage 
 
 Download source code and enter target folder:<br>
-```git clone https://github.com/MiikaViini/21sh.git ; cd 21sh```
+```
+git clone https://github.com/MiikaViini/21sh.git ; cd 21sh
+```
 
 Compile:<br>
-```make```
+```
+make
+```
 
 Run:<br>
-```./21sh```
+```
+./21sh
+```
 
 Have fun!!
